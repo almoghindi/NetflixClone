@@ -1,26 +1,24 @@
-import express, { Express, Request, Response , Application } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import { corsConfiguration } from './configurations/cors';
 import cors from 'cors';
+import { DBConnect } from './configurations/database';
+import authRoutes from './routes/auth-routes';
+import errorHandler from './middleware/error-handler';
 
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors(corsConfiguration()));
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to Express & TypeScript Server');
-});
+DBConnect();
 
-mongoose.connect(process.env.MONGODB_URI!).then(() => {
-  console.log('MongoDB Connected');
-}).catch((err) => {
-  console.log(err.message);
-});
+app.use('/api/auth', authRoutes);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+  console.log(`Server is on Fire at http://localhost:${port}`);
 });
