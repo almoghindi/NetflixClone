@@ -4,7 +4,7 @@
   "main": "./src/server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "node server.ts",
+    "start": "ts-node-dev --poll src/server.ts",
     "dev": "nodemon ./src/server.ts"
   },
   "keywords": [],
