@@ -6,9 +6,9 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - mongodb
+      - auth-mongodb
     environment:
-      MONGO_URI: mongodb://mongodb:27017/authdb
+      MONGO_URI: mongodb://auth-mongodb:27017/authdb
 
   accounts-service:
     build:
@@ -23,16 +23,33 @@ services:
       DB_PASSWORD: api
       DB_NAME: netflix_accounts
 
-  mongodb:
-    container_name: mongodb_container
+  content-service:
+    build:
+      context: ../content
+    ports:
+      - "3003:3003"
+    depends_on:
+      - content-mongodb
+    environment:
+      MONGO_URI: mongodb://content-mongodb:27018/contentdb
+
+  auth-mongodb:
+    container_name: auth_mongodb_container
     image: mongo:latest
     restart: always
     ports:
       - "27017:27017"
 
+  content-mongodb:
+    container_name: content_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27018:27017"
+
   mysql:
     container_name: mysql_container
-    image: mysql:latest
+    image: mysql:8.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: api
