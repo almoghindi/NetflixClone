@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, Application } from "express";
 import dotenv from "dotenv";
-
+import "./database/connection";
 //For env File
 dotenv.config();
 
