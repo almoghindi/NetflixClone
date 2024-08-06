@@ -58,3 +58,9 @@ services:
       MYSQL_PASSWORD: api
     ports:
       - "3307:3306"
+
+  client:
+    build:
+      context: ../client
+    ports:
+      - "80:80"
