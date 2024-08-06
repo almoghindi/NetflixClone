@@ -1,29 +1,50 @@
+import dotenv from "dotenv";
 import { Sequelize } from "sequelize-typescript";
-import path from "path";
+import Profile from "../models/profile";
+import FavoriteItem from "../models/favorite-item";
+import mysql from "mysql2";
 
-const modelsPath = path.join(__dirname, "..", "models");
-const sequelize: Sequelize = new Sequelize({
-  database: process.env.DB_NAME,
-  dialect: "mysql",
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
+dotenv.config();
+
+const databaseName = process.env.DB_NAME!;
+const connection = mysql.createConnection({
   host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  models: [modelsPath],
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
 });
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((error: any) => {
-    console.log("DB_NAME:", process.env.DB_NAME);
-    console.log("DB_USERNAME:", process.env.DB_USERNAME);
-    console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
-    console.log("DB_HOST:", process.env.DB_HOST);
-    console.log("DB_PORT:", process.env.DB_PORT);
-    console.error("Unable to connect to the database:", error.message);
-    // More detailed error logging can be done here if needed
-  });
 
-export default sequelize;
+connection.query(
+  `CREATE DATABASE IF NOT EXISTS \`${databaseName}\``,
+  (error) => {
+    if (error) {
+      console.error("Error creating database:", error);
+      process.exit(1);
+    } else {
+      console.log("Database created or already exists.");
+
+      const sequelize = new Sequelize(
+        databaseName,
+        process.env.DB_USERNAME!,
+        process.env.DB_PASSWORD!,
+        {
+          dialect: "mysql",
+          host: process.env.DB_HOST,
+          port: Number(process.env.DB_PORT),
+          models: [Profile, FavoriteItem],
+          logging: false,
+        }
+      );
+
+      sequelize
+        .sync({ force: false, alter: true })
+        .then(() => {
+          console.log("Database & tables created!");
+        })
+        .catch((error) => {
+          console.error("Error creating database or tables:", error);
+          process.exit(1);
+        });
+    }
+  }
+);
+export default connection;

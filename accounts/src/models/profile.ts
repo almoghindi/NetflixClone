@@ -1,15 +1,12 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
-  HasMany,
-  PrimaryKey,
-} from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import FavoriteItem from "./favorite-item";
+
+enum SubscriptionType {
+  BASIC = "BASIC",
+  STANDART = "STANDART",
+  PREMIUM = "PREMIUM",
+}
+
 @Table({
   timestamps: true,
   tableName: "Profiles",
@@ -36,18 +33,15 @@ class Profile extends Model {
   })
   declare avatar: string;
   @Column({
-    type: DataType.STRING,
+    type: DataType.ENUM(...Object.values(SubscriptionType)),
+    allowNull: false,
   })
-  declare subscription: string;
+  declare subscription: SubscriptionType;
   @Column({
     type: DataType.BOOLEAN,
   })
   declare isKid: boolean;
 
-  // @CreatedAt
-  // declare created_at: Date;
-  // @UpdatedAt
-  // declare updated_at: Date;
   @HasMany(() => FavoriteItem)
   declare favoriteItems: FavoriteItem[];
 }
