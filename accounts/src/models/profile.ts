@@ -9,6 +9,7 @@ import {
   HasMany,
   PrimaryKey,
 } from "sequelize-typescript";
+import FavoriteItem from "./favorite-item";
 @Table({
   timestamps: true,
   tableName: "Profiles",
@@ -25,7 +26,7 @@ class Profile extends Model {
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
   })
-  declare userId: string;
+  declare user_id: string;
   @Column({
     type: DataType.STRING,
   })
@@ -35,11 +36,19 @@ class Profile extends Model {
   })
   declare avatar: string;
   @Column({
-    type: DataType.ENUM,
+    type: DataType.STRING,
   })
   declare subscription: string;
   @Column({
     type: DataType.BOOLEAN,
   })
   declare isKid: boolean;
+
+  // @CreatedAt
+  // declare created_at: Date;
+  // @UpdatedAt
+  // declare updated_at: Date;
+  @HasMany(() => FavoriteItem)
+  declare favoriteItems: FavoriteItem[];
 }
+export default Profile;
