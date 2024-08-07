@@ -1,13 +1,18 @@
 import { Router } from "express";
 import {
   getAllProfiles,
-  getFavoriteItemsById,
+  addFavoriteItemById,
   createProfile,
+  getFavoriteItemsById,
+  updateProfile,
 } from "../controllers/account-controller";
-
+import expressAsyncHandler from "express-async-handler";
 const router: Router = Router();
 
-router.post("/create", createProfile);
-router.post("/:id/favorite-items", getFavoriteItemsById);
-router.get("/all", getAllProfiles);
+router.post("/create", expressAsyncHandler(createProfile));
+router.post("/:id/additem", expressAsyncHandler(addFavoriteItemById));
+router.get("/all", expressAsyncHandler(getAllProfiles));
+router.get("/:id/items", expressAsyncHandler(getFavoriteItemsById));
+router.put("/:id/update", expressAsyncHandler(updateProfile));
+
 export default router;
