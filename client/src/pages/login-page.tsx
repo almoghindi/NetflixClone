@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store.ts';
 
 // Define the validation schema with Zod
 const loginSchema = z.object({
@@ -12,6 +14,10 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
+
+  const auth = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch();
+
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
@@ -42,7 +48,7 @@ const Login: React.FC = () => {
           />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
-        <button type="submit">Login</button>
+        <button onClick={() => dispatch({ type: 'login' })} type="submit">Login</button>
       </form>
     </div>
   );
