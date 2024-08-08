@@ -1,49 +1,34 @@
 import axios, { AxiosError, Method } from "axios";
-import { useState } from "react";
 
-interface useRequestParams {
+interface RequestParams {
   url: string;
   method: Method;
   body?: any;
-  onSuccess?: (value?: any) => void;
 }
+
 interface RequestError {
   message: string;
 }
 
-export default function useRequest() {
-  const [requestErrors, setRequestErrors] = useState<RequestError[] | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const BASE_URL = 'http://localhost:8000';
 
-  const sendRequest = async ({
-    url,
-    method,
-    body,
-    onSuccess,
-  }: useRequestParams) => {
-    try {
-      setRequestErrors(null);
-      setIsLoading(true);
-      const response = await axios({
-        url,
-        method,
-        data: body,
-      });
-
-      if (onSuccess) {
-        onSuccess(response.data);
-      }
-      return response.data;
-    } catch (err) {
-      console.error(err);
-      if (err instanceof AxiosError)
-        setRequestErrors(err.response?.data.errors);
-      else setRequestErrors([{ message: "Some Error Occured" }]);
+export const sendRequest = async ({
+  url,
+  method,
+  body,
+}: RequestParams) => {
+  try {
+    const response = await axios({
+      url: `${BASE_URL}${url}`,
+      method,
+      data: body,
+    });
+    return response.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      throw new Error(err.response?.data.errors[0]?.message || "An error occurred");
+    } else {
+      throw new Error("An error occurred");
     }
-    setIsLoading(false);
-  };
-
-  return { requestErrors, sendRequest, isLoading };
-}
+  }
+};

@@ -18,6 +18,7 @@ export class AuthController {
     static async register(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password } = req.body;
+            console.log("email and pass", email, password);
             const result = await AuthService.register(email, password);
             res.status(201).json(result);
         }

@@ -8,6 +8,7 @@ export class AuthService {
 
     static async register(email: string, password: string) {
         const existingUser = await User.findOne({email});
+
         if (existingUser) {
             throw new Error('User already exists');
         }
@@ -15,11 +16,13 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash( password, 10 );
 
         const user = new User({email, password: hashedPassword});
-        await user.save();
-
+        //await user.save();
+        
+        console.log(user._id.toString());
         const refreshedToken = JwtService.generateRefreshToken(user._id.toString());
         const accessToken = JwtService.generateAccessToken(user._id.toString());
-
+        
+        user.id = user._id.toString();
         user.token = refreshedToken;
         await user.save();
 
