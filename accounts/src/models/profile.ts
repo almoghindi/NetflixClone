@@ -22,23 +22,27 @@ class Profile extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
+    allowNull: false,
   })
   declare user_id: string;
   @Column({
     type: DataType.STRING,
+    allowNull: true,
   })
   declare name: string;
   @Column({
     type: DataType.STRING,
+    allowNull: true,
   })
   declare avatar: string;
   @Column({
     type: DataType.ENUM(...Object.values(SubscriptionType)),
-    allowNull: false,
+    allowNull: true,
   })
   declare subscription: SubscriptionType;
   @Column({
     type: DataType.BOOLEAN,
+    allowNull: true,
   })
   declare isKid: boolean;
 
