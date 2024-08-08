@@ -1,16 +1,10 @@
-import express, { Express, Request, Response, Application } from "express";
-import dotenv from "dotenv";
-import "./database/connection";
-//For env File
-dotenv.config();
+import DBConnect from "./database/connection";
+import app from "./app";
 
-const app: Application = express();
 const port = process.env.PORT || 8000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Express & TypeScript Server");
-});
-
-app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+DBConnect().then(() => {
+  app.listen(port, () => {
+    console.log(`Server is Fire at http://localhost:${port}`);
+  });
 });

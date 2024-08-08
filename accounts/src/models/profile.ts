@@ -1,14 +1,12 @@
-import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  CreatedAt,
-  UpdatedAt,
-  BeforeCreate,
-  HasMany,
-  PrimaryKey,
-} from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import FavoriteItem from "./favorite-item";
+
+enum SubscriptionType {
+  BASIC = "BASIC",
+  STANDART = "STANDART",
+  PREMIUM = "PREMIUM",
+}
+
 @Table({
   timestamps: true,
   tableName: "Profiles",
@@ -24,22 +22,31 @@ class Profile extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
+    allowNull: false,
   })
-  declare userId: string;
+  declare user_id: string;
   @Column({
     type: DataType.STRING,
+    allowNull: true,
   })
   declare name: string;
   @Column({
     type: DataType.STRING,
+    allowNull: true,
   })
   declare avatar: string;
   @Column({
-    type: DataType.ENUM,
+    type: DataType.ENUM(...Object.values(SubscriptionType)),
+    allowNull: true,
   })
-  declare subscription: string;
+  declare subscription: SubscriptionType;
   @Column({
     type: DataType.BOOLEAN,
+    allowNull: true,
   })
   declare isKid: boolean;
+
+  @HasMany(() => FavoriteItem)
+  declare favoriteItems: FavoriteItem[];
 }
+export default Profile;

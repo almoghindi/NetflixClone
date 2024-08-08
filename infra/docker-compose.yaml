@@ -18,10 +18,12 @@ services:
     depends_on:
       - mysql
     environment:
+      PORT: 3002
       DB_HOST: mysql
       DB_USER: netflix
       DB_PASSWORD: api
       DB_NAME: netflix_accounts
+      DB_PORT: 3306
 
   content-service:
     build:
