@@ -1,11 +1,9 @@
-import dotenv from "dotenv";
 import { Sequelize } from "sequelize-typescript";
 import Profile from "../models/profile";
 import FavoriteItem from "../models/favorite-item";
 import mysql from "mysql2";
 
 // services.msc MySQL80
-dotenv.config();
 const DBConnect = async () => {
   const databaseName = process.env.DB_NAME!;
   const connection = mysql.createConnection({
