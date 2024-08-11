@@ -18,11 +18,9 @@ export class AuthService {
         const user = new User({email, password: hashedPassword});
         //await user.save();
         
-        console.log(user._id.toString());
         const refreshedToken = JwtService.generateRefreshToken(user._id.toString());
         const accessToken = JwtService.generateAccessToken(user._id.toString());
-        
-        user.id = user._id.toString();
+
         user.token = refreshedToken;
         await user.save();
 
@@ -36,7 +34,8 @@ export class AuthService {
             throw new Error('User does not exist');
         }
 
-        const isPasswordMatch = await bcrypt.compare(existingUser.password, password)
+        const isPasswordMatch = await bcrypt.compare(password,existingUser.password)
+    
         if (!isPasswordMatch) {
             throw new Error('Incorrect password');
         }
@@ -47,7 +46,7 @@ export class AuthService {
         existingUser.token = refreshedToken;
         await existingUser.save();
 
-        return {accessToken, refreshToken: refreshedToken};
+        return {accessToken, refreshToken: refreshedToken, user: existingUser};
     }
 
     static async refreshToken(refreshToken: string) {
@@ -69,12 +68,12 @@ export class AuthService {
 
     static async logout(userId: string){
         const user = await User.findById(userId);
-
+        
         if (!user){
             throw new Error('User not found');
         }
 
-        user.token = '';
+        user.token = null;
         await user.save();
     }
 }

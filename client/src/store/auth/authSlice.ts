@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, AuthResponse, LoginCredentials, SignupCredentials } from '../../types/auth';
-import { sendRequest } from '../../hooks/use-request'; // Adjust the path accordingly
+import { sendRequest } from '../../hooks/use-request'; 
+import { RootState } from '../store';
 
 const initialState: AuthState = {
   user: null,
@@ -40,13 +41,15 @@ export const login = (credentials: LoginCredentials) => async (dispatch: any) =>
   try {
     dispatch(setIsLoading(true));
     const response = await sendRequest({
-      url: 'api/auth/login',
+      url: '/api/auth/login',
       method: 'POST',
       body: credentials,
     });
+    console.log(response);
     dispatch(loginSuccess(response));
     localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('refreshToken', response.refreshToken);
+    localStorage.setItem('userId', response.user._id);
   } catch (error) {
     dispatch(setError(error instanceof Error ? error.message : 'An error occurred'));
   } finally {
@@ -65,6 +68,7 @@ export const signup = (credentials: SignupCredentials) => async (dispatch: any) 
     dispatch(signupSuccess(response));
     localStorage.setItem('accessToken', response.accessToken);
     localStorage.setItem('refreshToken', response.refreshToken);
+
   } catch (error) {
     dispatch(setError(error instanceof Error ? error.message : 'An error occurred'));
   } finally {
@@ -74,11 +78,20 @@ export const signup = (credentials: SignupCredentials) => async (dispatch: any) 
 
 export const logout = () => async (dispatch: any) => {
   try {
+    const userId = localStorage.getItem('userId');
+
+     if (!userId) {
+       throw new Error('User not found. Please logIn again.');
+     }
+
     await sendRequest({
-      url: '/logout',
+      url: '/api/auth/logout',
       method: 'POST',
+      body: { userId, refreshToken: localStorage.getItem('refreshToken') },
     });
+    
     dispatch(logoutSuccess());
+    localStorage.removeItem('userId');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   } catch (error) {

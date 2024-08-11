@@ -42,8 +42,8 @@ const Login: React.FC = () => {
         <button type="submit" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
-        {error && <p>{error}</p>}
       </form>
+      {error && <p>{error}</p>}
       <p>
         Don't have an account? <a href="/signup">Sign up</a>
       </p>
