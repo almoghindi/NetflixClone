@@ -2,10 +2,6 @@ import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-    id: {
-        type: ObjectId,
-        required: true,
-    },
     email: {
         type: String,
         required: true,
@@ -16,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     },
     token: {
         type: String,
-        required: true,
+        required: false,
     },
 });
 

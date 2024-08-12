@@ -3,6 +3,8 @@ export interface LoginCredentials {
     password: string;
 }
 
+export interface SignupCredentials extends LoginCredentials {}
+
 export interface AuthResponse {
     accessToken: string;
     refreshToken: string;
