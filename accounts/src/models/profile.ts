@@ -1,12 +1,6 @@
 import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import FavoriteItem from "./favorite-item";
 
-enum SubscriptionType {
-  BASIC = "BASIC",
-  STANDART = "STANDART",
-  PREMIUM = "PREMIUM",
-}
-
 @Table({
   timestamps: true,
   tableName: "Profiles",
@@ -35,11 +29,6 @@ class Profile extends Model {
     allowNull: true,
   })
   declare avatar: string;
-  @Column({
-    type: DataType.ENUM(...Object.values(SubscriptionType)),
-    allowNull: true,
-  })
-  declare subscription: SubscriptionType;
   @Column({
     type: DataType.BOOLEAN,
     allowNull: true,
