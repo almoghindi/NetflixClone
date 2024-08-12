@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./layouts/header";
 import Footer from "./layouts/footer";
 import HomePage from "./pages/home-page";
-import Login from "./pages/login-page";
+// import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,14 +17,16 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
+    <Router>
       <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <main>
-        <HomePage />
-        {!isLoggedIn && <Login />}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {/* {!isLoggedIn && <Login />} */}
+        </Routes>
       </main>
       <Footer />
-    </div>
+    </Router>
   );
 };
 export default App;
