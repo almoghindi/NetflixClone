@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutSuccess } from '../store/auth/authSlice';
+import { logoutSuccess } from '../store/slices/authSlice';
 import { RootState } from '../store/store';
 import { sendRequest } from '../hooks/use-request';
 

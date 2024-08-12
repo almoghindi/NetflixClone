@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { loginSuccess, signupSuccess } from "../store/auth/authSlice";
+import { loginSuccess, signupSuccess } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 
 const authSchema = z.object({
