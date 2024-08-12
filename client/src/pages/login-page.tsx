@@ -1,6 +1,6 @@
-import Login from "../components/login";
-import Signup from "../components/signup";
+
 import Logout from "../components/logout";
+import AuthForm from "../components/auth-form";
 
 
 const LoginPage: React.FC = () => {
@@ -9,8 +9,7 @@ const LoginPage: React.FC = () => {
   return (
     <>
       <Logout />
-      <Signup /> 
-      <Login />
+      <AuthForm />
     </>
   );
 };
