@@ -2,7 +2,7 @@
 
 import  netflixLogo from "../assets/img/Netflix_assests/Netflix_Logo_RGB.png";
 
-const HeaderLandingPage = () => {
+const HeaderLandingPage: React.FC = () => {
   return (
 <header className="">
       <nav
