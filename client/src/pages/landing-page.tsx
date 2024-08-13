@@ -72,17 +72,18 @@ const LandingPage: React.FC = () => {
       />
 
       <FAQSection />
-      <footer className="py-8 border-t border-gray-800">
+      <footer className="py-8 ">
         <div className="container mx-auto px-4 text-center">
-          <p>
+          <p className="text-lg mb-4 text-bold">
             Ready to watch? Enter your email to create or restart your
             membership.
           </p>
-          <div className="flex justify-center">
+          <div className="flex justify-center max-w-md mx-auto">
           <EmailForm />
           </div>
         </div>
       </footer>
+      <div className="border-t-8 rounded-lg" style={{ borderColor: 'rgb(45, 45, 45)' }}/>
     </div>
   );
 };

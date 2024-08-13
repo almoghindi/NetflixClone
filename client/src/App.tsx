@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./layouts/header";
 import Footer from "./layouts/footer";
 import HomePage from "./pages/home-page";
-import HeaderLandingPage from "./layouts/header-landing-page";
 import LandingPage from "./pages/landing-page";
 import LoginPage from "./pages/login-page";
 import SignUpPage from "./pages/signup-page";

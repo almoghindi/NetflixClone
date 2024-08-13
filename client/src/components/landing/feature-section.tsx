@@ -13,7 +13,7 @@ const FeatureSection: React.FC<{
     isReversed = false,
     videoWatchEverywere,
   }) => (
-    <section className="py-16 border-t border-gray-800">
+    <section className="py-16 border-t-8 rounded-lg" style={{ borderColor: 'rgb(45, 45, 45)' }}>
       <div
         className={`container mx-auto px-4 flex flex-col ${
           isReversed ? "md:flex-row-reverse" : "md:flex-row"

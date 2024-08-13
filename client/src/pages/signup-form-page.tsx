@@ -38,10 +38,12 @@ const SignUpPageForm: React.FC = () => {
         method: "POST",
         body: credentials,
       });
+      console.log(response);
+      
       dispatch(signupSuccess(response));
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.user.id);
+      localStorage.setItem("userId", response.user._id);
       navigation("/login");
     } catch (error) {
       console.error(error instanceof Error ? error.message : "An error occurred");
@@ -50,7 +52,6 @@ const SignUpPageForm: React.FC = () => {
 
   const onSubmit = (data: SignUpFormInputs) => {
     signup(data);
-
   };
 
   return (
