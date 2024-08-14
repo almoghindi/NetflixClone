@@ -30,8 +30,8 @@ const FeatureSection: React.FC<{
             className="w-full z-10 relative bg-cover"
           />
           {videoSrc && (
-            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-              <video autoPlay loop muted className="w-[73%] h-[60%] object-cover">
+            <div className="absolute inset-4 flex items-center justify-center overflow-hidden">
+              <video autoPlay loop muted className="w-[80%] h-[66%] object-cover">
                 <source src={videoSrc} type="video/mp4" />
               </video>
             </div>

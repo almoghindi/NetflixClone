@@ -18,6 +18,7 @@ const authSchema = z.object({
 type AuthFormInputs = z.infer<typeof authSchema>;
 
 const AuthForm: React.FC = () => {
+
   const navigation = useNavigate();
   const [isLogin, setIsLogin] = useState(true); 
   const { error, isLoading } = useSelector((state: RootState) => state.auth);
@@ -103,6 +104,10 @@ const AuthForm: React.FC = () => {
         </button>
       </form>
       {error && <p className="text-red-500 mt-4">{error}</p>}
+        <div onClick={() => navigation("/forgot-password")} className="hover:text-gray-300 cursor-pointer mt-5 text-sm text-medium text-white hover:underline flex items-center justify-center">
+          Forgot password?
+          
+        </div>
       <div className="flex items-center mt-4">
         <input type="checkbox" id="remember" className="mr-2" />
         <label htmlFor="remember" className="text-gray-400">Remember me</label>

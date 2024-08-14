@@ -1,6 +1,7 @@
 import React from "react";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
+import Footer from "../layouts/footer";
 
 const SignUpPage: React.FC = () => {
     const navigation = useNavigate();
@@ -36,8 +37,6 @@ const SignUpPage: React.FC = () => {
           Next
         </button>
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 };
