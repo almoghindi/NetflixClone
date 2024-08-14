@@ -1,10 +1,22 @@
-import express, { Express, Request, Response, Application } from "express";
+import express, {
+  Request,
+  Response,
+  Application,
+  urlencoded,
+  raw,
+} from "express";
+import cors from "cors";
 import dotenv from "dotenv";
-import paymentRouter from "./routes/payment-route";
 //For env File
 dotenv.config();
 
+import paymentRouter from "./routes/payment-route";
+import { corsConfiguration } from "./configurations/cors";
+
 const app: Application = express();
+app.use(urlencoded({ extended: true }));
+app.use(raw({ type: "application/json" }));
+app.use(cors(corsConfiguration()));
 
 app.use("/api/payment", paymentRouter);
 
