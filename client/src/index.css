@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.body {
+* {
   margin: 0;
   padding: 0;
   background-color: black;
 }
 
 html {
-  background-color: black;
+}
+
+.navbar {
+  background-color: transparent !important;
+}
+.top1video {
+  width: 100% !important;
+  height: 100vh !important;
 }

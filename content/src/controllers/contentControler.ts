@@ -42,4 +42,20 @@ export const searchContentByName = async (
     res.status(500).json(error);
   }
 };
-///delete later
+
+export const getTop10Content = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log("first");
+    const content = await Content.find().limit(10);
+    console.log(content);
+
+    res.status(200).json(content);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
