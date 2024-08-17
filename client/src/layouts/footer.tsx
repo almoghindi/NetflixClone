@@ -11,15 +11,16 @@ const Footer: React.FC<FooterProps> = () => {
   let isBlack = true;
   let LoginPage = false;
 
-  if (location.pathname === '/signup' || location.pathname === '/signup/regform') {
+  if (location.pathname === '/signup' || location.pathname === '/signup/regform' || location.pathname === '/reset-password') {
     isBlack = false;
   }
 
   if (location.pathname === '/login') {
     isBlack = true;
     LoginPage = true;
-    
   }
+
+
 
   return (
     <footer className={`${isBlack ? 'bg-black text-white border-gray-800' : 'bg-gray-50 text-gray-500 border-gray-200'} py-4 border-t`}>

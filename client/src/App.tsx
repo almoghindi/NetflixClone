@@ -8,6 +8,7 @@ import LoginPage from "./pages/login-page";
 import SignUpPage from "./pages/signup-page";
 import SignUpPageForm from "./pages/signup-form-page";
 import ForgotPasswordPage from "./pages/forgot-password";
+import ResetPasswordPage from "./pages/reset-password";
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup/regform" element={<SignUpPageForm />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       </Routes>
      <Footer />

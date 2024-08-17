@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services/auth-service';
+import { sendEmail } from '../services/email-service';
 
 export class AuthController {
 
@@ -52,6 +53,39 @@ export class AuthController {
 
             const result = await AuthService.refreshToken(refreshToken);
             res.json(result);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    static async requestPasswordReset(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email } = req.body;
+    
+            // Generate a reset token and save it
+            await AuthService.generateResetToken(email);
+    
+            await AuthService.requestPasswordReset(email);
+
+            res.status(200).json({ message: 'If an account with that email exists, a password reset link has been sent.' });
+
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+
+
+    static async resetPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { token, newPassword } = req.body;
+        
+            await AuthService.resetPassword(token, newPassword);
+
+            res.status(200).json({ message: 'Password reset successful.' });
+    
         }
         catch (err) {
             next(err);
