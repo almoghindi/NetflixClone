@@ -59,7 +59,7 @@ const SignUpPageForm: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col bg-white">
+      <div style={{ minHeight: '80vh' }} className="min-h-screen flex flex-col bg-white">
         <header className="bg-white border-b border-gray-200 py-0">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />

@@ -5,8 +5,8 @@ import BackGroundLadingPage from '../assets/img/landing-page-assets/landing-page
 
 const LoginPage: React.FC = () => {
   return (
-    <div className="min-h-screen  bg-center" style={{backgroundImage: `url(${BackGroundLadingPage})`}}>
-      <div className="min-h-screen bg-black bg-opacity-60">
+    <div  className="  bg-center" style={{backgroundImage: `url(${BackGroundLadingPage})`, minHeight: '80vh'}}>
+      <div style={{ minHeight: '80vh' }} className=" bg-black bg-opacity-60">
         <header className="p-4">
           <HeaderLandingPage />
         </header>

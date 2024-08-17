@@ -47,7 +47,7 @@ const ForgotPasswordPage: React.FC = () => {
         return (
             <>
                 <HeaderLandingPage />
-                <div className="min-h-screen">
+                <div style={{ minHeight: '80vh' }} >
                     <div className="flex items-center justify-end absolute top-0 right-0 m-6 mr-8">
                         <button onClick={() => navigate("/login")} className="flex justify-start text-red-600 hover:text-red-700 hover:underline font-semibold text-ms ">
                             Sign In
@@ -81,7 +81,7 @@ const ForgotPasswordPage: React.FC = () => {
     return (
         <>
             <HeaderLandingPage />
-            <div className="min-h-screen">
+            <div style={{ minHeight: '80vh' }}>
                 <div className="flex items-center justify-end absolute top-0 right-0 m-6 mr-8">
                     <button onClick={() => navigate("/login")} className="flex justify-start text-red-600 hover:text-red-700 hover:underline font-semibold text-ms ">
                         Sign In

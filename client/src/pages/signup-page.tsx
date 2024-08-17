@@ -1,13 +1,13 @@
 import React from "react";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
-import Footer from "../layouts/footer";
+
 
 const SignUpPage: React.FC = () => {
     const navigation = useNavigate();
     
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div style={{ minHeight: '80vh' }} className="min-h-screen bg-white flex flex-col">
       <header className="bg-white border-b border-gray-200 py-0">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <HeaderLandingPage />

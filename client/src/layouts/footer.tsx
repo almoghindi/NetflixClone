@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = () => {
 
 
   return (
-    <footer className={`${isBlack ? 'bg-black text-white border-gray-800' : 'bg-gray-50 text-gray-500 border-gray-200'} py-4 border-t`}>
+    <footer style={{ minHeight: '20vh' }} className={`${isBlack ? 'bg-black text-white border-gray-800' : 'bg-gray-50 text-gray-500 border-gray-200 '} py-4 border-t  `}>
       <div className={`${LoginPage ? 'bg-black bg-opacity-60 py-4 ': ''}  `}/>
       <div className="container mx-auto px-4">
         <p className={`${isBlack ? 'text-white' : 'text-gray-500'} mb-4`}>Questions? Contact us.</p>

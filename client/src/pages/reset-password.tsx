@@ -48,59 +48,64 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <>
-    <HeaderLandingPage />
+    <div style={{ minHeight: '80vh' }} className="flex flex-col">
+      <HeaderLandingPage />
 
-      <div className="p-6 bg-gray-100 shadow-xl ">
-      <h1 className="text-4xl font-black ml-5 mb-4">Change password</h1>
-      <p className="mb-4 ml-5">Protect your account with a unique password at least 6 characters long.</p>
-      <form onSubmit={handleSubmit} className="p-5 flex flex-col ">
-        <div className="mb-2">
-          <input
-            type="email"
-            placeholder="Current Email"
-            className="w-1/2 p-2 border rounded"
-            value={currentEmail}
-            onChange={(e) => setCurrentEmail(e.target.value)}
-            required
-          />
-          <a href="#" className="text-blue-400 font-bold text-xs"><br />Forgot password?</a>
-        </div>
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="New password (6-60 characters)"
-            className="w-1/2 p-2 border rounded"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-            minLength={6}
-            maxLength={60}
-          />
-        </div>
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Re-enter new password"
-            className="w-1/2 p-2 border rounded"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="flex space-x-2">
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-            Save
-          </button>
-          <button type="button" className="px-4 py-2 bg-gray-300 rounded" onClick={() => navigate('/')}>
-            Cancel
-          </button>
-        </div>
-      </form>
-      {message && <p className="mt-4 text-red-500">{message}</p>}
+      <div className="flex-grow p-6 bg-gray-100 shadow-xl">
+        <h1 className="text-4xl font-black ml-5 mb-4">Change password</h1>
+        <p className="mb-4 ml-5">
+          Protect your account with a unique password at least 6 characters long.
+        </p>
+        <form onSubmit={handleSubmit} className="p-5 flex flex-col">
+          <div className="mb-2">
+            <input
+              type="email"
+              placeholder="Current Email"
+              className="w-1/2 p-2 border rounded"
+              value={currentEmail}
+              onChange={(e) => setCurrentEmail(e.target.value)}
+              required
+            />
+            <a href="#" className="text-blue-400 font-bold text-xs">
+              <br />
+              Forgot password?
+            </a>
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              placeholder="New password (6-60 characters)"
+              className="w-1/2 p-2 border rounded"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+              maxLength={60}
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              placeholder="Re-enter new password"
+              className="w-1/2 p-2 border rounded"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex space-x-2">
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
+              Save
+            </button>
+            <button type="button" className="px-4 py-2 bg-gray-300 rounded" onClick={() => navigate('/')}>
+              Cancel
+            </button>
+          </div>
+        </form>
+        {message && <p className="mt-4 text-red-500">{message}</p>}
+      </div>
+
     </div>
-
-    </>
   );
 };
 
