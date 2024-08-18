@@ -1,11 +1,11 @@
 import React from "react";
-import HeaderLandingPage from "../layouts/header-landing-page";
-import { useNavigate } from "react-router-dom";
+import HeaderLandingPage from "../../layouts/header-landing-page";
 
+interface SignUpPageProps {
+  onNext: () => void;
+}
 
-const SignUpPage: React.FC = () => {
-    const navigation = useNavigate();
-    
+const SignUpPage: React.FC<SignUpPageProps> = ({ onNext }) => {
   return (
     <div style={{ minHeight: '80vh' }} className="min-h-screen bg-white flex flex-col">
       <header className="bg-white border-b border-gray-200 py-0">
@@ -33,7 +33,10 @@ const SignUpPage: React.FC = () => {
           <br />
           Create a password to start watching <br /> Netflix.
         </p>
-        <button onClick={() => navigation("/signup/regform")} className="bg-red-600 hover:bg-red-600 text-white font-bold py-3 px-8 rounded w-full max-w-sm">
+        <button
+          onClick={onNext}
+          className="bg-red-600 hover:bg-red-600 text-white font-bold py-3 px-8 rounded w-full max-w-sm"
+        >
           Next
         </button>
       </main>

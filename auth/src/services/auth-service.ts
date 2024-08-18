@@ -19,7 +19,6 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash( password, 10 );
 
         const user = new User({email, password: hashedPassword});
-        //await user.save();
         
         const refreshedToken = JwtService.generateRefreshToken(user._id.toString());
         const accessToken = JwtService.generateAccessToken(user._id.toString());
@@ -27,7 +26,7 @@ export class AuthService {
         user.token = refreshedToken;
         await user.save();
 
-        return {accessToken, refreshToken: refreshedToken};
+        return {accessToken, refreshToken: refreshedToken, userId: user._id.toString()};
     }
 
     static async login(email: string, password: string){

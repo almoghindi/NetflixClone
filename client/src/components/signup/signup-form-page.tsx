@@ -3,24 +3,26 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
-import { signupSuccess } from "../store/slices/authSlice";
-import { sendRequest } from "../hooks/use-request";
-import HeaderLandingPage from "../layouts/header-landing-page";
+import { AppDispatch } from "../../store/store";
+import { signupSuccess } from "../../store/slices/authSlice";
+import { sendRequest } from "../../hooks/use-request";
+import HeaderLandingPage from "../../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
-import Footer from "../layouts/footer";
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long" }),
-  //   emailOffers: z.boolean().optional(),
 });
 
 type SignUpFormInputs = z.infer<typeof signUpSchema>;
 
-const SignUpPageForm: React.FC = () => {
+interface SignUpPageFormProps {
+  onNext: () => void;
+}
+
+const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
 
@@ -44,8 +46,9 @@ const SignUpPageForm: React.FC = () => {
       dispatch(signupSuccess(response));
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.user._id);
-      navigation("/login");
+      localStorage.setItem("userId", response.userId);
+      
+      onNext(); // Proceed to the next step
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"
@@ -110,17 +113,6 @@ const SignUpPageForm: React.FC = () => {
                   </p>
                 )}
               </div>
-              {/* <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="emailOffers"
-                {...register("emailOffers")}
-                className="mr-2"
-              />
-              <label htmlFor="emailOffers" className="text-sm">
-                Yes, please email me Netflix special offers.
-              </label>
-            </div> */}
               <button
                 type="submit"
                 className="w-full bg-red-600 text-white p-4 rounded font-bold hover:bg-red-700 transition duration-300"

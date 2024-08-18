@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import HeaderLandingPage from '../layouts/header-landing-page';
 import { sendRequest } from '../hooks/use-request';
 
@@ -21,7 +20,7 @@ const ResetPasswordPage = () => {
     if (tokenParam) {
       setToken(tokenParam);
     } else {
-      setMessage('Invalid reset link');
+      setMessage('Invalid or expired reset link');
     }
   }, [location]);
 
@@ -49,7 +48,7 @@ const ResetPasswordPage = () => {
 
   return (
     <div style={{ minHeight: '80vh' }} className="flex flex-col">
-      <HeaderLandingPage />
+      <HeaderLandingPage /> //TODO: PUT THE MAIN PAGE HEADER.
 
       <div className="flex-grow p-6 bg-gray-100 shadow-xl">
         <h1 className="text-4xl font-black ml-5 mb-4">Change password</h1>
