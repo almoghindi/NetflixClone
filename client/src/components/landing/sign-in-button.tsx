@@ -8,7 +8,7 @@ const SignInButton: React.FC = () => {
         navigate("/login");
     }
     return (
-    <button onClick={handleNavigate} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+    <button onClick={handleNavigate} className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs py-2 px-3 rounded">
       Sign In
     </button>
   );    

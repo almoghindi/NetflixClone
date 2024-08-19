@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutSuccess } from '../store/slices/authSlice';
 import { RootState } from '../store/store';
 import { sendRequest } from '../hooks/use-request';
+import { useNavigate } from 'react-router-dom';
 
 const Logout: React.FC = () => {
   const dispatch = useDispatch();
-  const { error, user } = useSelector((state: RootState) => state.auth);
+  const {  } = useSelector((state: RootState) => state.auth);
+
+  const navigate = useNavigate();
 
   const handleLogOutClick = async () => {
-    console.log(user); 
+ 
     try {
       const userId = localStorage.getItem('userId');
       const refreshToken = localStorage.getItem('refreshToken');
@@ -30,16 +33,15 @@ const Logout: React.FC = () => {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
 
+      navigate('/login');
     } catch (error) {
       new Error(error instanceof Error ? error.message : 'An error occurred');
     }
-
   };
   
   return (
     <>
-      <button onClick={handleLogOutClick}>Logout</button>
-      {error && <p>Error: {error}</p>}
+      <button className='hover:underline' onClick={handleLogOutClick}>Sign Out</button>
     </>
   );
 };
