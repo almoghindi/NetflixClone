@@ -23,7 +23,7 @@ export const checkoutSessionComplete = async (
   let user;
   if (!customer.deleted) {
     user = await Subscriber.findOne({ stripeId });
-    const newOrder = await Order.create({
+    const newOrder = Order.build({
       userId: customer.id,
       price: plan.price,
       status: OrderStatus.Completed,
@@ -31,7 +31,7 @@ export const checkoutSessionComplete = async (
     await newOrder.save();
 
     if (!user) {
-      user = await Subscriber.create({
+      user = Subscriber.build({
         stripeId,
         orderId: newOrder.id,
         subscription: plan.type,

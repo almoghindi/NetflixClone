@@ -4,6 +4,7 @@ import express, {
   Application,
   urlencoded,
   raw,
+  json,
 } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -15,7 +16,8 @@ import { corsConfiguration } from "./configurations/cors";
 
 const app: Application = express();
 app.use(urlencoded({ extended: true }));
-app.use(raw({ type: "application/json" }));
+// app.use(raw({ type: "application/json" }));
+app.use(json());
 app.use(cors(corsConfiguration()));
 
 app.use("/api/payment", paymentRouter);

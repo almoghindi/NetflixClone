@@ -1,43 +1,46 @@
 import { Request, Response, text } from "express";
-import { stripe } from "../stripe";
+import { plans, stripe } from "../stripe";
 import { subsriptionDeleted } from "../events/customers/customer-subscription-deleted";
 import { checkoutSessionComplete } from "../events/checkout/checkout-session-completed";
+import Stripe from "stripe";
+import { Subscriber } from "../models/subscriber";
 
-const getPriceId = (plan: string): string => {
-  switch (plan.toLocaleLowerCase()) {
-    case "basic":
-      return "price_1PmurrGI8xoArhccBp4XFfSF";
-    case "standart":
-      return "price_1PmurQGI8xoArhccL8JVD2CK";
-    case "premium":
-      return "price_1PmurgGI8xoArhccigmyfZ86";
-    default:
-      return "";
-  }
-};
-export const createPayment = async (req: Request, res: Response) => {
-  const plan = req.query.plan?.toString();
-  if (!plan) {
-    res.status(401).send("plan not found");
-    return;
-  }
-  const priceid = getPriceId(plan);
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    mode: "subscription",
-    line_items: [
+export const createSubscription = async (req: Request, res: Response) => {
+  const customer = await stripe.customers.create({
+    name: req.body.name,
+    email: req.body.email,
+    payment_method: req.body.paymentMethod,
+    invoice_settings: {
+      default_payment_method: req.body.paymentMethod,
+    },
+  });
+  const priceId = req.body.priceId;
+  const subscription: Stripe.Subscription = await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [
       {
-        price: priceid, // Replace with your price ID
-        quantity: 1,
+        price: priceId,
       },
     ],
-    success_url: `${process.env.BASE_URL}/sucsses?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.BASE_URL}/cancel`,
+    payment_behavior: "default_incomplete",
+    payment_settings: { save_default_payment_method: "on_subscription" },
+    expand: ["latest_invoice.payment_intent"],
   });
 
-  // Return the session ID
-  console.log(session);
-  res.status(204).json(session.id);
+  const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
+  const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
+  const clientSecret = paymentIntent.client_secret;
+  res.send({
+    subscriptionId: subscription.id,
+    clientSecret: clientSecret,
+  });
+  console.log(req.body);
+};
+
+export const getPublishKey = async (req: Request, res: Response) => {
+  res.send({
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  });
 };
 export const webhookEvent = async (req: Request, res: Response) => {
   const sig = req.headers["stripe-signature"];
