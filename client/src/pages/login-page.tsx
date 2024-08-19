@@ -1,7 +1,9 @@
+
 import React from 'react';
 import AuthForm from "../components/auth-form";
 import HeaderLandingPage from '../layouts/header-landing-page';
 import BackGroundLadingPage from '../assets/img/landing-page-assets/landing-page-background.jpg';
+
 
 const LoginPage: React.FC = () => {
   return (
