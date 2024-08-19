@@ -49,9 +49,9 @@ const PlanSelection: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
                 <div className="p-4">
               <ul className="space-y-2 text-sm  ">
-                <li className=" flex flex-col border-b border-gray-200 mt-5 ">
-                  <span>Monthly price</span>
-                  <span>₪{plan.price}</span>
+                <li className=" flex flex-col border-b  border-gray-200 mt-5 ">	Modulus (Remainder)
+                  <span className='text-gray-600 font-semibold'>Monthly price</span>
+                  <span className='text-gray-700 font-bold'>₪{plan.price}</span>
                 </li>
                 <li className="flex flex-col border-b border-gray-200 mt-5">
                   <span>Video and sound quality</span>

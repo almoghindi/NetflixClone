@@ -40,6 +40,7 @@ const ForgotPasswordPage: React.FC = () => {
             setMessage('An error occurred. Please try again later.');
         } finally {
             setIsLoading(false);
+            
         }
     };
 

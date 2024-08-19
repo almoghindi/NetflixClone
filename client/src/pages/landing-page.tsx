@@ -12,9 +12,9 @@ import FAQSection from "../components/landing/faq-section";
 const LandingPage: React.FC = () => {
   return (
     <>
-      <div className="min-h-screen bg-black text-white">
+      <div className=" bg-black text-white">
         <div
-          className="relative bg-cover bg-center min-h-screen"
+          className="relative bg-cover bg-center "
           style={{ backgroundImage: `url(${BackgroundLandingPage})` }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-60" />
