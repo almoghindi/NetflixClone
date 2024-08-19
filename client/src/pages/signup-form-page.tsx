@@ -9,19 +9,19 @@ import { sendRequest } from "../hooks/use-request";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
 
-
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-//   emailOffers: z.boolean().optional(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+  //   emailOffers: z.boolean().optional(),
 });
-
 
 type SignUpFormInputs = z.infer<typeof signUpSchema>;
 
 const SignUpPageForm: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const navigation = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigate();
 
   const {
     register,
@@ -41,16 +41,17 @@ const SignUpPageForm: React.FC = () => {
       dispatch(signupSuccess(response));
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.user.id);
+      localStorage.setItem("userId", response.user._id);
       navigation("/login");
     } catch (error) {
-      console.error(error instanceof Error ? error.message : "An error occurred");
+      console.error(
+        error instanceof Error ? error.message : "An error occurred"
+      );
     }
   };
 
   const onSubmit = (data: SignUpFormInputs) => {
     signup(data);
-
   };
 
   return (
@@ -66,9 +67,12 @@ const SignUpPageForm: React.FC = () => {
 
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center bg-white justify-center">
         <div className="w-full max-w-md bg-white p-8 rounded">
-          <h1 className="text-3xl font-bold mb-4">Create a password to start your membership</h1>
+          <h1 className="text-3xl font-bold mb-4">
+            Create a password to start your membership
+          </h1>
           <p className="text-lg mb-6">
-            Just a few more steps and you're done!<br />
+            Just a few more steps and you're done!
+            <br />
             We hate paperwork, too.
           </p>
 
@@ -80,7 +84,11 @@ const SignUpPageForm: React.FC = () => {
                 {...register("email")}
                 className="w-full p-4 border border-gray-300 rounded"
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div>
               <input
@@ -89,7 +97,11 @@ const SignUpPageForm: React.FC = () => {
                 {...register("password")}
                 className="w-full p-4 border border-gray-300 rounded"
               />
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
             {/* <div className="flex items-center">
               <input
