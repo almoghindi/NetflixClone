@@ -2,7 +2,6 @@ import Stripe from "stripe";
 import { SubscriptionType } from "./models/subscriber";
 interface Plan {
   type: SubscriptionType;
-  link: string;
   priceId: string;
   price: number;
   duration: string;
@@ -10,23 +9,20 @@ interface Plan {
 export const plans: Plan[] = [
   {
     type: SubscriptionType.BASIC,
-    link: "https://buy.stripe.com/test_bIYcOAdiW9Gg5xu9AA",
-    priceId: "price_1PmurrGI8xoArhccBp4XFfSF",
+    priceId: "price_1Pok39GI8xoArhccOPaECA5T",
     price: 10,
     duration: "/month",
   },
 
   {
     type: SubscriptionType.STANDART,
-    link: "https://buy.stripe.com/test_bIY5m85Qu5q0cZW28a",
-    priceId: "price_1PmurQGI8xoArhccL8JVD2CK",
+    priceId: "price_1Pok5pGI8xoArhccVVtQHcp1",
     price: 20,
     duration: "/month",
   },
   {
     type: SubscriptionType.PREMIUM,
-    link: "https://buy.stripe.com/test_8wM3e01AecSs8JGdQR",
-    priceId: "price_1PmurgGI8xoArhccigmyfZ86",
+    priceId: "price_1Pok64GI8xoArhccm2Je21x9",
     price: 30,
     duration: "/month",
   },
