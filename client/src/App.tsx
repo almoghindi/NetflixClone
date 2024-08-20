@@ -10,6 +10,7 @@ import SignUpPageForm from "./components/signup/signup-form-page";
 import ForgotPasswordPage from "./pages/forgot-password";
 import ResetPasswordPage from "./pages/reset-password";
 import SignupFlow from "./pages/signup-flow";
+import VideoProcessor from "./components/video-test";
 
 
 const App: React.FC = () => {
@@ -24,6 +25,9 @@ const App: React.FC = () => {
         } } />} /> 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+        {/* Stream-Test //TODO: TO Erase */}
+        <Route path="/steam-test" element={<VideoProcessor />} />
 
       </Routes>
      <Footer />
