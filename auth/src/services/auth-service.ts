@@ -4,30 +4,38 @@ import { JwtService } from '../services/jwt-service';
 import crypto from 'crypto';
 import { PasswordResetToken } from '../models/password-reset-token';
 import { sendEmail } from './email-service';
-
+import decryptObject from '../utils/decryption';
 
 
 export class AuthService {
 
     static async register(email: string, password: string) {
-        const existingUser = await User.findOne({email});
-
+        const existingUser = await User.findOne({ email });
+    
         if (existingUser) {
-            throw new Error('User already exists');
+          throw new Error('User already exists');
         }
-
-        const hashedPassword = await bcrypt.hash( password, 10 );
-
-        const user = new User({email, password: hashedPassword});
-        
-        const refreshedToken = JwtService.generateRefreshToken(user._id.toString());
+    
+        const decryptedPassword = decryptObject(password);
+    
+        if (!decryptedPassword) {
+          throw new Error('Password decryption failed');
+        }
+    
+        const hashedPassword = await bcrypt.hash(decryptedPassword, 10);
+        console.log(hashedPassword);
+    
+        const user = new User({ email, password: hashedPassword });
+    
+        const refreshToken = JwtService.generateRefreshToken(user._id.toString());
         const accessToken = JwtService.generateAccessToken(user._id.toString());
-
-        user.token = refreshedToken;
+    
+        user.token = refreshToken;
         await user.save();
-
-        return {accessToken, refreshToken: refreshedToken, userId: user._id.toString()};
+    
+        return { accessToken, refreshToken, userId: user._id.toString() };
     }
+    
 
     static async login(email: string, password: string){
 
