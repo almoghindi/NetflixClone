@@ -8,7 +8,7 @@ import { signupSuccess } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from "crypto-js";
+import encryptObject from "../../utils/encription";
 
 
 const signUpSchema = z.object({
@@ -24,19 +24,7 @@ interface SignUpPageFormProps {
   onNext: () => void;
 }
 
-const secretkey:string = (import.meta.env.VITE_SECRET_KEY_CRYPTO as string);
-export const encryptObject = (password : string) => {
-  try {
-    const encryptedObject = CryptoJS.AES.encrypt(
-      password,
-      secretkey
-    ).toString();
-    return encryptedObject;
-  } catch (error) {
-    console.error("Encryption error:", error);
-    return null;
-  }
-};
+
 
 const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();

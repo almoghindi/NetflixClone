@@ -44,7 +44,13 @@ export class AuthService {
             throw new Error('User does not exist');
         }
 
-        const isPasswordMatch = await bcrypt.compare(password,existingUser.password)
+        const decryptedPassword = decryptObject(password);
+
+        if (!decryptedPassword) {
+            throw new Error('Password decryption failed');
+        }
+
+        const isPasswordMatch = await bcrypt.compare(decryptedPassword,existingUser.password)
     
         if (!isPasswordMatch) {
             throw new Error('Incorrect password');
