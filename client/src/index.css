@@ -5,16 +5,8 @@
 * {
   margin: 0;
   padding: 0;
-  background-color: black;
 }
 
 html {
-}
-
-.navbar {
-  background-color: transparent !important;
-}
-.top1video {
-  width: 100% !important;
-  height: 100vh !important;
+  background: rgb(33, 32, 32);
 }

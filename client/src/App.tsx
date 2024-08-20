@@ -12,7 +12,6 @@ const App: React.FC = () => {
         <Route path="/" element={<HomePage />} />
         {/* {!isLoggedIn && <Login />} */}
       </Routes>
-      <Footer />
     </Router>
   );
 };
