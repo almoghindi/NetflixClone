@@ -18,10 +18,13 @@ export const processVideo = async (req: Request, res: Response) => {
 
 export const streamVideo = (req: Request, res: Response) => {
   const { movieName } = req.params;
-  const filePath = path.join(__dirname, `../../video/${movieName}/output.m3u8`);
+  console.log(movieName)
+  const filePath = path.resolve(__dirname, `../../src/videos/${movieName}/output.m3u8`);
 
   if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
     res.sendFile(filePath);
+
   } else {
     res.status(404).send('Video not found');
   }
