@@ -16,6 +16,18 @@ export const processVideo = async (req: Request, res: Response) => {
   }
 };
 
+export const processVideoLocal = async (req: Request, res: Response) => {
+  const { movieName } = req.body;
+  const filePath = path.resolve(__dirname, `../../src/videos/${movieName}.mp4`);
+
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'video/mp4');
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Video not found');
+  }
+}
+
 export const streamVideo = (req: Request, res: Response) => {
   const { movieName } = req.params;
   console.log(movieName)
