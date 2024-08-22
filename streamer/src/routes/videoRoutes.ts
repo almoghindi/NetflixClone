@@ -1,9 +1,8 @@
 import express from 'express';
-import { processVideo, streamVideo } from '../controllers/videoController';
+import { VideoController } from '../controllers/videoController';
 
 const router = express.Router();
 
-router.post('/process', processVideo);
-router.get('/stream/:movieName', streamVideo);
+router.get('/stream/:movieName', VideoController.getMovieUrl);
 
 export default router;

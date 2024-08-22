@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Hls from 'hls.js';
+import { sendRequest } from '../hooks/use-request';
+import HeaderLandingPage from '../layouts/header-landing-page';
 
 const VideoPlayer: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -16,11 +18,13 @@ const VideoPlayer: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showTimeDisplay, setShowTimeDisplay] = useState(false);
 
+
   useEffect(() => {
     if (Hls.isSupported()) {
       hlsRef.current = new Hls();
       const hls = hlsRef.current;
       const video = videoRef.current;
+      
       const s3M3u8Url = 'https://netflixclonee.s3.amazonaws.com/The_Last_Breath/master.m3u8';
 
       if (video) {
@@ -40,6 +44,7 @@ const VideoPlayer: React.FC = () => {
         });
       }
 
+
       const handleFullscreenChange = () => {
         setIsFullscreen(!!document.fullscreenElement);
       };
@@ -50,10 +55,12 @@ const VideoPlayer: React.FC = () => {
         document.removeEventListener('fullscreenchange', handleFullscreenChange);
         hls.destroy();
       };
+
     }
   }, []);
 
   const togglePlay = () => {
+
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
@@ -62,7 +69,9 @@ const VideoPlayer: React.FC = () => {
         setShowTimeDisplay(true);
       }
       setIsPlaying(!isPlaying);
+      
     }
+    
   };
 
   const handleTimeUpdate = () => {
@@ -127,10 +136,12 @@ const VideoPlayer: React.FC = () => {
   };
 
   return (
+  <>
     
+    <HeaderLandingPage />
     <div className="relative w-full flex justify-center items-center max-w-7xl mx-auto">
       <video
-        ref={videoRef}
+        ref={videoRef }
         className="w-full h-auto"
         onClick={togglePlay}
         onTimeUpdate={handleTimeUpdate}
@@ -222,6 +233,7 @@ const VideoPlayer: React.FC = () => {
         </div>
       </div>
     </div>
+  </>
   );
 };
 

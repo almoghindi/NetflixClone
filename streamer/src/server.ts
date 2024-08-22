@@ -14,7 +14,6 @@ app.use('/api/video', videoRoutes);
 
 app.use('/videos', express.static(path.resolve(__dirname, 'videos')));
 
-
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

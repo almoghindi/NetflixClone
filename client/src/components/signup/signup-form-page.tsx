@@ -38,7 +38,6 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
     resolver: zodResolver(signUpSchema),
   });
 
-  
 
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {

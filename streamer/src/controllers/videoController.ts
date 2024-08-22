@@ -1,43 +1,21 @@
 import { Request, Response } from 'express';
-import { processVideoFromS3 } from '../utils/ffmpegProcessor';
-import fs from 'fs';
-import path from 'path';
 
-export const processVideo = async (req: Request, res: Response) => {
-  const { movieName } = req.body;
-  const bucketName = 'netflixclonee'; // You might want to store this in an environment variable
 
-  try {
-    await processVideoFromS3(bucketName, movieName);
-    res.status(200).json({ message: 'Video processed successfully' });
-  } catch (error) {
-    console.error('Error processing video:', error);
-    res.status(500).json({ error: 'Error processing video' });
-  }
-};
+export class VideoController {
+  private static movieUrlMap: Record<string, string> = {
+      'The Last Breath': 'https://netflixclonee.s3.amazonaws.com/The_Last_Breath/master.m3u8',
 
-export const processVideoLocal = async (req: Request, res: Response) => {
-  const { movieName } = req.body;
-  const filePath = path.resolve(__dirname, `../../src/videos/${movieName}.mp4`);
+      // Add more movies here...
+  };
 
-  if (fs.existsSync(filePath)) {
-    res.setHeader('Content-Type', 'video/mp4');
-    res.sendFile(filePath);
-  } else {
-    res.status(404).send('Video not found');
+  static getMovieUrl(req: Request, res: Response) {
+      const movieName = req.params.name;
+      const url = VideoController.movieUrlMap[movieName];
+      
+      if (url) {
+          res.send( url );
+      } else {
+          res.status(404).json({ message: 'Movie not found' });
+      }
   }
 }
-
-export const streamVideo = (req: Request, res: Response) => {
-  const { movieName } = req.params;
-  console.log(movieName)
-  const filePath = path.resolve(__dirname, `../../src/videos/${movieName}/output.m3u8`);
-
-  if (fs.existsSync(filePath)) {
-    res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-    res.sendFile(filePath);
-
-  } else {
-    res.status(404).send('Video not found');
-  }
-};
