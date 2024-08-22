@@ -37,6 +37,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
       const response = await sendRequest({
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
         body: credentials,
@@ -47,7 +48,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("userId", response.userId);
-      
+
       onNext(); // Proceed to the next step
     } catch (error) {
       console.error(
@@ -62,7 +63,10 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
 
   return (
     <>
-      <div style={{ minHeight: '80vh' }} className="min-h-screen flex flex-col bg-white">
+      <div
+        style={{ minHeight: "80vh" }}
+        className="min-h-screen flex flex-col bg-white"
+      >
         <header className="bg-white border-b border-gray-200 py-0">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />

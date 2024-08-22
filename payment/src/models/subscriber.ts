@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 enum SubscriptionType {
   EXPIRED = "EXPIRED",
   BASIC = "BASIC",
-  STANDART = "STANDART",
+  STANDARD = "STANDARD",
   PREMIUM = "PREMIUM",
 }
 interface SubscriberAttrs {
   orderId: string;
-  stripeId: string;
+  stripeId?: string;
   subscription: SubscriptionType;
 }
 
@@ -29,7 +29,6 @@ const SubscriberSchema = new mongoose.Schema(
     },
     orderId: {
       type: String,
-      required: true,
     },
     subscription: {
       type: String,

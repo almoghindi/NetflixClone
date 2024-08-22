@@ -18,9 +18,8 @@ const authSchema = z.object({
 type AuthFormInputs = z.infer<typeof authSchema>;
 
 const AuthForm: React.FC = () => {
-
   const navigation = useNavigate();
-  const [isLogin, setIsLogin] = useState(true); 
+  const [isLogin, setIsLogin] = useState(true);
   const { error, isLoading } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,9 +31,10 @@ const AuthForm: React.FC = () => {
     resolver: zodResolver(authSchema),
   });
 
-  const login = async (credentials: AuthFormInputs) : Promise<void> => {
+  const login = async (credentials: AuthFormInputs): Promise<void> => {
     try {
       const response = await sendRequest({
+        port: 3001,
         url: "/api/auth/login",
         method: "POST",
         body: credentials,
@@ -48,9 +48,10 @@ const AuthForm: React.FC = () => {
       new Error(error instanceof Error ? error.message : "An error occurred");
     }
   };
-  const signup = async (credentials: AuthFormInputs) : Promise<void> => {
+  const signup = async (credentials: AuthFormInputs): Promise<void> => {
     try {
       const response = await sendRequest({
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
         body: credentials,
@@ -73,7 +74,9 @@ const AuthForm: React.FC = () => {
 
   return (
     <div className="text-white">
-      <h2 className="text-3xl font-bold mb-6">{isLogin ? "Sign In" : "Sign Up"}</h2>
+      <h2 className="text-3xl font-bold mb-6">
+        {isLogin ? "Sign In" : "Sign Up"}
+      </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <input
@@ -83,7 +86,9 @@ const AuthForm: React.FC = () => {
             {...register("email")}
             className="w-full p-3 bg-gray-700 rounded"
           />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
         <div>
           <input
@@ -93,31 +98,39 @@ const AuthForm: React.FC = () => {
             {...register("password")}
             className="w-full p-3 bg-gray-700 rounded"
           />
-          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
         </div>
         <button
           type="submit"
           disabled={isLoading}
           className="w-full bg-red-600 text-white p-3 rounded font-bold hover:bg-red-700 transition duration-300"
         >
-          {isLoading ? "Loading..." : (isLogin ? "Sign In" : "Sign Up")}
+          {isLoading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
         </button>
       </form>
       {error && <p className="text-red-500 mt-4">{error}</p>}
-        <div onClick={() => navigation("/forgot-password")} className="hover:text-gray-300 cursor-pointer mt-5 text-sm text-medium text-white hover:underline flex items-center justify-center">
-          Forgot password?
-          
-        </div>
+      <div
+        onClick={() => navigation("/forgot-password")}
+        className="hover:text-gray-300 cursor-pointer mt-5 text-sm text-medium text-white hover:underline flex items-center justify-center"
+      >
+        Forgot password?
+      </div>
       <div className="flex items-center mt-4">
         <input type="checkbox" id="remember" className="mr-2" />
-        <label htmlFor="remember" className="text-gray-400">Remember me</label>
+        <label htmlFor="remember" className="text-gray-400">
+          Remember me
+        </label>
       </div>
       <p className="mt-4 text-gray-400">
         {isLogin ? "New to Netflix? " : "Already have an account? "}
         <button
           type="button"
           //onClick={() => setIsLogin(!isLogin)}
-          onClick={() => navigation("/signup/regform")}
+          onClick={() => navigation("/signup/")}
           className="text-white hover:underline"
         >
           {isLogin ? "Sign up now" : "Sign in"}
@@ -125,7 +138,8 @@ const AuthForm: React.FC = () => {
       </p>
       {isLogin && (
         <p className="mt-4 text-sm text-gray-400">
-          This page is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#" className="text-blue-500 hover:underline">Learn more</a>.
+          This page is protected by Google reCAPTCHA to ensure you're not a bot.{" "}
+          <a className="text-blue-500 hover:underline">Learn more</a>.
         </p>
       )}
     </div>

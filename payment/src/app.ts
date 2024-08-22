@@ -12,15 +12,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import paymentRouter from "./routes/payment-route";
+import webhookRouter from "./routes/webhook-route";
+
 import { corsConfiguration } from "./configurations/cors";
 
 const app: Application = express();
 app.use(urlencoded({ extended: true }));
-// app.use(raw({ type: "application/json" }));
-app.use(json());
 app.use(cors(corsConfiguration()));
 
-app.use("/api/payment", paymentRouter);
+app.use("/api/payment", json(), paymentRouter);
+app.use("/api/webhook", raw({ type: "application/json" }), webhookRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Payment & TypeScript Server");
