@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { VideoResponse } from "../types/video";
+import { VideoResponse } from "../../types/video";
 import ReactPlayer from "react-player";
 
 const Video = ({ movieId }: { movieId: number }) => {

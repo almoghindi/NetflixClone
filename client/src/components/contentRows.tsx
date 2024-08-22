@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -6,13 +6,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { sendRequest } from "../hooks/use-request";
 import { filter, NewContent } from "../types/new-content";
-import Video from "./video"; // Import the Video component
+import Video from "./shared/video";
 import { StarIcon } from "@heroicons/react/20/solid";
 
 const ContentRows = ({ filter }: { filter: filter }) => {
   const [movies, setMovies] = useState<NewContent[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<NewContent | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const showMovies = async (): Promise<void> => {
     try {
@@ -31,13 +32,15 @@ const ContentRows = ({ filter }: { filter: filter }) => {
   }, [filter.url]);
 
   const slideLeft = () => {
-    const slider = document.getElementById("slider") as HTMLElement;
-    slider.scrollLeft -= 500;
+    if (sliderRef.current) {
+      sliderRef.current.scrollLeft -= 500;
+    }
   };
 
   const slideRight = () => {
-    const slider = document.getElementById("slider") as HTMLElement;
-    slider.scrollLeft += 500;
+    if (sliderRef.current) {
+      sliderRef.current.scrollLeft += 500;
+    }
   };
 
   const handlePlay = (movie: NewContent) => {
@@ -57,23 +60,23 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       </h2>
       <div className="relative flex items-center group">
         <ChevronLeftIcon
-          id="left-arrow"
           onClick={slideLeft}
           className="text-white cursor-pointer absolute z-50 left-0 mt-16 hidden group-hover:block"
           width={40}
         />
         <div
-          id="slider"
-          className="w-full h-[400px] overflow-x-visible overflow-y-visible overflow- scroll-smooth whitespace-nowrap relative custom-scrollbar"
+          ref={sliderRef}
+          className="w-full h-full overflow-x-hidden overflow-y-hidden overflow- scroll-smooth whitespace-nowrap relative custom-scrollbar"
         >
           {movies.map((movie, index) => (
             <div
               onClick={() => handlePlay(movie)}
               key={index}
-              className="w-[160px] h-[90px] sm:w-[200px] sm:h-[112px] md:w-[240px] md:h-[135px] lg:w-[full] lg:h-full inline-block cursor-pointer relative p-2 overflow-visible transform hover:scale-150 hover:z-20 transition duration-300"
+              // card responsive
+              className="w-[100px] h-[160px] sm:w-[300px] sm:h-[400px] md:w-[240px] md:h-[335px] lg:w-[full] lg:h-full inline-block cursor-pointer relative p-2 overflow-visible transform hover:scale-150 hover:z-20 transition duration-300"
             >
               <img
-                className="w-full h-full block rounded object-fit"
+                className="w-full h-full block rounded object-fit "
                 src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                 alt={movie.title}
               />
@@ -81,7 +84,6 @@ const ContentRows = ({ filter }: { filter: filter }) => {
           ))}
         </div>
         <ChevronRightIcon
-          id="right-arrow"
           onClick={slideRight}
           className="text-white cursor-pointer absolute z-50 right-0 mt-16 hidden group-hover:block "
           width={40}
@@ -89,8 +91,8 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       </div>
       {/* Modal */}
       {showModal && selectedMovie && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
-          <div className="relative w-4/5 mx-auto bg-black rounded-lg overflow-hidden">
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 ">
+          <div className="relative w-4/5 mx-auto bg-black rounded-lg overflow-hidden mt-20 p-2">
             <p className="text-white text-4xl p-4">{selectedMovie.title}</p>
             <p className="text-white text-lg p-4 ">{selectedMovie.overview}</p>
             <p className="text-white flex text-lg p-4 ">
@@ -111,13 +113,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
             </button>
             <div className="lg:h-70 w-full">
               <Video movieId={selectedMovie.id} />
-              <button>
-                <SpeakerWaveIcon
-                  width={40}
-                  height={40}
-                  className="text-white absolute top-1/3  right-40 mt-96"
-                />
-              </button>
+              <button></button>
             </div>
           </div>
         </div>

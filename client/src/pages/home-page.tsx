@@ -4,12 +4,10 @@ import { sendRequest } from "../hooks/use-request";
 import { NewContent } from "../types/new-content";
 
 import ContentRows from "../components/contentRows";
-import {
-  PlayIcon,
-  InformationCircleIcon,
-  StarIcon,
-} from "@heroicons/react/20/solid";
-import Video from "../components/video";
+import { PlayIcon, StarIcon } from "@heroicons/react/20/solid";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import Video from "../components/shared/video";
+import { Link } from "react-router-dom";
 
 enum filters {
   trending = "trending/all",
@@ -50,29 +48,29 @@ export const HomePage = () => {
 
   return (
     <>
-      <div className="z-60 -mt-36">
+      <div className="z-60 -mt-36 sm:-mt-50">
         {content && <Video movieId={content.content.id} />}
       </div>
-      <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
-        <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
+      <div className="absolute top-[30%]  ml-4 md:ml-16">
+        <p className="text-white text-1xl md:text-3xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
           {content?.content.title}
         </p>
-        <p className="text-white text-[8px] md:text-lg mt-3 md:-mt8 w-[90-%] md:w-[80%] lg:w-[50%] drop-shadow-xl">
+        <p className="text-white text-[8px] md:text-sm mt-3 md:-mt8 w-[90-%] md:w-[60%] lg:w-[50%] drop-shadow-xl">
           {content?.content.overview}
         </p>
         <div className="flex gap-3 flex-row items-center mt-3 md:mt-4">
           <div className="flex gap-3 flex-row items-center mt-3 md:mt-4">
             <button className="bg-white flex text-black sm:w-[100px] lg:w-[140px] py-1 md:py-2 px-2 md:px-4 font-bold text-sm lg:text-xl  rounded-lg hover:bg-[#e6e6e6]">
-              <PlayIcon width={25} height={25} className="mr-5" />
+              <PlayIcon width={25} height={25} className="mr-2" />
               Play
             </button>
           </div>
           <div className="flex gap-3 flex-row items-center mt-3 md:mt-4">
             <button
               onClick={handlePlay}
-              className="bg-white bg-opacity-30 flex text-white sm:w-[100px] lg:w-auto py-1 md:py-2 px-2 md:px-4  text-sm lg:text-xl  rounded-lg hover:bg-[#b7b1b1] hover:bg-opacity-20"
+              className="bg-white bg-opacity-30 flex text-white lg:w-auto py-1 md:py-2 px-2 md:px-4  text-sm lg:text-xl  rounded-lg hover:bg-[#b7b1b1] hover:bg-opacity-20 "
             >
-              <InformationCircleIcon width={25} height={25} />
+              <InformationCircleIcon width={25} height={25} className="me-2 " />
               More Info
             </button>
           </div>
