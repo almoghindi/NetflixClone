@@ -4,7 +4,6 @@ import Footer from "./layouts/footer";
 import SubscriptionPage from "./pages/subscription-page";
 import LandingPage from "./pages/landing-page";
 import LoginPage from "./pages/login-page";
-
 import SignUpPageForm from "./components/signup/signup-form-page";
 import ForgotPasswordPage from "./pages/forgot-password";
 import ResetPasswordPage from "./pages/reset-password";
@@ -31,6 +30,7 @@ const App: React.FC = () => {
             />
           }
         />
+        <Route path="/signup" element={<SignupFlow />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/steam-test" element={<VideoProcessor />} />

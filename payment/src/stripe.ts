@@ -9,20 +9,20 @@ interface Plan {
 export const plans: Plan[] = [
   {
     type: SubscriptionType.BASIC,
-    priceId: "price_1Pok39GI8xoArhccOPaECA5T",
+    priceId: "price_1PpwwMGI8xoArhcckSGICyTL",
     price: 10,
     duration: "/month",
   },
 
   {
-    type: SubscriptionType.STANDART,
-    priceId: "price_1Pok5pGI8xoArhccVVtQHcp1",
+    type: SubscriptionType.STANDARD,
+    priceId: "price_1PpwweGI8xoArhcct9iyJoiM",
     price: 20,
     duration: "/month",
   },
   {
     type: SubscriptionType.PREMIUM,
-    priceId: "price_1Pok64GI8xoArhccm2Je21x9",
+    priceId: "price_1PpwxAGI8xoArhccpY5Ofz0Q",
     price: 30,
     duration: "/month",
   },

@@ -1,6 +1,7 @@
 import axios, { AxiosError, Method } from "axios";
 
 interface RequestParams {
+  port: number;
   url: string;
   method: Method;
   body?: any;
@@ -10,13 +11,18 @@ interface RequestError {
   message: string;
 }
 
-const BASE_URL = "http://localhost:3004";
+const BASE_URL = "http://localhost:";
 
-export const sendRequest = async ({ url, method, body }: RequestParams) => {
+export const sendRequest = async ({
+  port,
+  url,
+  method,
+  body,
+}: RequestParams) => {
   try {
     console.log(`${BASE_URL}${url}`);
     const response = await axios({
-      url: `${BASE_URL}${url}`,
+      url: `${BASE_URL}${port}${url}`,
       method,
       data: body,
     });

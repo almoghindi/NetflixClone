@@ -42,6 +42,7 @@ const LoginPage: React.FC = () => {
       };
 
       const response = await sendRequest({
+        port: 3001,
         url: "/api/auth/login",
         method: "POST",
         body: encryptedCredentials,
