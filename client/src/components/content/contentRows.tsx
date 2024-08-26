@@ -6,8 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
-import Video from "../content/video"; // Import the Video component
-import { StarIcon } from "@heroicons/react/20/solid";
+
 import MovieCard from "./movieCard";
 
 const ContentRows = ({ filter }: { filter: filter }) => {
@@ -18,6 +17,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       const data = await sendRequest({
         url: `/api/${filter.url}`,
         method: "GET",
+        port: 8000,
       });
       setMovies(data.content);
     } catch (error) {
