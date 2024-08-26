@@ -1,14 +1,39 @@
 import { Router } from "express";
-import { getAllContents, searchContentByName } from "../controllers/contentControler";
-
-
+import {
+  getAllContents,
+  getContentByGenre,
+  getMovies,
+  getTop10Content,
+  searchContentByName,
+} from "../controllers/contentControler";
+import {
+  getSimilarContent,
+  getTrendingContent,
+  getContentByCategory,
+  getContentDetails,
+  getContentTrailers,
+  getAllContentByCategory,
+} from "../controllers/contentControler";
 
 const router = Router();
 
 const contentRouter = Router();
 
 contentRouter.get("/content", getAllContents);
-contentRouter.post("/search", searchContentByName)
+contentRouter.post("/search", searchContentByName);
+contentRouter.get("/top10", getTop10Content);
+contentRouter.get("/movies", getMovies);
+contentRouter.get("/genre/:genre", getContentByGenre);
 
+// new content Routes
 
-export default contentRouter
+contentRouter.get("/trending/all", getAllContentByCategory);
+contentRouter.get("/trending/:type", getTrendingContent);
+contentRouter.get("/:id/trailers/:type", getContentTrailers);
+contentRouter.get("/:id/details/:type", getContentDetails);
+contentRouter.get("/:id/similar/:type", getSimilarContent);
+contentRouter.get("/:category/:type", getContentByCategory);
+contentRouter.get("/genre/:genre", getContentByGenre);
+// contentRouter.get("/:id/season/:seasonNumber", getSeasonDetails);
+
+export default contentRouter;
