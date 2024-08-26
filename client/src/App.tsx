@@ -10,14 +10,14 @@ import SignupFlow from "./pages/signup-flow";
 import VideoProcessor from "./components/video-test";
 import Nav from "../src/layouts/nav";
 // import { HomePage } from "./pages/home-page";
-import WatchMovie from "./components/shared/watchMovie";
+// import WatchMovie from "./components/shared/watchMovie";
+import Footer from "./layouts/footer";
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Nav />
-
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -40,8 +40,9 @@ const App: React.FC = () => {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/steam-test" element={<VideoProcessor />} />
         {/* {!isLoggedIn && <Login />} */}
-        <Route path="/watch:id" element={<WatchMovie />} />
+        {/* <Route path="/watch:id" element={<WatchMovie />} /> */}
       </Routes>
+      <Footer />
     </Router>
   );
 };
