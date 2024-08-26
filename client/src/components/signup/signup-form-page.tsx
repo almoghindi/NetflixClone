@@ -46,7 +46,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
       const encryptedCredentials = { ...credentials, password: encryptedPassword };
 
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,

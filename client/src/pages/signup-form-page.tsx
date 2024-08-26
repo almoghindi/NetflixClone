@@ -34,7 +34,7 @@ const SignUpPageForm: React.FC = () => {
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/register",
         method: "POST",
         body: credentials,

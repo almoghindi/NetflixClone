@@ -5,6 +5,7 @@ interface RequestParams {
   url: string;
   method: Method;
   body?: any;
+  headers?: any;
 }
 
 interface RequestError {
@@ -18,6 +19,7 @@ export const sendRequest = async ({
   url,
   method,
   body,
+  headers,
 }: RequestParams) => {
   try {
     console.log(`${BASE_URL}${url}`);
@@ -25,6 +27,7 @@ export const sendRequest = async ({
       url: `${BASE_URL}${port}${url}`,
       method,
       data: body,
+      headers: headers,
     });
     return response.data;
   } catch (err) {

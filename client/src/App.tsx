@@ -9,6 +9,8 @@ import ForgotPasswordPage from "./pages/forgot-password";
 import ResetPasswordPage from "./pages/reset-password";
 import SignupFlow from "./pages/signup-flow";
 import VideoProcessor from "./components/video-test";
+import PurchaseSuccess from "./components/payment/purchase-success";
+
 
 const App: React.FC = () => {
   return (
@@ -34,6 +36,8 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/steam-test" element={<VideoProcessor />} />
+        <Route path="/purchase-success" element={<PurchaseSuccess />} />
+
       </Routes>
       <Footer />
     </Router>

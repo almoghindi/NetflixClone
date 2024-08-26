@@ -5,14 +5,22 @@ import ChoosePlan from "../components/signup/choose-plan";
 import PlanSelection from "../components/signup/plan-selection";
 import Payment from "../components/payment/payment";
 import ChoosePayment from "../components/signup/choose-payment";
+import PayPalSetup from "../components/payment/paypal-payment";
 
 const SignupFlow: React.FC = () => {
   const [step, setStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("10341"); // Default to Premium
+  const [price, setPrice] = useState("20"); // Default to Premium
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleNextStep = () => {
     setStep(step + 1);
   };
+
+  const handlePaymentMethodSelected = (method: string) => {
+    setPaymentMethod(method);
+    handleNextStep();
+  }
 
   return (
     <>
@@ -23,11 +31,20 @@ const SignupFlow: React.FC = () => {
         <PlanSelection
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
+          planPrice={price}
+          setSelectedPrice={setPrice}
           onNext={handleNextStep}
         />
       )}
-      {step === 5 && <ChoosePayment onNext={handleNextStep} />}
-      {step === 6 && <Payment selectedPlan={selectedPlan} setStep={setStep} />}
+      {step === 5 && <ChoosePayment onPaymentMethodSelect={handlePaymentMethodSelected} />}
+      {step === 6 &&
+        paymentMethod === "Credit or Debit Card" && (
+          <Payment selectedPlan={selectedPlan} setStep={setStep} />
+        )}
+      {step === 6 &&
+        paymentMethod === "PayPal" && (
+          <PayPalSetup selectedPlan={selectedPlan} PlanPrice={price} setStep={setStep} />
+        )}
     </>
   );
 };

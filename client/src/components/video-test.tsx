@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Hls from 'hls.js';
-import { sendRequest } from '../hooks/use-request';
 import HeaderLandingPage from '../layouts/header-landing-page';
 
 const VideoPlayer: React.FC = () => {
@@ -233,6 +232,8 @@ const VideoPlayer: React.FC = () => {
         </div>
       </div>
     </div>
+
+
   </>
   );
 };
