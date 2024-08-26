@@ -8,6 +8,8 @@ import { signupSuccess } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
+import encryptObject from "../../utils/encription";
+
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -22,6 +24,8 @@ interface SignUpPageFormProps {
   onNext: () => void;
 }
 
+
+
 const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
@@ -34,12 +38,18 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
     resolver: zodResolver(signUpSchema),
   });
 
+
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
+      
+      const encryptedPassword = encryptObject(credentials.password);
+      const encryptedCredentials = { ...credentials, password: encryptedPassword };
+
       const response = await sendRequest({
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
-        body: credentials,
+        body: encryptedCredentials,
       });
       console.log(response);
 
@@ -47,7 +57,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("userId", response.userId);
-      
+
       onNext(); // Proceed to the next step
     } catch (error) {
       console.error(
@@ -62,7 +72,10 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
 
   return (
     <>
-      <div style={{ minHeight: '80vh' }} className="min-h-screen flex flex-col bg-white">
+      <div
+        style={{ minHeight: "80vh" }}
+        className="min-h-screen flex flex-col bg-white"
+      >
         <header className="bg-white border-b border-gray-200 py-0">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />

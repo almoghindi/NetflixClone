@@ -4,15 +4,14 @@ enum OrderStatus {
   Pending = "Pending",
   Completed = "Completed",
   Failed = "Failed",
+  Canceled = "Canceled",
 }
 interface OrderAttrs {
-  userId: string;
   price: number;
   status: OrderStatus;
 }
 
 interface OrderDoc extends mongoose.Document {
-  userId: string;
   price: number;
   status: OrderStatus;
 }
@@ -23,10 +22,6 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 
 const orderSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true,
-    },
     price: {
       type: Number,
       required: true,
@@ -50,7 +45,6 @@ const orderSchema = new mongoose.Schema(
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order({
     price: attrs.price,
-    userId: attrs.userId,
     status: attrs.status,
   });
 };
