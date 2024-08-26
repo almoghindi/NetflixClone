@@ -26,6 +26,7 @@ export const sendRequest = async ({
       method,
       data: body,
     });
+
     return response.data;
   } catch (err) {
     if (err instanceof AxiosError) {
