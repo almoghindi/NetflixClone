@@ -38,6 +38,7 @@ const SignUpPageForm: React.FC = () => {
         url: "/api/auth/register",
         method: "POST",
         body: credentials,
+        
       });
       dispatch(signupSuccess(response));
       localStorage.setItem("accessToken", response.accessToken);
@@ -60,7 +61,7 @@ const SignUpPageForm: React.FC = () => {
       <header className="bg-white border-b border-gray-200 py-0">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <HeaderLandingPage />
-          <a href="/login" className="text-gray-600 font-semibold text-medium">
+          <a  className="text-gray-600 font-semibold text-medium">
             Sign In
           </a>
         </div>

@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("userId", response.user._id);
-      navigation("/");
+      navigation("/home");
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"

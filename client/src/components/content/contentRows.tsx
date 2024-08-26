@@ -17,7 +17,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       const data = await sendRequest({
         url: `/api/${filter.url}`,
         method: "GET",
-        port: 8000,
+        port: 8080,
       });
       setMovies(data.content);
     } catch (error) {
@@ -54,17 +54,18 @@ const ContentRows = ({ filter }: { filter: filter }) => {
             className="w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100"
             onClick={() => slideRight(`slider-${filter.url}`)}
           />
-          <div
-            className="relative gap-2 flex items-center w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
-            id={`slider-${filter.url}`}
-          >
-            {movies &&
-              movies.map((movie, index) => (
-                <div key={index}>
-                  <MovieCard movie={movie} />
-                </div>
-              ))}
-          </div>
+ <div
+  className="relative gap-2 flex items-center w-full h-full overflow-x-visible whitespace-nowrap scroll-smooth scrollbar-hide"
+  id={`slider-${filter.url}`}
+>
+  {movies &&
+    movies.map((movie, index) => (
+      <div key={index}>
+        <MovieCard movie={movie} />
+      </div>
+    ))}
+</div>
+
         </div>
       </div>
     </>

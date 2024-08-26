@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 
 const secretkey:string = (import.meta.env.VITE_SECRET_KEY_CRYPTO as string);
+
 const encryptObject = (password : string) => {
   try {
     const encryptedObject = CryptoJS.AES.encrypt(

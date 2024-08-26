@@ -9,7 +9,7 @@ const Video = ({ movieId }: { movieId: number }) => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        "Authorization": `Bearer ${import.meta.env.VITE_TMDB_API_KEY as string}`,
       },
     })
       .then((response) => response.json())
@@ -42,6 +42,8 @@ const Video = ({ movieId }: { movieId: number }) => {
           width="100%"
           height={"80vh"}
           controls={false}
+
+          
         />
       )}
       <p className="text-white text-3xl">{}</p>

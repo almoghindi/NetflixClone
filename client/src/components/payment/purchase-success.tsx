@@ -31,7 +31,7 @@ const PurchaseSuccess: React.FC = () => {
                         <p className="text-gray-600">{selectedPlan}</p>
                     </div>
                     <p className="mb-8">You can now start enjoying unlimited movies and TV shows.</p>
-                    <Link to="/" className="bg-red-600 text-white py-3 px-6 rounded-md font-bold hover:bg-red-700 transition duration-300">
+                    <Link to="/home" className="bg-red-600 text-white py-3 px-6 rounded-md font-bold hover:bg-red-700 transition duration-300">
                         Start Watching
                     </Link>
                 </div>
