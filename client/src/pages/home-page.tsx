@@ -3,13 +3,14 @@ import { sendRequest } from "../hooks/use-request";
 
 import { NewContent } from "../types/new-content";
 
-import ContentRows from "../components/contentRows";
+import ContentRows from "../components/content/contentRows";
 import {
   PlayIcon,
   InformationCircleIcon,
   StarIcon,
 } from "@heroicons/react/20/solid";
-import Video from "../components/video";
+import Video from "../components/content/video";
+import Navbar from "../layouts/nav";
 
 enum filters {
   trending = "trending/all",
@@ -18,7 +19,7 @@ enum filters {
   upcoming = "upcoming/movie",
 }
 
-export const HomePage = () => {
+const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [content, setContent] = useState<NewContent>();
 
@@ -50,6 +51,7 @@ export const HomePage = () => {
 
   return (
     <>
+      <Navbar />
       <div className="z-60 -mt-36">
         {content && <Video movieId={content.content.id} />}
       </div>
@@ -78,12 +80,12 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className="pb-40">
+      <div className="pb-40 mt-20">
         <ContentRows
           filter={{ url: filters.trending, title: "Trending Now" }}
         />
-        <ContentRows filter={{ url: filters.popular, title: "Popular" }} />
         <ContentRows filter={{ url: filters.topRated, title: "Top Rated" }} />
+        <ContentRows filter={{ url: filters.popular, title: "Popular" }} />
         <ContentRows filter={{ url: filters.upcoming, title: "UpComming" }} />
       </div>
 
@@ -122,3 +124,5 @@ export const HomePage = () => {
     </>
   );
 };
+
+export default HomePage;

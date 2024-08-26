@@ -1,0 +1,19 @@
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px;
+  }
+  
+  footer {
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+  
+  main {
+    padding: 20px;
+    margin-bottom: 50px; /* Ensure the footer is not covered */
+  }

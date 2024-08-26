@@ -13,7 +13,6 @@ export class JwtService {
         return jwt.sign({userId}, JwtService.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
     }
     
-    
     static generateRefreshToken = (userId: string) : string => {
         return jwt.sign({userId}, JwtService.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
     }

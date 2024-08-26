@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+
 import mongoose from "mongoose";
 
 enum SubscriptionType {
@@ -17,12 +17,13 @@ const UserSchema = new mongoose.Schema({
   },
   token: {
     type: String,
-    required: true,
+    required: false,
   },
-  subscription: {
-    type: SubscriptionType,
-    required: true,
-  },
+  // subscription: {
+  //   type: String,
+  //   enum: Object.values(SubscriptionType), // Use the enum values for validation
+  //   required: true,
+  // },
 });
 
 export default mongoose.model("User", UserSchema);

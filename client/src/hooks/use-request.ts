@@ -14,6 +14,7 @@ const BASE_URL = "http://localhost:8000";
 
 export const sendRequest = async ({ url, method, body }: RequestParams) => {
   try {
+    console.log(`${BASE_URL}${url}`);
     const response = await axios({
       url: `${BASE_URL}${url}`,
       method,

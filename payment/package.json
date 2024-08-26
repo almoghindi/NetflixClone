@@ -5,7 +5,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "ts-node-dev --poll /src/index.ts"
+    "start": "ts-node-dev --poll src/index.ts"
   },
   "keywords": [],
   "author": "",
