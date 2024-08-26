@@ -30,6 +30,7 @@ const HomePage = () => {
         method: "GET",
       });
       setContent(data);
+
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"

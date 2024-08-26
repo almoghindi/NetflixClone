@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  SpeakerWaveIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
 

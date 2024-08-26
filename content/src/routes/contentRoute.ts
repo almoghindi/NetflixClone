@@ -4,6 +4,7 @@ import {
   getContentByGenre,
   getMovies,
   getTop10Content,
+  getTrailer,
   searchContentByName,
 } from "../controllers/contentControler";
 import {
@@ -34,6 +35,7 @@ contentRouter.get("/:id/details/:type", getContentDetails);
 contentRouter.get("/:id/similar/:type", getSimilarContent);
 contentRouter.get("/:category/:type", getContentByCategory);
 contentRouter.get("/genre/:genre", getContentByGenre);
+contentRouter.get("/movies/:movieId/trailer", getTrailer);
 // contentRouter.get("/:id/season/:seasonNumber", getSeasonDetails);
 
 export default contentRouter;

@@ -320,3 +320,43 @@ export const getContentByGenreNew = async (
     res.status(500).send({ message: "Internal server error" });
   }
 };
+
+export const getTrailer = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { movieId } = req.params;
+
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      res.status(response.status).json({ error: "Failed to fetch trailer." });
+      return;
+    }
+
+    const data = await response.json();
+
+    const trailers = data.results.filter(
+      (video: any) => video.type === "Trailer" && video.site === "YouTube"
+    );
+
+    if (trailers.length > 0) {
+      const trailerUrl = `https://www.youtube.com/watch?v=${trailers[0].key}`;
+      res.status(200).json({ trailerUrl });
+    } else {
+      res.status(404).json({ message: "No trailer found for this movie." });
+    }
+  } catch (error) {
+    console.error("Error fetching trailer:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
