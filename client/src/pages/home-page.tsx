@@ -25,10 +25,10 @@ const HomePage = () => {
   const getTop10Content = async (): Promise<void> => {
     try {
       const data = await sendRequest({
+        port: 8000,
         url: "/api/trending/movie",
         method: "GET",
       });
-
       setContent(data);
     } catch (error) {
       console.error(
