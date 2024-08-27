@@ -57,11 +57,12 @@ const HomePage = () => {
       <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div style={{
-        transform: "scale(1.5)",  // This scales the player by 130%
-        transformOrigin: "center", // Keeps the scaling centered
+        transform: "scale(1.5)",  
+        transformOrigin: "center",
         width: "100%",
         height: "80vh",
-        overflow: "hidden"
+        overflow: "hidden",
+        opacity: "0.7",
         }}
         className="z-60 -mt-36 sm:-mt-50  ">
           {<Video movieId={"1241674"} />}
