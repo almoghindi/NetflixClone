@@ -20,7 +20,7 @@ export const sendRequest = async ({
   body,
 }: RequestParams) => {
   try {
-    console.log(`${BASE_URL}${url}`);
+    console.log(`${BASE_URL}${port}${url}`);
     const response = await axios({
       url: `${BASE_URL}${port}${url}`,
       method,

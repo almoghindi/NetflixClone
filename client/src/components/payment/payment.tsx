@@ -24,7 +24,6 @@ const Payment: React.FC<PaymentProps> = ({ selectedPlan, setStep }) => {
 
   useEffect(() => {
     const id = localStorage.getItem("userId");
-    console.log(id);
     const fetchPublishableKey = async () => {
       sendRequest({
         port: 3004,

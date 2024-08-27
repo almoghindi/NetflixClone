@@ -7,10 +7,9 @@ export const createSubscription = async (req: Request, res: Response) => {
 
   const customer = await stripe.customers.create({
     name: userId,
-    // payment_method: req.body.paymentMethod,
-    // invoice_settings: {
-    //   default_payment_method: req.body.paymentMethod,
-    // },
+    metadata: {
+      user_id: userId,
+    },
   });
   const priceId = plans.find((p) => p.type === plan)!.priceId;
   const subscription: Stripe.Subscription = await stripe.subscriptions.create({

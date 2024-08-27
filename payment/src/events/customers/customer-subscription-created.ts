@@ -31,6 +31,7 @@ export const subscriptionCreatedEvent = async (
     });
 
     await user.save();
+    
   } else {
     throw new Error("No user Found");
   }
