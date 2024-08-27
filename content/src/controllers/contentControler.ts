@@ -320,3 +320,52 @@ export const getContentByGenreNew = async (
     res.status(500).send({ message: "Internal server error" });
   }
 };
+
+
+export const getTvShows = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/popular?page=1`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    
+    const data = await response.json();
+    const tvShows = data.results.slice(0, 10); // Ensure you only get the first 10
+    res.status(200).json({ content: tvShows });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+// export const getMovies = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const response = await fetch(
+//       `https://api.themoviedb.org/3/movie/changes?page=1`,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+//         },
+//       }
+//     );
+//     if (!response.ok) {
+//       throw new Error("Network response was not ok");
+//     }
+    
+//     const data = await response.json();
+//     const movies = data.results.slice(0, 10); // Ensure you only get the first 10
+//     res.status(200).json({ content: movies });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send({ message: "Internal server error" });
+//   }
+// };

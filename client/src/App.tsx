@@ -10,18 +10,23 @@ import VideoProcessor from "./components/video-test";
 import PurchaseSuccess from "./components/payment/purchase-success";
 import HomePage from "./pages/home-page";
 import Footer from "./layouts/footer";
-import WatchMovie from "./components/shared/watchMovie";
-import Nav from "../src/layouts/nav";
 
+import VideoPlayer from "./components/video-test";
+import MyList from "./components/content/my-list";
+import TvShows from "./pages/tv-shows";
+import Movies from "./pages/movies";
 
 const App: React.FC = () => {
   return (
+
     <Router>
       {/* <Nav /> */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        
         <Route path="/home" element={<HomePage />} />
+        <Route path="/mylist" element={<MyList/>} />
         <Route path="/signup" element={<SignupFlow />} />
         <Route
           path="/signup/regform"
@@ -40,7 +45,10 @@ const App: React.FC = () => {
 
         <Route path="/purchase-success" element={<PurchaseSuccess />} />
         
-        {/* <Route path="/watch:id" element={<WatchMovie />} /> */}
+        <Route path="/main-movie/play" element={<VideoPlayer />} />
+        <Route path="/tv" element={<TvShows />} />
+        <Route path="/movies" element={<Movies />} />
+        
 
       </Routes>
       <Footer />

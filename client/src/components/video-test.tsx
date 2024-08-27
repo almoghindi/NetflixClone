@@ -136,12 +136,11 @@ const VideoPlayer: React.FC = () => {
 
   return (
   <>
-    
-    <HeaderLandingPage />
-    <div className="relative w-full flex justify-center items-center max-w-7xl mx-auto">
+
+    <div className="relative min-w-full h-[60rem] scrollbar-hide scroll-20%">
       <video
         ref={videoRef }
-        className="w-full h-auto"
+        className="w-full h-auto h-[60rem] bg-black"
         onClick={togglePlay}
         onTimeUpdate={handleTimeUpdate}
       ></video>

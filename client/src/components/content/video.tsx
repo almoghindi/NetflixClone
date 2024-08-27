@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { VideoResponse } from "../../types/video";
 import ReactPlayer from "react-player";
 
-const Video = ({ movieId }: { movieId: number }) => {
+interface VideoProps {
+  movieId: string;
+}
+
+const Video : React.FC<VideoProps> = ({ movieId }) => {
   const [trailer, setTrailer] = useState("");
 
   const getTrailer = async (movieId: number): Promise<void> => {
@@ -28,11 +32,11 @@ const Video = ({ movieId }: { movieId: number }) => {
   };
 
   useEffect(() => {
-    getTrailer(movieId);
+    getTrailer(Number(movieId));
   }, [movieId]);
 
   return (
-    <div className="z-60  ">
+    <div className="z-60">
       {trailer && (
         <ReactPlayer
           url={trailer}
@@ -40,7 +44,7 @@ const Video = ({ movieId }: { movieId: number }) => {
           loop
           muted
           width="100%"
-          height={"80vh"}
+          height={"100vh"}
           controls={false}
 
           

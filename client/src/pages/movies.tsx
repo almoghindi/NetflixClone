@@ -1,4 +1,4 @@
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { sendRequest } from "../hooks/use-request";
 
 import { NewContent } from "../types/new-content";
@@ -12,8 +12,6 @@ import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
 import VideoPlayer from "../components/video-test";
 import { useNavigate } from "react-router-dom";
-import MovieCard from "../components/content/movieCard";
-import Top10Videos from "../components/content/top10-videos";
 
 enum filters {
   trending = "trending/all",
@@ -22,18 +20,17 @@ enum filters {
   upcoming = "upcoming/movie",
 }
 
-const HomePage = () => {
-  const [content, setContent] = useState<NewContent[]>([]);
+const Movies = () => {
+  const [content, setContent] = useState<NewContent>();
   const navigate = useNavigate();
 
   const getTop10Content = async (): Promise<void> => {
     try {
-      const response = await sendRequest({
+      const data = await sendRequest({
         port: 8080,
         url: "/api/trending/movie",
         method: "GET",
       });
-      const data = response.content;
       setContent(data);
     } catch (error) {
       console.error(
@@ -89,16 +86,16 @@ const HomePage = () => {
           </div>
         </div>
         <div className="pb-40 mt-15">
-
-        <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
-        <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
-        
-        <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
-        <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
-    </div>
-    </div>
+          <ContentRows
+            filter={{ url: filters.trending, title: "Trending Now" }}
+          />
+          <ContentRows filter={{ url: filters.topRated, title: "Top Rated" }} />
+          <ContentRows filter={{ url: filters.popular, title: "Popular" }} />
+          <ContentRows filter={{ url: filters.upcoming, title: "Upcoming" }} />
+        </div>
+      </div>
     </>
   );
 };
 
-export default HomePage;
+export default Movies;
