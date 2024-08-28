@@ -10,12 +10,9 @@ export interface AuthResponse {
     refreshToken: string;
     user:{
         id: string;
-        email: string;
     };
 }
 
 export interface AuthState {
     user: AuthResponse['user'] | null;
-    isLoading: boolean;
-    error: string | null;
 }

@@ -23,7 +23,7 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
-  const { error, isLoading } = useSelector((state: RootState) => state.auth);
+  // const { error, isLoading } = useSelector((state: RootState) => state.auth);
 
   const {
     register,
@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
       };
 
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/login",
         method: "POST",
         body: encryptedCredentials,
@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       localStorage.setItem("userId", response.user._id);
-      navigation("/");
+      navigation("/home");
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"
@@ -110,13 +110,13 @@ const LoginPage: React.FC = () => {
               </div>
               <button
                 type="submit"
-                disabled={isLoading}
+                // disabled={isLoading}
                 className="w-full bg-red-600 text-white p-3 rounded font-bold hover:bg-red-700 transition duration-300"
               >
-                {isLoading ? "Loading..." : "Sign In"}
+                {/* {isLoading ? "Loading..." : "Sign In"} */}
               </button>
             </form>
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            {/* {error && <p className="text-red-500 mt-4">{error}</p>}  */}
             <div
               onClick={() => navigation("/forgot-password")}
               className="hover:text-gray-300 cursor-pointer mt-5 text-sm text-medium text-white hover:underline flex items-center justify-center"

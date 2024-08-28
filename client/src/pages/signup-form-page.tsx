@@ -41,7 +41,7 @@ const SignUpPageForm: React.FC = () => {
       };
 
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,
@@ -67,9 +67,7 @@ const SignUpPageForm: React.FC = () => {
       <header className="bg-white border-b border-gray-200 py-0">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <HeaderLandingPage />
-          <a href="/login" className="text-gray-600 font-semibold text-medium">
-            Sign In
-          </a>
+          <a className="text-gray-600 font-semibold text-medium">Sign In</a>
         </div>
       </header>
 

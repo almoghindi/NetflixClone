@@ -1,8 +1,13 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { IPasswordResetToken } from '../models/password-reset-token';
 
 dotenv.config();
-
+interface DecodedToken extends jwt.JwtPayload {
+  userId: string,
+  iat: number,
+  exp: number
+}
 export class JwtService {
 
     private static readonly ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN!;
@@ -18,10 +23,9 @@ export class JwtService {
     }
 
     static verifyAccessToken = (token: string) => {
-        return jwt.verify(token, JwtService.ACCESS_TOKEN_SECRET);
+        return jwt.verify(token, JwtService.ACCESS_TOKEN_SECRET) as DecodedToken;
     }
-
-    static verifyRefreshToken = (token: string) => {
-        return jwt.verify(token, JwtService.REFRESH_TOKEN_SECRET);
-    }
+    static verifyRefreshToken = (token: string): DecodedToken => {
+        return jwt.verify(token, JwtService.REFRESH_TOKEN_SECRET) as DecodedToken;
+    };
 }

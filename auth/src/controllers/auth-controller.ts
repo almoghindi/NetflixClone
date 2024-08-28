@@ -47,6 +47,7 @@ export class AuthController {
         try {
             const { refreshToken } = req.body;
 
+
             if (!refreshToken) {
                 return res.status(400).json({ message: 'Refresh token is required in the request body!' });
             }

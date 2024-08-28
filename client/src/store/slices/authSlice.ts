@@ -3,9 +3,7 @@ import { AuthState, AuthResponse} from '../../types/auth';
 
 
 const initialState: AuthState = {
-  user: null,
-  isLoading: false,
-  error: null,
+  user: localStorage.getItem('userId') ? { id: localStorage.getItem('userId') as string } : null,
 };
 
 const authSlice = createSlice({
@@ -20,7 +18,6 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.user = null;
-      state.error = null;
     },
     signupSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.user = action.payload.user;

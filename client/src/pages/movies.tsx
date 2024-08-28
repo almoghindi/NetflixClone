@@ -1,5 +1,6 @@
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { sendRequest } from "../hooks/use-request";
+
 import { NewContent } from "../types/new-content";
 import ContentRows from "../components/content/contentRows";
 import {
@@ -9,8 +10,8 @@ import {
 } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
+import VideoPlayer from "../components/video-test";
 import { useNavigate } from "react-router-dom";
-import Top10Videos from "../components/content/top10-videos";
 
 enum filters {
   trending = "trending/all",
@@ -19,8 +20,30 @@ enum filters {
   upcoming = "upcoming/movie",
 }
 
-const HomePage = () => {
+const Movies = () => {
+  const [content, setContent] = useState<NewContent>();
   const navigate = useNavigate();
+
+  const getTop10Content = async (): Promise<void> => {
+    try {
+      const data = await sendRequest({
+        port: 8080,
+        url: "/api/trending/movie",
+        method: "GET",
+      });
+      setContent(data);
+    } catch (error) {
+      console.error(
+        error instanceof Error ? error.message : "An error occurred"
+      );
+    }
+  };
+
+  useEffect(() => {
+    getTop10Content();
+  }, []);
+
+
 
   function handlePlayMainVideoClick(): void {
     navigate(`/main-movie/play`);
@@ -31,15 +54,14 @@ const HomePage = () => {
       <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div style={{
-        transform: "scale(1.5)",  //TODO: FIX THE SIZING TO FIT THE WINDOW.
-        transformOrigin: "center",
+        transform: "scale(1.5)",  // This scales the player by 130%
+        transformOrigin: "center", // Keeps the scaling centered
         width: "100%",
         height: "80vh",
-        overflow: "hidden",
-        opacity: "0.7",
+        overflow: "hidden"
         }}
         className="z-60 -mt-36 sm:-mt-50  ">
-          {<Video movieId={"1241674"} />} // TODO: This is The Last Breath Movie
+          {<Video movieId={"1241674"} />}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">
@@ -64,15 +86,16 @@ const HomePage = () => {
           </div>
         </div>
         <div className="pb-40 mt-15">
-
-        <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
-        <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
-        <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
-        <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
+          <ContentRows
+            filter={{ url: filters.trending, title: "Trending Now" }}
+          />
+          <ContentRows filter={{ url: filters.topRated, title: "Top Rated" }} />
+          <ContentRows filter={{ url: filters.popular, title: "Popular" }} />
+          <ContentRows filter={{ url: filters.upcoming, title: "Upcoming" }} />
+        </div>
       </div>
-    </div>
     </>
   );
 };
 
-export default HomePage;
+export default Movies;

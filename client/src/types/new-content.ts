@@ -1,4 +1,8 @@
+import { Key } from "react";
+
 export interface NewContent {
+  [x: string]: any;
+  id: Key | null | undefined;
   content: {
     id: number;
     adult: boolean;
@@ -15,6 +19,7 @@ export interface NewContent {
     video: boolean;
     vote_average: number;
     vote_count: number;
+    name: string;
   };
 }
 

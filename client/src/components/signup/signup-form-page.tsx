@@ -7,7 +7,6 @@ import { AppDispatch } from "../../store/store";
 import { signupSuccess } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
-import { useNavigate } from "react-router-dom";
 import encryptObject from "../../utils/encription";
 
 
@@ -24,11 +23,8 @@ interface SignUpPageFormProps {
   onNext: () => void;
 }
 
-
-
 const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigate();
 
   const {
     register,
@@ -46,7 +42,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
       const encryptedCredentials = { ...credentials, password: encryptedPassword };
 
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,
@@ -80,7 +76,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />
             <a
-              onClick={() => navigation("/login")}
+              // onClick={() => navigation("/login")}
               className="text-gray-600 font-semibold text-medium cursor-pointer hover:underline"
             >
               Sign In

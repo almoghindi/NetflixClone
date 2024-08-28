@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 import netflixLogo from "../assets/img/Netflix_assests/Netflix_Logo_CMYK.png";
 import NavProfile from "./nav-profie";
 import NavMobile from "./navMobile";
@@ -19,15 +20,8 @@ import { PopoverGroup } from "@headlessui/react";
 </svg>;
 
 export default function Navbar() {
-  // const [bgColor, setBgColor] = useState("bg-transparent");
 
-  // const handleScroll = () => {
-  //   if (window.scrollY > 20) {
-  //     setBgColor("bg-black");
-  //   } else {
-  //     setBgColor("bg-transparent");
-  //   }
-  // };
+  const navigate = useNavigate();
 
   return (
     <header
@@ -39,27 +33,26 @@ export default function Navbar() {
         className=" flex  absolute top-0 inset-x-0 items-center justify-between p-5 lg:px-8  "
       >
         <div className="flex lg:flex-0">
-          <a href="/" className="-m-1.5 p-1.5">
+          <Link to="/" className="-m-1.5 p-1.5">
             <img alt="netflix logo" src={netflixLogo} className="h-14 w-17" />
-          </a>
+          </Link>
 
           <PopoverGroup className="hidden  lg:flex lg:gap-x-12 ms-20 mt-4">
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            <Link to="/home" className="text-sm font-semibold leading-6 text-white">
               Home
-            </a>
-
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            </Link>
+            <Link to="/tv" className="text-sm font-semibold leading-6 text-white">
               TV Shows
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            </Link>
+            <Link to="/movies" className="text-sm font-semibold leading-6 text-white">
               Movies
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            </Link>
+            <Link to="/new" className="text-sm font-semibold leading-6 text-white">
               New & Popular
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-white">
+            </Link>
+            <Link to="/mylist" className="text-sm font-semibold leading-6 text-white">
               My List
-            </a>
+            </Link>
           </PopoverGroup>
 
           {/* profile section */}

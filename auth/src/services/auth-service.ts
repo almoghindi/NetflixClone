@@ -68,14 +68,17 @@ export class AuthService {
     static async refreshToken(refreshToken: string) {
 
         const verifyRefreshToken = JwtService.verifyRefreshToken(refreshToken); 
-        const user = await User.findOne({token: verifyRefreshToken});
+        if (!verifyRefreshToken) {
+            throw new Error('Invalid refresh token');
+        }
+        const user = await User.findOne({token:refreshToken});
         if (!user) {
             throw new Error('Error verifying refresh token');
         }
 
         const accessToken = JwtService.generateAccessToken(user._id.toString());
         const newRefreshToken = JwtService.generateRefreshToken(user._id.toString());
-    
+        
         user.token = newRefreshToken;
         await user.save();
     

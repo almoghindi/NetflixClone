@@ -9,6 +9,7 @@ import {
   ArrowPathRoundedSquareIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
+import Logout from "../components/logout";
 
 const NavProfile = () => {
   const profileDropDown = [
@@ -30,11 +31,7 @@ const NavProfile = () => {
       href: "#",
       icon: UserIcon,
     },
-    {
-      name: "Sign out of Netflix",
 
-      href: "#",
-    },
   ];
 
   const profileColor = [blueIcon, redIcon];
@@ -78,8 +75,26 @@ const NavProfile = () => {
                   </div>
                 </Link>
               </MenuItem>
+              
             </div>
           ))}
+        <MenuItem>
+          <Link
+            to="/"
+            className="block px-4 py-2 text-sm text-white"
+          >
+
+
+          <div className="block px-4 py-2 text-sm text-white-700 data-[focus]:bg-gray-100 data-[focus]:text-white">
+            <div className="flex  ">
+            <div className="mr-2">
+
+              <Logout />
+              </div>
+            </div>
+              </div>
+          </Link>
+        </MenuItem>
         </MenuItems>
       </Menu>
 

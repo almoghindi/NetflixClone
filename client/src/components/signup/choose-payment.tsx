@@ -6,11 +6,13 @@ import VisaLogo from "../../assets/img/payment-assets/visa.svg";
 
 import PaypalLogo from "../../assets/img/payment-assets/paypal.svg";
 
-const ChoosePayment: React.FC<{ onNext: () => void }> = ({ onNext }) => {
+interface ChoosePaymentProps {
+   onPaymentMethodSelect: (method: string) => void;
+}
+
+const ChoosePayment: React.FC<ChoosePaymentProps> = ({ onPaymentMethodSelect: onPaymentMethodSelect }) => {
   const handlePaymentSelect = (method: string) => {
-    if (method === "Credit or Debit Card") {
-      onNext(); // Replace with your actual route
-    }
+      onPaymentMethodSelect(method);
   };
 
   return (
@@ -76,10 +78,10 @@ const ChoosePayment: React.FC<{ onNext: () => void }> = ({ onNext }) => {
               </div>
             </button>
             <button
-              disabled
-              className="flex items-center justify-between w-full py-3 px-6 border border-gray-300 rounded bg-gray-100 text-gray-500 cursor-not-allowed"
+              onClick={() => handlePaymentSelect("PayPal")}
+              className="flex items-center justify-between w-full py-3 px-6 border rounded hover:border-red-600 transition duration-300"
             >
-              <span>PayPal (Coming Soon)</span>
+              <span>PayPal</span>
               <img src={PaypalLogo} alt="PayPal" className="w-8 h-8" />
             </button>
           </div>

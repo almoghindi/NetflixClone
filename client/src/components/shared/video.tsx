@@ -4,12 +4,13 @@ import ReactPlayer from "react-player";
 
 const Video = ({ movieId }: { movieId: number }) => {
   const [trailer, setTrailer] = useState("");
-
+  const tmbd_key = import.meta.env.VITE_TMDB_API_KEY as string;
   const getTrailer = async (movieId: number): Promise<void> => {
+    console.log(tmbd_key + "TTT")
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        "Authorization": `Bearer ${tmbd_key}`,
       },
     })
       .then((response) => response.json())

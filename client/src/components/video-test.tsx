@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Hls from 'hls.js';
-import { sendRequest } from '../hooks/use-request';
 import HeaderLandingPage from '../layouts/header-landing-page';
 
 const VideoPlayer: React.FC = () => {
@@ -25,7 +24,7 @@ const VideoPlayer: React.FC = () => {
       const hls = hlsRef.current;
       const video = videoRef.current;
       
-      const s3M3u8Url = 'https://netflixclonee.s3.amazonaws.com/The_Last_Breath/master.m3u8';
+      const s3M3u8Url = import.meta.env.VITE_LAST_BREATH_URL;
 
       if (video) {
         hls.loadSource(s3M3u8Url);
@@ -137,12 +136,11 @@ const VideoPlayer: React.FC = () => {
 
   return (
   <>
-    
-    <HeaderLandingPage />
-    <div className="relative w-full flex justify-center items-center max-w-7xl mx-auto">
+
+    <div className="relative min-w-full h-[60rem] scrollbar-hide scroll-20%">
       <video
         ref={videoRef }
-        className="w-full h-auto"
+        className="w-full h-auto h-[60rem] bg-black"
         onClick={togglePlay}
         onTimeUpdate={handleTimeUpdate}
       ></video>
@@ -233,6 +231,8 @@ const VideoPlayer: React.FC = () => {
         </div>
       </div>
     </div>
+
+
   </>
   );
 };

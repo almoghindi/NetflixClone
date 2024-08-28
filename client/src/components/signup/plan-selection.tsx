@@ -5,6 +5,8 @@ import { plans } from "../../utils/plans";
 interface PlanSelectionProps {
   selectedPlan: string;
   setSelectedPlan: (planId: string) => void;
+  planPrice: string;
+  setSelectedPrice: (price: string) => void;
   onNext: () => void;
 }
 
@@ -12,6 +14,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
   onNext,
   selectedPlan,
   setSelectedPlan,
+  setSelectedPrice,
 }) => {
   return (
     <>
@@ -38,7 +41,11 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
                 className={`w-1/3 border border-gray-200 rounded-lg shadow transition-all duration-250 ease-in-out ${
                   selectedPlan === plan.type ? "ring-2 ring-gray-400" : " p-2"
                 }`}
-                onClick={() => setSelectedPlan(plan.type)}
+                onClick={() => {
+                  setSelectedPlan(plan.type); 
+                  setSelectedPrice(plan.price);
+                }}
+    
               >
                 <div className={`${plan.background} p-8 rounded-lg  relative`}>
                   <h3 className="text-xl font-bold text-white">{plan.type}</h3>

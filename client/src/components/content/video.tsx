@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { VideoResponse } from "../../types/video";
 import ReactPlayer from "react-player";
 
-const Video = ({ movieId }: { movieId: number }) => {
+interface VideoProps {
+  movieId: string;
+}
+
+const Video : React.FC<VideoProps> = ({ movieId }) => {
   const [trailer, setTrailer] = useState("");
 
   const getTrailer = async (movieId: number): Promise<void> => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+        "Authorization": `Bearer ${import.meta.env.VITE_TMDB_API_KEY as string}`,
       },
     })
       .then((response) => response.json())
@@ -28,11 +32,11 @@ const Video = ({ movieId }: { movieId: number }) => {
   };
 
   useEffect(() => {
-    getTrailer(movieId);
+    getTrailer(Number(movieId));
   }, [movieId]);
 
   return (
-    <div className="z-60  ">
+    <div className="z-60">
       {trailer && (
         <ReactPlayer
           url={trailer}
@@ -40,8 +44,10 @@ const Video = ({ movieId }: { movieId: number }) => {
           loop
           muted
           width="100%"
-          height={"80vh"}
+          height={"100vh"}
           controls={false}
+
+          
         />
       )}
       <p className="text-white text-3xl">{}</p>

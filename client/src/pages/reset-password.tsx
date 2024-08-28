@@ -31,7 +31,7 @@ const ResetPasswordPage = () => {
     }
     try {
       const response = await sendRequest({
-        port: 3001,
+        port: 8000,
         url: "/api/auth/reset-password-link",
         method: "POST",
         body: {
