@@ -10,21 +10,27 @@ import SignupFlow from "./pages/signup-flow";
 import SignUpPageForm from "./components/signup/signup-form-page";
 
 import VideoProcessor from "./components/video-test";
-import Nav from "../src/layouts/nav";
+// import Nav from "../src/layouts/nav";
 
 import HomePage from "./pages/home-page";
 // import WatchMovie from "./components/shared/watchMovie";
 import Footer from "./layouts/footer";
+import ProfileManager from "./components/profile/profile-manager";
+import AddProfile from "./components/profile/add-profile";
+import SelectProfile from "./components/profile/select-profile";
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   return (
     <Router>
-      <Nav />
+      {/* <Nav /> */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/profiles/manage" element={<ProfileManager />} />
+        <Route path="/profiles/add" element={<AddProfile />} />
+        <Route path="/profiles" element={<SelectProfile />} />
         {/* <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup/regform" element={<SignUpPageForm />} /> */}
         {/* <Route path="/subscriptions" element={<SubscriptionPage />} /> */}

@@ -15,7 +15,7 @@ const NavProfile = () => {
     {
       name: "Mange Profile",
 
-      href: "#",
+      href: "../profiles/manage",
       icon: PencilIcon,
     },
     {

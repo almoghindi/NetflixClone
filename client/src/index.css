@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 * {
   margin: 0;
   padding: 0;
@@ -9,5 +8,5 @@
 
 html {
   background: rgb(33, 32, 32);
+  font-family: NetflixSans, system-ui, sans-serif;
 }
-
