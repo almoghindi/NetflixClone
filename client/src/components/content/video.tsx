@@ -54,4 +54,3 @@ const Video: React.FC<VideoProps> = ({ movieId }) => {
 };
 
 export default Video;
-s
