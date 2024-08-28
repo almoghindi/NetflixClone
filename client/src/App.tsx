@@ -25,13 +25,17 @@ import Movies from "./pages/movies";
 import { RootState } from "./store/store";
 import { useSelector } from "react-redux";
 import WatchTrailers from "./components/content/watch-trailers";
+import SearchPage from "./pages/search-page";
+import Navbar from "../src/layouts/nav";
+import HeaderLandingPage from "../src/layouts/header-landing-page";
+// import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
     <Router>
-      {/* <Nav /> */}
+      {user === null ? <HeaderLandingPage /> : <Navbar />}
       <Routes>
         {user === null ? (
           <>
@@ -60,6 +64,7 @@ const App: React.FC = () => {
             <Route path="/profiles/manage" element={<ProfileManager />} />
             <Route path="/profiles/add" element={<AddProfile />} />
             <Route path="/profiles" element={<SelectProfile />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/mylist" element={<MyList />} />
             <Route path="/steam-test" element={<VideoProcessor />} />
             <Route path="/main-movie/play" element={<VideoPlayer />} />
