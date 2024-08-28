@@ -1,6 +1,6 @@
 import Video from "./video";
 
-const WatchMovie = (movieId: Number) => {
+const WatchMovie = (movieId: number) => {
   return (
     <div>
       <Video movieId={movieId} />

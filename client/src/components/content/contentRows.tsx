@@ -56,7 +56,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
           />
           </div>
           <div
-            className="relative gap-2 flex items-center w-full h-full overflow-x-scroll  whitespace-nowrap scroll-smooth  scrollbar-hide"
+            className="relative gap-2 flex items-center w-full h-full overflow-x-scroll  whitespace-nowrap scroll-smooth  scrollbar-hide "
             id={`slider-${filter.url}`}
           >
               {movies &&

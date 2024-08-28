@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const NavMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,44 +39,29 @@ const NavMobile = () => {
               className="absolute text-white right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
               <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black"
-                >
+                <Link to="/home" className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black">
                   Home
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black"
-                >
+                <Link to="/tv" className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black">
                   TV Shows
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black"
-                >
+                <Link to="/movies" className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black">
                   Movies
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black"
-                >
-                  New & Popular
-                </a>
+                <Link to="/new" className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black">
+                  New and Popular
+                </Link>
               </MenuItem>
               <MenuItem>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black"
-                >
+                <Link to="/list" className="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-black">
                   My List
-                </a>
+                </Link>
               </MenuItem>
             </MenuItems>
           )}

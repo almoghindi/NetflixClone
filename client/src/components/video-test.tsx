@@ -24,7 +24,7 @@ const VideoPlayer: React.FC = () => {
       const hls = hlsRef.current;
       const video = videoRef.current;
       
-      const s3M3u8Url = 'https://netflixclonee.s3.amazonaws.com/The_Last_Breath/master.m3u8';
+      const s3M3u8Url = import.meta.env.VITE_LAST_BREATH_URL;
 
       if (video) {
         hls.loadSource(s3M3u8Url);

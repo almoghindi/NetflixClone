@@ -43,6 +43,7 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
   };
 
   const handlePlay = () => {
+    console.log(movie.id)
     navigate(`/watch/${movie.id}`);
   };
 

@@ -1,6 +1,5 @@
 import { Key, useEffect, useState } from "react";
 import { sendRequest } from "../hooks/use-request";
-
 import { NewContent } from "../types/new-content";
 import ContentRows from "../components/content/contentRows";
 import {
@@ -10,9 +9,7 @@ import {
 } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
-import VideoPlayer from "../components/video-test";
 import { useNavigate } from "react-router-dom";
-import MovieCard from "../components/content/movieCard";
 import Top10Videos from "../components/content/top10-videos";
 
 enum filters {
@@ -23,30 +20,7 @@ enum filters {
 }
 
 const HomePage = () => {
-  const [content, setContent] = useState<NewContent[]>([]);
   const navigate = useNavigate();
-
-  const getTop10Content = async (): Promise<void> => {
-    try {
-      const response = await sendRequest({
-        port: 8080,
-        url: "/api/trending/movie",
-        method: "GET",
-      });
-      const data = response.content;
-      setContent(data);
-    } catch (error) {
-      console.error(
-        error instanceof Error ? error.message : "An error occurred"
-      );
-    }
-  };
-
-  useEffect(() => {
-    getTop10Content();
-  }, []);
-
-
 
   function handlePlayMainVideoClick(): void {
     navigate(`/main-movie/play`);
@@ -65,7 +39,7 @@ const HomePage = () => {
         opacity: "0.7",
         }}
         className="z-60 -mt-36 sm:-mt-50  ">
-          {<Video movieId={"1241674"} />}
+          {<Video movieId={"1241674"} />} // TODO: This is The Last Breath Movie
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">
@@ -90,13 +64,11 @@ const HomePage = () => {
           </div>
         </div>
         <div className="pb-40 mt-15">
-
-        <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
-        <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
-        
-        <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
-        <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
-    </div>
+          <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
+          <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
+          <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
+          <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
+        </div>
     </div>
     </>
   );

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getAllContents,
+  getByID,
   getContentByGenre,
   getMovies,
   getTop10Content,
@@ -37,6 +38,7 @@ contentRouter.get("/:id/details/:type", getContentDetails);
 contentRouter.get("/:id/similar/:type", getSimilarContent);
 contentRouter.get("/:category/:type", getContentByCategory);
 contentRouter.get("/genre/:genre", getContentByGenre);
+contentRouter.get("/:id", getByID);
 
 
 // contentRouter.get("/:id/season/:seasonNumber", getSeasonDetails);
