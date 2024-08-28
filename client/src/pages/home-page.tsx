@@ -31,7 +31,7 @@ const HomePage = () => {
       <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div style={{
-        transform: "scale(1.5)",  
+        transform: "scale(1.5)",  //TODO: FIX THE SIZING TO FIT THE WINDOW.
         transformOrigin: "center",
         width: "100%",
         height: "80vh",
@@ -64,11 +64,12 @@ const HomePage = () => {
           </div>
         </div>
         <div className="pb-40 mt-15">
-          <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
-          <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
-          <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
-          <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
-        </div>
+
+        <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
+        <Top10Videos filter={{ url: "top_rated/movie", title: "Top 10 Movies in Israel Today" }} />
+        <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
+        <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
+      </div>
     </div>
     </>
   );
