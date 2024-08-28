@@ -9,6 +9,8 @@ import {
   ArrowPathRoundedSquareIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
+import { BellIcon } from "@heroicons/react/24/outline";
+import SearchBar from "./searchBar";
 
 const NavProfile = () => {
   const profileDropDown = [
@@ -40,10 +42,18 @@ const NavProfile = () => {
   const profileColor = [blueIcon, redIcon];
   const profileColorPicker =
     profileColor[Math.floor(Math.random() * profileColor.length)];
+
   return (
     <div className="flex  lg:flex lg:flex-1 lg:justify-end me-10 ">
+      <SearchBar />
+
+      <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 text-white cursor-pointer" />
       <a href="#" className="text-sm font-semibold leading-6 text-white">
-        <img src={profileColorPicker} className="h-10 w-10 rounded" alt="" />
+        <img
+          src={profileColorPicker}
+          className="h-8 w-8 rounded cursor-pointer"
+          alt=""
+        />
       </a>
       <Menu as="div" className="relative inline-block text-left">
         <div>
@@ -82,8 +92,6 @@ const NavProfile = () => {
           ))}
         </MenuItems>
       </Menu>
-
-      <button className="">{}</button>
     </div>
   );
 };

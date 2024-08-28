@@ -221,6 +221,7 @@ export const getContentByCategory = async (
   res: Response
 ): Promise<void> => {
   const { type, category } = req.params;
+
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/${type}/${category}?language=en-US&page=1&`,
@@ -231,14 +232,16 @@ export const getContentByCategory = async (
         },
       }
     );
+
     if (!response.ok) {
+      console.log(response);
       throw new Error("Network response was not ok");
     }
     const { results }: TMDBResponse<any> = await response.json();
     res.status(200).send({ content: results });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Internal server error" });
+    res.status(500).send({ message: "Internal server error ddddd" });
   }
 };
 
@@ -358,5 +361,47 @@ export const getTrailer = async (
   } catch (error) {
     console.error("Error fetching trailer:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const searchContent = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  // Extract 'text' from query parameters
+  const { text } = req.params;
+  console.log(text);
+
+  try {
+    const SEARCH_KEY = process.env.SEARCH_KEY;
+    if (!SEARCH_KEY) {
+      res.status(500).send({ message: "API key is missing" });
+      return;
+    }
+
+    // Make the API request to TMDB
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/movie?page=1&api_key=${SEARCH_KEY}&query=${text}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      // Handle non-OK responses from the API
+      const errorData = await response.json();
+      res
+        .status(response.status)
+        .send({ message: errorData.status_message || "Error from TMDB API" });
+      return;
+    }
+
+    const data = await response.json();
+    res.status(200).send({ content: data });
+  } catch (error) {
+    console.error("Error fetching movie data:", error);
+    res.status(500).send({ message: "Internal server error" });
   }
 };

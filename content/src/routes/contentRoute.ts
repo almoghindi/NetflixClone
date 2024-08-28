@@ -1,16 +1,18 @@
 import { Router } from "express";
 import {
   getAllContents,
+  getContentByCategory,
   getContentByGenre,
   getMovies,
   getTop10Content,
   getTrailer,
+  searchContent,
   searchContentByName,
 } from "../controllers/contentControler";
 import {
   getSimilarContent,
   getTrendingContent,
-  getContentByCategory,
+  // getContentByCategory,
   getContentDetails,
   getContentTrailers,
   getAllContentByCategory,
@@ -33,6 +35,7 @@ contentRouter.get("/trending/:type", getTrendingContent);
 contentRouter.get("/:id/trailers/:type", getContentTrailers);
 contentRouter.get("/:id/details/:type", getContentDetails);
 contentRouter.get("/:id/similar/:type", getSimilarContent);
+contentRouter.get("/search/:text", searchContent);
 contentRouter.get("/:category/:type", getContentByCategory);
 contentRouter.get("/genre/:genre", getContentByGenre);
 contentRouter.get("/movies/:movieId/trailer", getTrailer);

@@ -8,20 +8,19 @@ import MovieCard from "./movieCard";
 const ContentRows = ({ filter }: { filter: filter }) => {
   const [movies, setMovies] = useState<NewContent[]>([]);
 
-  const showMovies = async (): Promise<void> => {
-    try {
-      const data = await sendRequest({
-        url: `/api/${filter.url}`,
-        method: "GET",
-        port: 8000,
-      });
-      setMovies(data.content);
-    } catch (error) {
-      new Error(error instanceof Error ? error.message : "An error occurred");
-    }
-  };
-
   useEffect(() => {
+    const showMovies = async (): Promise<void> => {
+      try {
+        const data = await sendRequest({
+          url: `/api/${filter.url}`,
+          method: "GET",
+          port: 8000,
+        });
+        setMovies(data.content);
+      } catch (error) {
+        new Error(error instanceof Error ? error.message : "An error occurred");
+      }
+    };
     showMovies();
   }, [filter.url]);
 

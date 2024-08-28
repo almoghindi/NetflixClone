@@ -30,7 +30,6 @@ const HomePage = () => {
         method: "GET",
       });
       setContent(data);
-
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"
@@ -52,7 +51,6 @@ const HomePage = () => {
 
   return (
     <>
-      <Navbar />
       <div className="z-60 -mt-36">
         <div className="z-60 -mt-36 sm:-mt-50">
           {content && <Video movieId={content.content.id} />}
@@ -82,8 +80,8 @@ const HomePage = () => {
           <ContentRows
             filter={{ url: filters.trending, title: "Trending Now" }}
           />
-          <ContentRows filter={{ url: filters.topRated, title: "Top Rated" }} />
           <ContentRows filter={{ url: filters.popular, title: "Popular" }} />
+          <ContentRows filter={{ url: filters.topRated, title: "Top Rated" }} />
           <ContentRows filter={{ url: filters.upcoming, title: "Upcoming" }} />
         </div>
 
