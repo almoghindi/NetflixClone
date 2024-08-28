@@ -1,7 +1,7 @@
-import React from 'react';
-import { NewContent } from '../../types/new-content';
-import { StarIcon } from '@heroicons/react/20/solid';
-import Video from './video';
+import React from "react";
+import { NewContent } from "../../types/new-content";
+import { StarIcon } from "@heroicons/react/20/solid";
+import Video from "./video";
 
 interface MovieModalProps {
   movie: NewContent;
@@ -21,14 +21,18 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
         <div className="flex">
           <img
             className="h-120 w-80"
-            src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt={movie.title}
           />
           <div className="block p-4">
             <p className="text-white text-4xl font-bold mb-2">{movie.title}</p>
             <p className="text-white flex items-center mb-4">
-              {movie.release_date.split('-')[0]} | {movie.vote_average}
-              <StarIcon width={20} height={20} className="text-yellow-500 ml-1" />
+              {movie.release_date.split("-")[0]} | {movie.vote_average}
+              <StarIcon
+                width={20}
+                height={20}
+                className="text-yellow-500 ml-1"
+              />
             </p>
             <p className="text-white">{movie.overview}</p>
           </div>

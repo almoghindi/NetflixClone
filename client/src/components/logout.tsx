@@ -1,13 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../store/slices/authSlice";
-import { RootState } from "../store/store";
 import { sendRequest } from "../hooks/use-request";
 import { useNavigate } from "react-router-dom";
 
 const Logout: React.FC = () => {
   const dispatch = useDispatch();
-  const {} = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
 
@@ -40,11 +38,14 @@ const Logout: React.FC = () => {
   };
 
   return (
-    <>
-      <button className="hover:underline" onClick={handleLogOutClick}>
-        Sign Out
-      </button>
-    </>
+    <div
+      className="block px-4 py-2 text-sm text-white"
+      onClick={handleLogOutClick}
+    >
+      <div className="block px-4 py-2 text-sm text-white-700 data-[focus]:bg-gray-100 data-[focus]:text-white flex mr-2">
+        <div className="hover:underline">Sign Out</div>
+      </div>
+    </div>
   );
 };
 

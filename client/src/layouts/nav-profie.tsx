@@ -44,7 +44,7 @@ const NavProfile = () => {
       <SearchBar />
 
       <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 text-white cursor-pointer" />
-      <a href="#" className="text-sm font-semibold leading-6 text-white">
+      <a className="text-sm font-semibold leading-6 text-white">
         <img
           src={profileColorPicker}
           className="h-8 w-8 rounded cursor-pointer"
@@ -87,14 +87,8 @@ const NavProfile = () => {
             </div>
           ))}
           <MenuItem>
-            <Link to="/" className="block px-4 py-2 text-sm text-white">
-              <div className="block px-4 py-2 text-sm text-white-700 data-[focus]:bg-gray-100 data-[focus]:text-white">
-                <div className="flex  ">
-                  <div className="mr-2">
-                    <Logout />
-                  </div>
-                </div>
-              </div>
+            <Link to="/" >
+              <Logout />
             </Link>
           </MenuItem>
         </MenuItems>
