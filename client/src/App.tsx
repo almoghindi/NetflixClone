@@ -13,6 +13,10 @@ import VideoProcessor from "./components/video-test";
 import HomePage from "./pages/home-page";
 // import WatchMovie from "./components/shared/watchMovie";
 import Footer from "./layouts/footer";
+import ProfileManager from "./components/profile/profile-manager";
+import AddProfile from "./components/profile/add-profile";
+import SelectProfile from "./components/profile/select-profile";
+// import SignUpPageForm from "./pages/signup-form-page";
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
@@ -23,6 +27,27 @@ const App: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+
+        <Route path="/profiles/manage" element={<ProfileManager />} />
+        <Route path="/profiles/add" element={<AddProfile />} />
+        <Route path="/profiles" element={<SelectProfile />} />
+        {/* <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signup/regform" element={<SignUpPageForm />} /> */}
+        {/* <Route path="/subscriptions" element={<SubscriptionPage />} /> */}
+        {/* <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signup/regform" element={<SignUpPageForm />} /> */}
+        {/* <Route path="/subscriptions" element={<SubscriptionPage />} /> */}
+        <Route path="/signup" element={<SignupFlow />} />
+        {/* <Route
+          path="/signup/regform"
+          element={
+            <SignUpPageForm
+              onNext={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          }
+        /> */}
         <Route path="/signup" element={<SignupFlow />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
