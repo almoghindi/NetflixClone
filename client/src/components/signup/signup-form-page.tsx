@@ -9,7 +9,6 @@ import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import encryptObject from "../../utils/encription";
 
-
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
@@ -34,15 +33,16 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
     resolver: zodResolver(signUpSchema),
   });
 
-
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
-      
       const encryptedPassword = encryptObject(credentials.password);
-      const encryptedCredentials = { ...credentials, password: encryptedPassword };
+      const encryptedCredentials = {
+        ...credentials,
+        password: encryptedPassword,
+      };
 
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,

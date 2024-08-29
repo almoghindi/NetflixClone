@@ -41,7 +41,7 @@ const SignUpPageForm: React.FC = () => {
       };
 
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,

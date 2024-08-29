@@ -34,7 +34,7 @@ const AuthForm: React.FC = () => {
   const login = async (credentials: AuthFormInputs): Promise<void> => {
     try {
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/login",
         method: "POST",
         body: credentials,
