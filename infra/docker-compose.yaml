@@ -35,6 +35,16 @@ services:
     environment:
       MONGO_URI: mongodb://content-mongodb:27018/contentdb
 
+  payment-service:
+    build:
+      context: ../content
+    ports:
+      - "3004:3004"
+    depends_on:
+      - payment-mongodb
+    environment:
+      MONGO_URI: mongodb://payment-mongodb:27019/paymentdb
+
   auth-mongodb:
     container_name: auth_mongodb_container
     image: mongo:latest
@@ -48,6 +58,13 @@ services:
     restart: always
     ports:
       - "27018:27017"
+
+  payment-mongodb:
+    container_name: payment_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27019:27017"
 
   mysql:
     container_name: mysql_container
