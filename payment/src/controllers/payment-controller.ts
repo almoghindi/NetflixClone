@@ -3,12 +3,12 @@ import { plans, stripe } from "../stripe";
 import Stripe from "stripe";
 
 export const createSubscription = async (req: Request, res: Response) => {
-  const { plan, user } = req.body;
+  const { plan, userId } = req.body;
 
   const customer = await stripe.customers.create({
-    name: user.email,
+    name: userId,
     metadata: {
-      user_id: user.id,
+      user_id: userId,
     },
   });
   const priceId = plans.find((p) => p.type === plan)!.priceId;

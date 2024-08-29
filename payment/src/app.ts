@@ -19,10 +19,14 @@ import { corsConfiguration } from "./configurations/cors";
 const app: Application = express();
 app.use(urlencoded({ extended: true }));
 app.use(cors(corsConfiguration()));
+app.use(
+  "/api/webhook",
+  express.raw({ type: "application/json" }),
+  webhookRouter
+);
 app.use(express.json());
 
 app.use("/api/payment", json(), paymentRouter);
-app.use("/api/webhook", raw({ type: "application/json" }), webhookRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Payment & TypeScript Server");

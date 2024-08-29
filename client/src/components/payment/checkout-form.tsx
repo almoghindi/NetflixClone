@@ -2,6 +2,7 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { plans } from "../../utils/plans";
+import { useNavigate } from "react-router-dom";
 
 interface CheckoutForm {
   selectedPlan: string;
@@ -10,6 +11,7 @@ interface CheckoutForm {
 const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [message, setMessage] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
@@ -37,6 +39,7 @@ const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
     }
     if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage("Payment status " + paymentIntent.status);
+      navigate("/purchase-success");
     }
     setIsProcessing(false);
   };
