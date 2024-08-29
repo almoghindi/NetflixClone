@@ -8,7 +8,7 @@ import { signupSuccess } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
-import encryptObject from "../utils/encription";
+import {encryptString} from "../utils/encription";
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -34,7 +34,7 @@ const SignUpPageForm: React.FC = () => {
 
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
-      const encryptedPassword = encryptObject(credentials.password);
+      const encryptedPassword = encryptString(credentials.password);
       const encryptedCredentials = {
         ...credentials,
         password: encryptedPassword,

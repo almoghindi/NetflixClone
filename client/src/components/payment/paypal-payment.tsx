@@ -5,6 +5,9 @@ import Logout from "../logout";
 import PayPalLogo from "../../assets/img/payment-assets/paypal.svg";
 import { sendRequest } from '../../hooks/use-request';
 import { useNavigate } from 'react-router-dom';
+import { AppDispatch, RootState } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../store/slices/authSlice';
 
 interface PaymentProps {
     selectedPlan: string;
@@ -13,6 +16,9 @@ interface PaymentProps {
 }
 
 const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const {user} = useSelector((state: RootState) => state.auth);
+
     const [isLoading, setIsLoading] = useState(true);
     const navigaion = useNavigate();
 
@@ -29,7 +35,7 @@ const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
                 body: {
                     selectedPlan,
                     PlanPrice,
-                    userId: localStorage.getItem('userId'),
+                    userId: user?.userId,
                 },
             });
             return order.id;
@@ -52,8 +58,13 @@ const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
             });
             console.log("Capture result", orderData);
             if (orderData.status === "COMPLETED") {
-                navigaion('/purchase-success', { state: { selectedPlan, PlanPrice } });
+                if (!user || !user.subscription) {
+                    return;
+                }
                 
+                dispatch(setUser({ ...user, subscription: selectedPlan }));
+
+                navigaion('/purchase-success', { state: { selectedPlan, PlanPrice } });
             }
         } catch (error) {
             console.error("Failed to capture order:", error);

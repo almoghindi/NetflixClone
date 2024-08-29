@@ -2,12 +2,19 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { plans } from "../../utils/plans";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { setUser } from "../../store/slices/authSlice";
+
 
 interface CheckoutForm {
   selectedPlan: string;
   setStep: (step: number) => void;
 }
 const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const {user} = useSelector((state: RootState) => state.auth);
+
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<string>("");
@@ -36,6 +43,11 @@ const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
       }
     }
     if (paymentIntent && paymentIntent.status === "succeeded") {
+      if (!user || !user.subscription) {
+        return;
+      }
+      dispatch(setUser({ ...user, subscription: selectedPlan }));
+      
       setMessage("Payment status " + paymentIntent.status);
     }
     setIsProcessing(false);

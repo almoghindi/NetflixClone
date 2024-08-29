@@ -32,7 +32,7 @@ export class AuthService {
         user.token = refreshToken;
         await user.save();
     
-        return { accessToken, refreshToken, userId: user._id.toString() };
+        return { email: user.email, subscription: user.subscription, userId: user._id.toString(),accessToken, refreshToken}
     }
     
 
@@ -61,7 +61,7 @@ export class AuthService {
         existingUser.token = refreshedToken;
         await existingUser.save();
 
-        return {accessToken, refreshToken: refreshedToken, user: existingUser};
+        return { email: existingUser.email, subscription: existingUser.subscription, userId: existingUser._id.toString(),accessToken, refreshToken: refreshedToken};
     }
 
     static async refreshToken(refreshToken: string) {
@@ -85,8 +85,10 @@ export class AuthService {
     }
 
     static async logout(userId: string){
+        console.log("User is " + userId);
         const user = await User.findById(userId);
         
+        console.log("User is " + user);
         if (!user){
             throw new Error('User not found');
         }

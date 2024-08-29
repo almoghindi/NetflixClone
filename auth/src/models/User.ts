@@ -1,7 +1,7 @@
 
 import mongoose from "mongoose";
 
-enum SubscriptionType {
+export enum SubscriptionType {
   BASIC = "BASIC",
   STANDART = "STANDART",
   PREMIUM = "PREMIUM",
