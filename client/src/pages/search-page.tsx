@@ -19,7 +19,7 @@ const SearchPage = () => {
       try {
         const url = `/api/search/${query}`;
         const data = await sendRequest({
-          port: 8000,
+          port: 3003,
           url: url,
           method: "GET",
         });

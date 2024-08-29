@@ -5,6 +5,7 @@ enum SubscriptionType {
   BASIC = "BASIC",
   STANDART = "STANDART",
   PREMIUM = "PREMIUM",
+  NOT_PAID = "NOT_PAID",
 }
 const UserSchema = new mongoose.Schema({
   email: {
@@ -19,11 +20,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  // subscription: {
-  //   type: String,
-  //   enum: Object.values(SubscriptionType), // Use the enum values for validation
-  //   required: true,
-  // },
+  subscription: {
+    type: String,
+    enum: Object.values(SubscriptionType),
+    required: true,
+    default: SubscriptionType.NOT_PAID,
+  },
 });
 
 export default mongoose.model("User", UserSchema);

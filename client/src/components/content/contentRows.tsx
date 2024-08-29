@@ -17,7 +17,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       const data = await sendRequest({
         url: `/api/${filter.url}`,
         method: "GET",
-        port: 8080,
+        port: 3003,
       });
       setMovies(data.content);
     } catch (error) {

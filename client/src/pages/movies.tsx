@@ -27,7 +27,7 @@ const Movies = () => {
   const getTop10Content = async (): Promise<void> => {
     try {
       const data = await sendRequest({
-        port: 8080,
+        port: 3003,
         url: "/api/trending/movie",
         method: "GET",
       });

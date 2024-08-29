@@ -13,7 +13,7 @@ const TvShows = () => {
   const getTvShows = async (): Promise<void> => {
     try {
       const response = await sendRequest({
-        port: 8080,
+        port: 3003,
         url: "/api/tvshows",
         method: "GET",
       });

@@ -15,7 +15,7 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
       const data = await sendRequest({
         url: `/api/${filter.url}`,
         method: "GET",
-        port: 8080,
+        port: 3003,
       });
       setMovies(data.content.slice(0, 10)); // Ensure we only get top 10
     } catch (error) {

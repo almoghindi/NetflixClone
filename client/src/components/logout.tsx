@@ -19,7 +19,7 @@ const Logout: React.FC = () => {
       }
 
       await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/logout",
         method: "POST",
         body: { userId, refreshToken },

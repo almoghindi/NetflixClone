@@ -1,7 +1,7 @@
 import DBConnect from "./database/connection";
 import app from "./app";
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3002;
 
 DBConnect().then(() => {
   app.listen(port, () => {

@@ -17,7 +17,7 @@ const WatchTrailers = () => {
           const data = await sendRequest({
             url: `/api/${movieId}`,
             method: "GET",
-            port: 8080,
+            port: 3003,
           });
 
           console.log(data);
