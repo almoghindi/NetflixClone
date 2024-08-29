@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import Content from "../models/content";
 import newContent from "../models/new-content";
+import { redisClient } from "../configurations/redis";
+
+
+
 
 export const getAllContents = async (
   req: Request,

@@ -23,7 +23,6 @@ export class AuthService {
         }
     
         const hashedPassword = await bcrypt.hash(decryptedPassword, 10);
-        console.log(hashedPassword);
     
         const user = new User({ email, password: hashedPassword });
     

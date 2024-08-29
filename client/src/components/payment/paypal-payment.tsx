@@ -53,6 +53,7 @@ const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
             console.log("Capture result", orderData);
             if (orderData.status === "COMPLETED") {
                 navigaion('/purchase-success', { state: { selectedPlan, PlanPrice } });
+                
             }
         } catch (error) {
             console.error("Failed to capture order:", error);
