@@ -2,7 +2,11 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        netflix: ["NetflixSans", "sans-serif"],
+      },
+    },
   },
   plugins: [
     // eslint-disable-next-line no-undef

@@ -3,14 +3,13 @@ import { plans, stripe } from "../stripe";
 import Stripe from "stripe";
 
 export const createSubscription = async (req: Request, res: Response) => {
-  const { plan, userId } = req.body;
+  const { plan, user } = req.body;
 
   const customer = await stripe.customers.create({
-    name: userId,
-    // payment_method: req.body.paymentMethod,
-    // invoice_settings: {
-    //   default_payment_method: req.body.paymentMethod,
-    // },
+    name: user.email,
+    metadata: {
+      user_id: user.id,
+    },
   });
   const priceId = plans.find((p) => p.type === plan)!.priceId;
   const subscription: Stripe.Subscription = await stripe.subscriptions.create({

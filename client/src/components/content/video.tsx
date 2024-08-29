@@ -6,14 +6,14 @@ interface VideoProps {
   movieId: string;
 }
 
-const Video : React.FC<VideoProps> = ({ movieId }) => {
+const Video: React.FC<VideoProps> = ({ movieId }) => {
   const [trailer, setTrailer] = useState("");
 
   const getTrailer = async (movieId: number): Promise<void> => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${import.meta.env.VITE_TMDB_API_KEY as string}`,
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY as string}`,
       },
     })
       .then((response) => response.json())
@@ -46,13 +46,10 @@ const Video : React.FC<VideoProps> = ({ movieId }) => {
           width="100%"
           height={"100vh"}
           controls={false}
-
-          
         />
       )}
       <p className="text-white text-3xl">{}</p>
     </div>
   );
 };
-
 export default Video;

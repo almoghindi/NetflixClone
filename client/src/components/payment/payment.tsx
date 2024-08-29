@@ -5,6 +5,8 @@ import CheckoutForm from "./checkout-form";
 import { Elements } from "@stripe/react-stripe-js";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import Logout from "../logout";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface publishableKey {
   publishableKey: string;
@@ -19,12 +21,11 @@ interface PaymentProps {
 }
 
 const Payment: React.FC<PaymentProps> = ({ selectedPlan, setStep }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const [stripePromise, setStripePromise] = useState<Stripe | null>(null);
   const [clientSecret, setClientSecret] = useState<string>("");
 
   useEffect(() => {
-    const id = localStorage.getItem("userId");
-    console.log(id);
     const fetchPublishableKey = async () => {
       sendRequest({
         port: 3004,
@@ -43,7 +44,7 @@ const Payment: React.FC<PaymentProps> = ({ selectedPlan, setStep }) => {
         method: "POST",
         body: {
           plan: selectedPlan.toLocaleUpperCase(),
-          userId: id,
+          user: user,
         },
       }).then(async (res: clientSecret) => {
         const { clientSecret } = res;
@@ -53,7 +54,7 @@ const Payment: React.FC<PaymentProps> = ({ selectedPlan, setStep }) => {
     };
     fetchPublishableKey();
     fetchClientSecret();
-  }, [selectedPlan]);
+  }, [selectedPlan, user]);
 
   return (
     <>

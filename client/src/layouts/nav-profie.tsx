@@ -10,13 +10,15 @@ import {
   UserIcon,
 } from "@heroicons/react/20/solid";
 import Logout from "../components/logout";
+import { BellIcon } from "@heroicons/react/24/outline";
+import SearchBar from "./searchBar";
 
 const NavProfile = () => {
   const profileDropDown = [
     {
       name: "Mange Profile",
 
-      href: "#",
+      href: "../profiles/manage",
       icon: PencilIcon,
     },
     {
@@ -31,16 +33,23 @@ const NavProfile = () => {
       href: "#",
       icon: UserIcon,
     },
-
   ];
 
   const profileColor = [blueIcon, redIcon];
   const profileColorPicker =
     profileColor[Math.floor(Math.random() * profileColor.length)];
+
   return (
     <div className="flex  lg:flex lg:flex-1 lg:justify-end me-10 ">
-      <a href="#" className="text-sm font-semibold leading-6 text-white">
-        <img src={profileColorPicker} className="h-10 w-10 rounded" alt="" />
+      <SearchBar />
+
+      <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 text-white cursor-pointer" />
+      <a className="text-sm font-semibold leading-6 text-white">
+        <img
+          src={profileColorPicker}
+          className="h-8 w-8 rounded cursor-pointer"
+          alt=""
+        />
       </a>
       <Menu as="div" className="relative inline-block text-left">
         <div>
@@ -75,30 +84,15 @@ const NavProfile = () => {
                   </div>
                 </Link>
               </MenuItem>
-              
             </div>
           ))}
-        <MenuItem>
-          <Link
-            to="/"
-            className="block px-4 py-2 text-sm text-white"
-          >
-
-
-          <div className="block px-4 py-2 text-sm text-white-700 data-[focus]:bg-gray-100 data-[focus]:text-white">
-            <div className="flex  ">
-            <div className="mr-2">
-
+          <MenuItem>
+            <Link to="/" >
               <Logout />
-              </div>
-            </div>
-              </div>
-          </Link>
-        </MenuItem>
+            </Link>
+          </MenuItem>
         </MenuItems>
       </Menu>
-
-      <button className="">{}</button>
     </div>
   );
 };

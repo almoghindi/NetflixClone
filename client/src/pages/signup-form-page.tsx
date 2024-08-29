@@ -8,6 +8,7 @@ import { signupSuccess } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
+import encryptObject from "../utils/encription";
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -33,12 +34,17 @@ const SignUpPageForm: React.FC = () => {
 
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
+      const encryptedPassword = encryptObject(credentials.password);
+      const encryptedCredentials = {
+        ...credentials,
+        password: encryptedPassword,
+      };
+
       const response = await sendRequest({
         port: 8000,
         url: "/api/auth/register",
         method: "POST",
-        body: credentials,
-        
+        body: encryptedCredentials,
       });
       dispatch(signupSuccess(response));
       localStorage.setItem("accessToken", response.accessToken);
@@ -61,9 +67,7 @@ const SignUpPageForm: React.FC = () => {
       <header className="bg-white border-b border-gray-200 py-0">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <HeaderLandingPage />
-          <a  className="text-gray-600 font-semibold text-medium">
-            Sign In
-          </a>
+          <a className="text-gray-600 font-semibold text-medium">Sign In</a>
         </div>
       </header>
 

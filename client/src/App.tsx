@@ -15,27 +15,33 @@ import VideoProcessor from "./components/video-test";
 import PurchaseSuccess from "./components/payment/purchase-success";
 import HomePage from "./pages/home-page";
 import Footer from "./layouts/footer";
-
+import ProfileManager from "./components/profile/profile-manager";
+import AddProfile from "./components/profile/add-profile";
+import SelectProfile from "./components/profile/select-profile";
 import VideoPlayer from "./components/video-test";
 import MyList from "./components/content/my-list";
 import TvShows from "./pages/tv-shows";
 import Movies from "./pages/movies";
 import { RootState } from "./store/store";
 import { useSelector } from "react-redux";
-import WatchVideo from "./components/content/watch-video";
 import WatchTrailers from "./components/content/watch-trailers";
+import SearchPage from "./pages/search-page";
+import Navbar from "../src/layouts/nav";
+import HeaderLandingPage from "../src/layouts/header-landing-page";
+// import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
     <Router>
+      {user === null ? <HeaderLandingPage /> : <Navbar />}
       <Routes>
         {user === null ? (
           <>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route
+            {/* <Route
               path="/signup/regform"
               element={
                 <SignUpPageForm
@@ -44,7 +50,7 @@ const App: React.FC = () => {
                   }}
                 />
               }
-            />
+            /> */}
             <Route path="/signup" element={<SignupFlow />} />
 
             <Route path="/purchase-success" element={<PurchaseSuccess />} />
@@ -55,6 +61,10 @@ const App: React.FC = () => {
         ) : (
           <>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/profiles/manage" element={<ProfileManager />} />
+            <Route path="/profiles/add" element={<AddProfile />} />
+            <Route path="/profiles" element={<SelectProfile />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/mylist" element={<MyList />} />
             <Route path="/steam-test" element={<VideoProcessor />} />
             <Route path="/main-movie/play" element={<VideoPlayer />} />
