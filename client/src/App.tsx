@@ -27,7 +27,6 @@ import { useSelector } from "react-redux";
 import WatchTrailers from "./components/content/watch-trailers";
 import SearchPage from "./pages/search-page";
 import Navbar from "../src/layouts/nav";
-import ChoosePayment from "./components/signup/choose-payment";
 
 // import Login from "./pages/login-page";
 

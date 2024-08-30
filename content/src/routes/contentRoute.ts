@@ -8,7 +8,7 @@ import {
   searchContent,
   getContentByCategory,
   getContentByGenre,
-  getByID,
+  // getByID,
   getTrailer,
   getTvShows,
 } from "../controllers/contentControler";
@@ -28,7 +28,7 @@ contentRouter.get("/:category/:type", getContentByCategory);
 contentRouter.get("/genre/:genre", getContentByGenre);
 contentRouter.get("/movies/:movieId/trailer", getTrailer);
 contentRouter.get("/tvshows", getTvShows);
-contentRouter.get("/:id", getByID);
+//contentRouter.get("/:id", getByID);
 
 
 export default contentRouter;

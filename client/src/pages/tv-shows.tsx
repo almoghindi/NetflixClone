@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentRows from '../components/content/contentRows';
 import { sendRequest } from '../hooks/use-request';
 import { NewContent } from '../types/new-content';
@@ -53,7 +53,7 @@ const TvShows = () => {
           height: "80vh",
           overflow: "hidden"
         }} className="z-60 -mt-36 sm:-mt-50">
-          {selectedShow && <Video movieId={selectedShow.id.toString()} />}
+          {selectedShow && <Video movieId={selectedShow.id!.toString()} />}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className="text-white text-4xl md:text-3xl h-full w-[100%] lg:text-6xl font-bold drop-shadow-xl">

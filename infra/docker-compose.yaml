@@ -1,72 +1,72 @@
 version: "3.8"
 services:
-  auth-service:
-    build:
-      context: ../auth
-    ports:
-      - "3001:3001"
-    depends_on:
-      - auth-mongodb
-    environment:
-      MONGO_URI: mongodb://auth-mongodb:27017/authdb
+#   auth-service:
+#     build:
+#       context: ../auth
+#     ports:
+#       - "3001:3001"
+#     depends_on:
+#       - auth-mongodb
+#     environment:
+#       MONGO_URI: mongodb://auth-mongodb:27017/authdb
 
-  accounts-service:
-    build:
-      context: ../accounts
-    ports:
-      - "3002:3002"
-    depends_on:
-      - mysql
-    environment:
-      PORT: 3002
-      DB_HOST: mysql
-      DB_USER: netflix
-      DB_PASSWORD: api
-      DB_NAME: netflix_accounts
-      DB_PORT: 3306
+#   accounts-service:
+#     build:
+#       context: ../accounts
+#     ports:
+#       - "3002:3002"
+#     depends_on:
+#       - mysql
+#     environment:
+#       PORT: 3002
+#       DB_HOST: mysql
+#       DB_USER: netflix
+#       DB_PASSWORD: api
+#       DB_NAME: netflix_accounts
+#       DB_PORT: 3306
 
-  content-service:
-    build:
-      context: ../content
-    ports:
-      - "3003:3003"
-    depends_on:
-      - content-mongodb
-      - redis
-    environment:
-      MONGO_URI: mongodb://content-mongodb:27018/contentdb
+#   content-service:
+#     build:
+#       context: ../content
+#     ports:
+#       - "3003:3003"
+#     depends_on:
+#       - content-mongodb
+#       - redis
+#     environment:
+#       MONGO_URI: mongodb://content-mongodb:27018/contentdb
 
-  auth-mongodb:
-    container_name: auth_mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - "27017:27017"
+#   auth-mongodb:
+#     container_name: auth_mongodb_container
+#     image: mongo:latest
+#     restart: always
+#     ports:
+#       - "27017:27017"
 
-  content-mongodb:
-    container_name: content_mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - "27018:27017"
+#   content-mongodb:
+#     container_name: content_mongodb_container
+#     image: mongo:latest
+#     restart: always
+#     ports:
+#       - "27018:27017"
 
-  mysql:
-    container_name: mysql_container
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: api
-      MYSQL_DATABASE: netflix_accounts
-      MYSQL_USER: netflix
-      MYSQL_PASSWORD: api
-    ports:
-      - "3307:3306"
+#   mysql:
+#     container_name: mysql_container
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: api
+#       MYSQL_DATABASE: netflix_accounts
+#       MYSQL_USER: netflix
+#       MYSQL_PASSWORD: api
+#     ports:
+#       - "3307:3306"
 
-  client:
-    build:
-      context: ../client
-    ports:
-      - "80:80"
+#   client:
+#     build:
+#       context: ../client
+#     ports:
+#       - "5173:5173"
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -92,5 +92,3 @@ services:
     image: redis
     ports:
       - "6379:6379"
-
-    

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  SpeakerWaveIcon,
 } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
@@ -15,11 +14,19 @@ const ContentRows = ({ filter }: { filter: filter }) => {
   const showMovies = async (): Promise<void> => {
     try {
       const data = await sendRequest({
-        url: `/api/${filter.url}`,
+        url: `/redis/${filter.url}`,
         method: "GET",
         port: 3003,
       });
-      setMovies(data.content);
+
+      console.log(data.content);
+      if (filter.url === "trending/all") {
+        setMovies(data.content);
+      }
+      else{
+        setMovies(data.content.results);
+
+      }
     } catch (error) {
       new Error(error instanceof Error ? error.message : "An error occurred");
     }

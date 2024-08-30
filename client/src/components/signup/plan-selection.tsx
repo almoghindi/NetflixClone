@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import Logout from "../logout";
-import { plans } from "../../utils/plans";
+import { Plan, plans as fetchPlans } from "../../utils/plans";
+
 interface PlanSelectionProps {
   selectedPlan: string;
   setSelectedPlan: (planId: string) => void;
@@ -16,6 +17,17 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
   setSelectedPlan,
   setSelectedPrice,
 }) => {
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  useEffect(() => {
+    const fetchPlansData = async () => {
+      const plansData = await fetchPlans();
+      setPlans(plansData);
+    };
+
+    fetchPlansData();
+  }, []);
+
   return (
     <>
       <header className="bg-white border-b border-gray-200 py-0">
@@ -43,7 +55,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
                 }`}
                 onClick={() => {
                   setSelectedPlan(plan.type); 
-                  setSelectedPrice(plan.price);
+                  setSelectedPrice(plan.price.toString());
                 }}
     
               >
