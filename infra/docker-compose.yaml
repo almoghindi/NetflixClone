@@ -7,8 +7,8 @@ services:
       - "3001:3001"
     depends_on:
       - auth-mongodb
-    environment:
-      MONGO_URI: mongodb://auth-mongodb:27017/authdb
+    env_file:
+      - ../auth/.env
 
   accounts-service:
     build:
@@ -17,13 +17,8 @@ services:
       - "3002:3002"
     depends_on:
       - mysql
-    environment:
-      PORT: 3002
-      DB_HOST: mysql
-      DB_USER: netflix
-      DB_PASSWORD: api
-      DB_NAME: netflix_accounts
-      DB_PORT: 3306
+    env_file:
+      - ../accounts/.env
 
   content-service:
     build:
@@ -32,18 +27,19 @@ services:
       - "3003:3003"
     depends_on:
       - content-mongodb
-    environment:
-      MONGO_URI: mongodb://content-mongodb:27018/contentdb
+      - redis
+    env_file:
+      - ../content/.env
 
   payment-service:
     build:
-      context: ../content
+      context: ../payment
     ports:
       - "3004:3004"
     depends_on:
       - payment-mongodb
-    environment:
-      MONGO_URI: mongodb://payment-mongodb:27019/paymentdb
+    env_file:
+      - ../payment/.env
 
   auth-mongodb:
     container_name: auth_mongodb_container
@@ -103,3 +99,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       ALLOW_PLAINTEXT_LISTENER: "yes"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

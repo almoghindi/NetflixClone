@@ -27,7 +27,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@netflix-adea/common": "^1.0.1",
+    "@netflix-adea/common": "^1.0.4",
     "@sendgrid/mail": "^8.1.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",

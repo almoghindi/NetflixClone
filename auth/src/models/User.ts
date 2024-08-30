@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 enum SubscriptionType {
@@ -6,6 +5,7 @@ enum SubscriptionType {
   STANDART = "STANDART",
   PREMIUM = "PREMIUM",
 }
+
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -19,11 +19,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  // subscription: {
-  //   type: String,
-  //   enum: Object.values(SubscriptionType), // Use the enum values for validation
-  //   required: true,
-  // },
+  subscription: {
+    type: String,
+    required: true,
+  },
 });
 
 export default mongoose.model("User", UserSchema);
