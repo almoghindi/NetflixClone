@@ -2,23 +2,25 @@ import React, {  useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { getTrailer } from "../../utils/trailerUtils";
 
-interface VideoProps {
-  movieId:  string ;
+export interface VideoProps {
+  movieId: string ;
+  type: string;
 }
 
-const Video: React.FC<VideoProps> = ({ movieId }) => {
+const Video: React.FC<VideoProps> = ({ movieId, type }) => {
   const [trailer, setTrailer] = useState<string | null>(null);
 
+  console.log(movieId,"type", type)
   useEffect(() => {
     const fetchTrailer = async () => {
       if (movieId) {
-        const trailerUrl = await getTrailer(movieId);
+        const trailerUrl = await getTrailer(movieId, type);
         setTrailer(trailerUrl);
       }
     };
 
     fetchTrailer();
-  }, [movieId]);
+  }, [movieId, type]);
 
   return (
     <div className="z-60">

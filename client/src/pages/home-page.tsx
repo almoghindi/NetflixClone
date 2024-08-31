@@ -27,7 +27,7 @@ const HomePage = () => {
           }}
           className="z-60 -mt-36 sm:-mt-50  "
         >
-          {<Video movieId={"1241674"} />} // TODO: This is The Last Breath Movie
+          {<Video movieId={"1241674"} type={"movie"} />} // TODO: This is The Last Breath Movie
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">

@@ -13,7 +13,6 @@ const getCachedOrFetch = async (key: string, fetchFunction: () => Promise<any>) 
     const cachedData = await redisClientInstance.get(key);
 
     if (cachedData && cachedData.trim() !== "") {
-      console.log("Using cached data:");
       return JSON.parse(cachedData);
     }
 
@@ -43,7 +42,6 @@ export const getTrendingContent = async (req: Request, res: Response): Promise<v
     const randomContent = results[Math.floor(Math.random() * results.length)];
     res.status(200).send({ content: randomContent });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -54,9 +52,14 @@ export const getContentTrailers = async (req: Request, res: Response): Promise<v
 
   try {
     const data = await getCachedOrFetch(cacheKey, () => fetch(`/${type}/${id}/videos?language=en-US`));
-    res.status(200).send({ content: data.results });
+    if (type == 'tv'){
+      res.status(200).send({ content: data });
+    }
+    else{
+      res.status(200).send({ content: data.results });
+    }
   } catch (error) {
-    console.log(error);
+
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -69,7 +72,7 @@ export const getContentDetails = async (req: Request, res: Response): Promise<vo
     const data = await getCachedOrFetch(cacheKey, () => fetch(`/${type}/${id}?language=en-US`));
     res.status(200).send({ content: data });
   } catch (error) {
-    console.log(error);
+
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -82,7 +85,6 @@ export const getSimilarContent = async (req: Request, res: Response): Promise<vo
     const data = await getCachedOrFetch(cacheKey, () => fetch(`/${type}/${id}/similar?language=en-US&page=1`));
     res.status(200).send({ content: data.results });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -101,12 +103,15 @@ export const searchContent = async (req: Request, res: Response): Promise<void> 
 };
 
 export const getTreiler = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  const cacheKey = `treiler:${id}`;
+  const { type,id } = req.params;
+  const cacheKey = `treiler:${type}:${id}`;
+
 
   try {
     const data = await getCachedOrFetch(cacheKey, async () => {
-      const videos = await fetch(`/movie/${id}/videos`);
+      const videos = await fetch(`/${type}/${id}/videos`);
+      console.log( "videos",videos);
+      
       const trailer = videos.results.find((video: any) => video.type === "Trailer");
 
       if (!trailer) {
@@ -152,6 +157,49 @@ export const TrendingAllMovies = async (
     res.status(200).send({ content: response.results });
   } catch (error) {
     console.error("Error in TrendingAllMovies:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+export const TrendingAllTv = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const cacheKey = `Trending:TV`;
+
+  try {
+    // Fetch data or get from cache
+    const response: TMDBResponse<any> = await getCachedOrFetch(cacheKey, () =>
+      fetch(`/trending/tv/day?language=en-US`)
+    );
+
+    // Send the response
+    res.status(200).send({ content: response.results });
+  } catch (error) {
+    console.error("Error in TrendingAllMovies:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+//tv-shows
+
+export const getTvShows = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const cacheKey = `tv:popular`;
+
+  try {
+    // Fetch data or get from cache
+    const response: TMDBResponse<any> = await getCachedOrFetch(cacheKey, () => fetch(`/tv/popular?page=1`));
+
+    if (response && Array.isArray(response.results)) {
+      const tvShows = response.results.slice(0, 15);
+      res.status(200).send({ content: tvShows });
+    } else {
+      res.status(404).send({ message: "TV Shows not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching TV shows:", error);
     res.status(500).send({ message: "Internal server error" });
   }
 };

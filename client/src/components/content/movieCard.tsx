@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { addMovieToList, removeMovieFromList, selectIsMovieInList } from "../../store/slices/myListSlice";
+import { TvProps } from "./contentRows";
 const genreLookup: { [key: number]: string } = {
   28: "Action",
   12: "Adventure",
@@ -26,7 +27,10 @@ const genreLookup: { [key: number]: string } = {
   10752: "War",
   37: "Western",
 };
-const MovieCard = ({ movie }: { movie: NewContent }) => {
+interface MovieCardProps {
+  movie: NewContent | TvProps;
+}
+const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -34,13 +38,13 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
   // Determine if the movie is already in the list
   const isAddedToMyList = useSelector((state: RootState) => selectIsMovieInList(state.myList, movie.id as number));
 
-  const handleAddOrRemoveMovie = () => {
-    if (isAddedToMyList) {
-      dispatch(removeMovieFromList(movie.id as number));
-    } else {
-      dispatch(addMovieToList(movie));
-    }
-  };
+  // const handleAddOrRemoveMovie = () => {
+  //   if (isAddedToMyList) {
+  //     dispatch(removeMovieFromList(movie.id as number));
+  //   } else {
+  //     dispatch(addMovieToList(movie));
+  //   }
+  // };
 
   const handlePlay = () => {
     console.log(movie.id)
@@ -58,14 +62,14 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
       <img
         className="cursor-pointer object-cover transition duration shadow-md rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 w-full h-full"
         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-        alt={movie.title} 
+        alt={movie.name  } 
       />
 
       <div className="opacity-0 absolute top-0 transition duration-500 z-10 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:opacity-100">
         <img
           className="cursor-pointer object-cover duration shadow-xl rounded-t-md w-full h-[12vw]"
           src={`https://image.tmdb.org/t/p/original${movie.poster_path }`}
-          alt={movie.title}
+          alt={movie.name}
         />
         <div className="z-10 bg-zinc-800 p-2 lg:p-3 absolute w-full transition shadow-md rounded-b-md">
           <div className="flex flex-row items-center gap-3">
@@ -78,14 +82,14 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
             {isAddedToMyList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={handleAddOrRemoveMovie}
+                // onClick={handleAddOrRemoveMovie}
                 width={30}
                 height={30}
               />
             ) : (
               <PlusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={handleAddOrRemoveMovie}
+                // onClick={handleAddOrRemoveMovie}
                 width={30}
                 height={30}
               />
@@ -94,7 +98,7 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
               <HandThumbUpIcon width={20} height={20} onClick={() => {}} />
             </div>
           </div>
-          <div className="text-white mb-0">{movie.title||movie.name}</div>
+          <div className="text-white mb-0">{movie.name}</div>
           <div className="flex flex-row mt-0 gap-2 items-center">
             <p className="text-white text-[8px] lg:text-xs">
               {movie.genre_ids.map((genre: number, index: React.Key) => (

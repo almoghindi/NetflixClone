@@ -1,15 +1,17 @@
 import { sendRequest } from "../hooks/use-request";
 import { VideoResponse } from "../types/video";
 
-export const getTrailer = async (movieId: string | number): Promise<string | null> => {
+
+export const getTrailer = async (movieId: string | number, type: string): Promise<string | null> => {
   try {
+    console.log(movieId, "type ", type );
     const response = await sendRequest({
-      url: `/redis/movie/${movieId}`,
+      url: `/redis/${type}/${movieId}/trailer`,
       method: "GET",
       port: 3003,
     });
 
-    console.log("response", response);
+    console.log("response treiler", response);
     
     if (response && response.content) {
       // const trailers = response.content.filter(

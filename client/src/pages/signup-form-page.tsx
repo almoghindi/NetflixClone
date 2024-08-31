@@ -2,13 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
-import { signupSuccess } from "../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { setUser, signupSuccess } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";
-import {encryptString} from "../utils/encription";
+import {encryptObject, encryptString} from "../utils/encription";
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -23,6 +23,7 @@ type SignUpFormInputs = z.infer<typeof signUpSchema>;
 const SignUpPageForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     register,
@@ -46,11 +47,19 @@ const SignUpPageForm: React.FC = () => {
         method: "POST",
         body: encryptedCredentials,
       });
-      dispatch(signupSuccess(response));
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.user._id);
-      navigation("/login");
+      dispatch(setUser(response));
+      const encryptedResponse: string | null = encryptObject(response);
+      if (encryptedResponse){
+        localStorage.setItem("user", encryptedResponse as string);
+      }
+      if (user?.subscription === "NOT_PAID") {
+        console.log(user, "USER IN LOGIN PAGE");
+        navigation("/choose-payment");
+      }
+
+      else {
+        navigation("/");
+      }
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"
