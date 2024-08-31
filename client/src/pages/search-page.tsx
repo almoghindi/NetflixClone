@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { sendRequest } from "../hooks/use-request";
 import { NewContent } from "../types/new-content";
 import MovieCard from "../components/content/movieCard";
+
 
 const SearchPage = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const SearchPage = () => {
       try {
         const url = `/api/search/${query}`;
         const data = await sendRequest({
-          port: 8000,
+          port: 3003,
           url: url,
           method: "GET",
         });

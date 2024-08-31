@@ -8,9 +8,6 @@ interface RequestParams {
   headers?: any;
 }
 
-interface RequestError {
-  message: string;
-}
 
 const BASE_URL = "http://localhost:";
 

@@ -2,12 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { signupSuccess } from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { setUser, signupSuccess } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
-import encryptObject from "../../utils/encription";
+import {encryptObject, encryptString} from "../../utils/encription";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const signUpSchema = z.object({
@@ -25,6 +26,9 @@ interface SignUpPageFormProps {
 
 const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
+
 
   const {
     register,
@@ -38,22 +42,26 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
       
-      const encryptedPassword = encryptObject(credentials.password);
+      const encryptedPassword = encryptString(credentials.password);
       const encryptedCredentials = { ...credentials, password: encryptedPassword };
 
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/register",
         method: "POST",
         body: encryptedCredentials,
       });
       console.log(response);
-
-      dispatch(signupSuccess(response));
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.userId);
-
+      
+      dispatch(setUser(response));
+      const encryptedResponse: string | null = encryptObject(response);
+      if (encryptedResponse){
+        localStorage.setItem("user", encryptedResponse as string);
+      }
+      // if (user?.subscription === "NOT_PAID") {
+      //   console.log(user, "USER IN LOGIN PAGE");
+      //   navigation("/choose-payment");
+      // }
       onNext(); // Proceed to the next step
     } catch (error) {
       console.error(
@@ -75,12 +83,10 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
         <header className="bg-white border-b border-gray-200 py-0">
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />
-            <a
-              // onClick={() => navigation("/login")}
-              className="text-gray-600 font-semibold text-medium cursor-pointer hover:underline"
-            >
+
+            <Link className="text-gray-600 font-semibold text-medium cursor-pointer hover:underline" to="/login">
               Sign In
-            </a>
+            </Link>
           </div>
         </header>
 

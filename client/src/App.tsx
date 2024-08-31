@@ -27,21 +27,21 @@ import { useSelector } from "react-redux";
 import WatchTrailers from "./components/content/watch-trailers";
 import SearchPage from "./pages/search-page";
 import Navbar from "../src/layouts/nav";
-import HeaderLandingPage from "../src/layouts/header-landing-page";
+
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const {user} = useSelector((state: RootState) => state.auth);
 
   return (
     <Router>
-      {user === null ? <HeaderLandingPage /> : <Navbar />}
+      {user === null || user?.subscription === "NOT_PAID" ? null : <Navbar />}
       <Routes>
-        {user === null ? (
+        {user === null || user?.subscription === "NOT_PAID" ? (
           <>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* <Route
+            <Route
               path="/signup/regform"
               element={
                 <SignUpPageForm
@@ -50,9 +50,10 @@ const App: React.FC = () => {
                   }}
                 />
               }
-            /> */}
-            <Route path="/signup" element={<SignupFlow />} />
-
+            />
+            <Route path="/signup/*" element={<SignupFlow />} />
+            <Route path="/choose-payment" element={<SignupFlow initialStep={4} />}/>
+            
             <Route path="/purchase-success" element={<PurchaseSuccess />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

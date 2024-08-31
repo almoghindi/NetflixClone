@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { VideoResponse } from "../../types/video";
 import ReactPlayer from "react-player";
 

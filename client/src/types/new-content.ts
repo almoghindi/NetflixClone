@@ -14,12 +14,14 @@ export interface NewContent {
     overview: string;
     popularity: number;
     poster_path: string;
-    release_date: string;
-    title: string;
     video: boolean;
     vote_average: number;
     vote_count: number;
-    name: string;
+    title?: string; // Optional, since TV shows have `name` instead
+    name?: string;  // Optional, since movies have `title` instead
+    first_air_date?: string; // Only for TV shows
+    release_date?: string; // Only for movies
+    origin_country?: string[]; // Only for TV shows
   };
 }
 

@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-enum SubscriptionType {
-  BASIC = "BASIC",
-  STANDART = "STANDART",
-  PREMIUM = "PREMIUM",
-}
-
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -22,6 +16,7 @@ const UserSchema = new mongoose.Schema({
   subscription: {
     type: String,
     required: true,
+    default: "NOT_PAID",
   },
 });
 

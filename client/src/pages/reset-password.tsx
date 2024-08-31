@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { sendRequest } from "../hooks/use-request";
@@ -31,7 +31,7 @@ const ResetPasswordPage = () => {
     }
     try {
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/reset-password-link",
         method: "POST",
         body: {

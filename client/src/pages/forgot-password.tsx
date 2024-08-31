@@ -27,7 +27,7 @@ const ForgotPasswordPage: React.FC = () => {
     try {
       if (selectedOption === "email") {
         await sendRequest({
-          port: 8000,
+          port: 3001,
           url: "/api/auth/reset-password",
           method: "POST",
           body: {

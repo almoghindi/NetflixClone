@@ -246,47 +246,47 @@ export const getTvShows = async (
   }
 };
 
-export const getByID = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-  console.log(`${id} - THIS IS THE ID`);
+// export const getByID = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { id } = req.params;
+//   console.log(`${id} - THIS IS THE ID`);
 
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/videos`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-        },
-      }
-    );
+//   try {
+//     const response = await fetch(
+//       `https://api.themoviedb.org/3/movie/${id}/videos`,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+//         },
+//       }
+//     );
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    const trailers = data.results.filter(
-      (video: { type: string; site: string }) =>
-        video.type === "Trailer" && video.site === "YouTube"
-    );
+//     const trailers = data.results.filter(
+//       (video: { type: string; site: string }) =>
+//         video.type === "Trailer" && video.site === "YouTube"
+//     );
 
-    if (trailers.length > 0) {
-      const trailerUrl = `https://www.youtube.com/watch?v=${trailers[0].key}`;
-      console.log("Trailer URL:", trailerUrl);
+//     if (trailers.length > 0) {
+//       const trailerUrl = `https://www.youtube.com/watch?v=${trailers[0].key}`;
+//       console.log("Trailer URL:", trailerUrl);
 
-      // Return the trailer URL and any other relevant data
-      res.status(200).json({ trailerUrl, data: trailers[0] });
-    } else {
-      console.log("No trailer found for this movie.");
-      res.status(404).json({ message: "No trailer found for this movie." });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Internal server error" });
-  }
-};
+//       // Return the trailer URL and any other relevant data
+//       res.status(200).json({ trailerUrl, data: trailers[0] });
+//     } else {
+//       console.log("No trailer found for this movie.");
+//       res.status(404).json({ message: "No trailer found for this movie." });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ message: "Internal server error" });
+//   }
+// };
 
 export const getTrailer = async (
   req: Request,

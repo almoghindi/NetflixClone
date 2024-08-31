@@ -6,11 +6,9 @@ import ContentRows from "../components/content/contentRows";
 import {
   PlayIcon,
   InformationCircleIcon,
-  StarIcon,
 } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
-import VideoPlayer from "../components/video-test";
 import { useNavigate } from "react-router-dom";
 
 enum filters {
@@ -21,13 +19,13 @@ enum filters {
 }
 
 const Movies = () => {
-  const [content, setContent] = useState<NewContent>();
+  const [, setContent] = useState<NewContent>();
   const navigate = useNavigate();
 
   const getTop10Content = async (): Promise<void> => {
     try {
       const data = await sendRequest({
-        port: 8080,
+        port: 3003,
         url: "/api/trending/movie",
         method: "GET",
       });
@@ -61,7 +59,7 @@ const Movies = () => {
         overflow: "hidden"
         }}
         className="z-60 -mt-36 sm:-mt-50  ">
-          {<Video movieId={"1241674"} />}
+          {<Video movieId={1241674} />}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">

@@ -3,7 +3,7 @@ import app from "./app";
 import { kafkaWrapper } from "./kafka-wrapper";
 import { UserRegisteredConsumer } from "./events/consumers/user-registered-consumer";
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3002;
 
 const start = async () => {
   if (!process.env.KAFKA_BROKER) {

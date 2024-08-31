@@ -27,22 +27,23 @@ export class AuthController {
     }
   }
 
-  static async logout(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { userId } = req.body;
-      console.log("UserId is" + userId);
+    static async logout(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.body;
+            console.log("UserId is"+userId);
 
-      if (!userId) {
-        return res
-          .status(400)
-          .json({ message: "User ID is required in the request body!" });
-      }
-      await AuthService.logout(userId);
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
+            if (!userId){
+                return res.status(400).json({ message: 'User ID is required in the request body!' });
+            }
+            
+            await AuthService.logout(userId);
+            res.sendStatus(204);
+        }
+        catch (err) {
+            next(err);
+        }
     }
-  }
+  
   static async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
       const { refreshToken } = req.body;
