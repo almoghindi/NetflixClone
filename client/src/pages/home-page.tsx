@@ -56,6 +56,7 @@ const HomePage = () => {
               url: "top_rated/movie",
               title: "Top 10 Movies in Israel Today",
             }}
+            
           />
           <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
           <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />

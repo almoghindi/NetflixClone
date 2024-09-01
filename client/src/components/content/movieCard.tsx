@@ -36,7 +36,7 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
   const dispatch: AppDispatch = useDispatch();
 
   // Determine if the movie is already in the list
-  const isAddedToMyList = useSelector((state: RootState) => selectIsMovieInList(state.myList, movie.id as number));
+  // const isAddedToMyList = useSelector((state: RootState) => selectIsMovieInList(state.myList, movie.id as number));
 
   // const handleAddOrRemoveMovie = () => {
   //   if (isAddedToMyList) {
@@ -48,7 +48,7 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
 
   const handlePlay = () => {
     console.log(movie.id)
-    navigate(`/watch/${movie.id}`);
+    navigate(`/watch/${movie.id}/${movie.media_type || "movie"}`);
   };
 
   return (
@@ -61,7 +61,8 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
     >
       <img
         className="cursor-pointer object-cover transition duration shadow-md rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 w-full h-full"
-        src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+        onClick={handlePlay}
         alt={movie.name  } 
       />
 
@@ -69,6 +70,7 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
         <img
           className="cursor-pointer object-cover duration shadow-xl rounded-t-md w-full h-[12vw]"
           src={`https://image.tmdb.org/t/p/original${movie.poster_path }`}
+          onClick={handlePlay}
           alt={movie.name}
         />
         <div className="z-10 bg-zinc-800 p-2 lg:p-3 absolute w-full transition shadow-md rounded-b-md">
@@ -79,7 +81,7 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
             >
               <PlayIcon width={16} height={20} />
             </div>
-            {isAddedToMyList ? (
+            {/* {isAddedToMyList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
                 // onClick={handleAddOrRemoveMovie}
@@ -93,12 +95,12 @@ const MovieCard : React.FC<MovieCardProps> = ({ movie }) => {
                 width={30}
                 height={30}
               />
-            )}
+            )} */}
             <div className="text-white cursor-pointer w-7 h-7 border-2 border-white rounded-full flex justify-center items-center transition hover:bg-neutral-500">
               <HandThumbUpIcon width={20} height={20} onClick={() => {}} />
             </div>
           </div>
-          <div className="text-white mb-0">{movie.name}</div>
+          <div className="text-white mb-0">{movie.name || movie.original_title}</div>
           <div className="flex flex-row mt-0 gap-2 items-center">
             <p className="text-white text-[8px] lg:text-xs">
               {movie.genre_ids.map((genre: number, index: React.Key) => (

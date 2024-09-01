@@ -5,6 +5,7 @@ import { plans as fetchPlans, Plan } from "../../utils/plans";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { setUser } from "../../store/slices/authSlice";
+import { encryptObject } from "../../utils/encription";
 
 interface CheckoutFormProps {
   selectedPlan: string;
@@ -48,19 +49,21 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ selectedPlan, setStep }) =>
     if (error) {
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message!);
-      } else {
-        setMessage("An unexpected error occurred.");
+        } else {
+          setMessage("An unexpected error occurred.");
+        }
       }
-    }
 
-    if (paymentIntent && paymentIntent.status === "succeeded") {
-      if (!user || !user.subscription) {
-        return;
+      if (paymentIntent && paymentIntent.status === "succeeded") {
+        if (!user || !user.subscription) {
+          return;
       }
+
       dispatch(setUser({ ...user, subscription: selectedPlan }));
-      setMessage("Payment status " + paymentIntent.status);
-    }
-
+      const encryptedResponse: string | null = encryptObject({...user, subscription: selectedPlan});
+      localStorage.setItem("user", encryptedResponse as string);
+        setMessage("Payment status " + paymentIntent.status);
+      }
     setIsProcessing(false);
   };
 

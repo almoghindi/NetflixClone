@@ -33,8 +33,11 @@ const ContentRows = ({ filter }: { filter: filter }) => {
         port: 3003,
       });
 
-
-      if (filter.url === "trending/all" || filter.url === "tv" || filter.url === "trending/tv") {
+      if (
+        filter.url === "trending/all" ||
+        filter.url === "tv" ||
+        filter.url === "trending/tv"
+      ) {
         if (Array.isArray(data.content)) {
           setContent(data.content);
         } else {
@@ -71,16 +74,16 @@ const ContentRows = ({ filter }: { filter: filter }) => {
 
   return (
     <div className="px-4 md:px-12 mt-4 space-y-8">
-      <p className="text-white text-xl md:text:xl lg-text-2xl xl:text-3xl font-semibold mb-4">
+      <p className="text-white text-xl md:text:xl lg:text-2xl xl:text-3xl font-semibold mb-4">
         {filter.title}
       </p>
-      <div>
+      <div className="relative">
         <ChevronLeftIcon
-          className="w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100"
+          className="w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
           onClick={() => slideLeft(`slider-${filter.url}`)}
         />
         <ChevronRightIcon
-          className="w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100"
+          className="w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
           onClick={() => slideRight(`slider-${filter.url}`)}
         />
       </div>
