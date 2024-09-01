@@ -48,3 +48,7 @@ recommendations are powered by Groq, processing user activity in real-time to de
 #### Profiles
 ![image](https://github.com/user-attachments/assets/72884783-788f-4bd5-bd90-869898734671)
 
+#### Tv Shows
+![image](https://github.com/user-attachments/assets/18afa5de-76ce-4c1b-a105-20d62550dff9)
+
+
