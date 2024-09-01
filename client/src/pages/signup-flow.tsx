@@ -7,8 +7,12 @@ import Payment from "../components/payment/payment";
 import ChoosePayment from "../components/signup/choose-payment";
 import PayPalSetup from "../components/payment/paypal-payment";
 
-const SignupFlow: React.FC = () => {
-  const [step, setStep] = useState(1);
+interface SignupFlowProps {
+  initialStep?: number;
+}
+
+const SignupFlow: React.FC<SignupFlowProps> = ({ initialStep = 1 }) => {
+  const [step, setStep] = useState(initialStep);
   const [selectedPlan, setSelectedPlan] = useState("10341"); // Default to Premium
   const [price, setPrice] = useState("20"); // Default to Premium
   const [paymentMethod, setPaymentMethod] = useState("");

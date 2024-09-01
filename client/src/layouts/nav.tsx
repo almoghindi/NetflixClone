@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import netflixLogo from "../assets/img/Netflix_assests/Netflix_Logo_CMYK.png";
 import NavProfile from "./nav-profie";
 import NavMobile from "./navMobile";
@@ -20,8 +20,6 @@ import { PopoverGroup } from "@headlessui/react";
 </svg>;
 
 export default function Navbar() {
-  const navigate = useNavigate();
-
   return (
     <header
       // onScroll={handleScroll}

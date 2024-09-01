@@ -1,4 +1,4 @@
-import { Router, raw } from "express";
+import { Router } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { webhookEvent } from "../controllers/webhook-controller";
 const router: Router = Router();

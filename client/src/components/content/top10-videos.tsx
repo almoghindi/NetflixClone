@@ -9,12 +9,15 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
 
   const showMovies = async (): Promise<void> => {
     try {
+      console.log(filter);
       const data = await sendRequest({
-        url: `/api/${filter.url}`,
+        url: `/redis/${filter.url}`,
         method: "GET",
         port: 3003,
       });
-      setMovies(data.content.slice(0, 10)); // Ensure we only get top 10
+
+      console.log(data);
+      setMovies(data.content.results.slice(0, 10)); // Ensure we only get top 10
     } catch (error) {
       new Error(error instanceof Error ? error.message : "An error occurred");
     }

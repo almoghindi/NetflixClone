@@ -1,17 +1,35 @@
+import React, { useState, useEffect } from "react";
 import { PaymentElement } from "@stripe/react-stripe-js";
-import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
-import { plans } from "../../utils/plans";
+import { plans as fetchPlans, Plan } from "../../utils/plans";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { setUser } from "../../store/slices/authSlice";
+import { encryptObject } from "../../utils/encription";
 
-interface CheckoutForm {
+interface CheckoutFormProps {
   selectedPlan: string;
   setStep: (step: number) => void;
 }
-const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
+
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ selectedPlan, setStep }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  useEffect(() => {
+    const fetchPlansData = async () => {
+      const plansData = await fetchPlans(); // Await the async function
+      setPlans(plansData); // Store the fetched plans in state
+    };
+
+    fetchPlansData(); // Trigger the fetch when the component mounts
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,23 +41,33 @@ const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
         return_url: `${window.location.origin}/`,
       },
       redirect: "if_required",
     });
+
     if (error) {
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message!);
-      } else {
-        setMessage("An unexpected error occured.");
+        } else {
+          setMessage("An unexpected error occurred.");
+        }
       }
-    }
-    if (paymentIntent && paymentIntent.status === "succeeded") {
-      setMessage("Payment status " + paymentIntent.status);
-    }
+
+      if (paymentIntent && paymentIntent.status === "succeeded") {
+        if (!user || !user.subscription) {
+          return;
+      }
+
+      dispatch(setUser({ ...user, subscription: selectedPlan }));
+      const encryptedResponse: string | null = encryptObject({...user, subscription: selectedPlan});
+      localStorage.setItem("user", encryptedResponse as string);
+        setMessage("Payment status " + paymentIntent.status);
+      }
     setIsProcessing(false);
   };
+
+  const selectedPlanDetails = plans.find((p) => p.type === selectedPlan);
 
   return (
     <form
@@ -60,8 +88,7 @@ const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
       </div>
 
       <div className="text-center text-lg font-medium mb-6">
-        {plans.find((p) => p.type === selectedPlan)?.price}
-        /month
+        {selectedPlanDetails?.price}/month
         <a onClick={() => setStep(4)} className="ml-2 text-blue-600">
           Change
         </a>
@@ -95,4 +122,5 @@ const CheckoutForm: React.FC<CheckoutForm> = ({ selectedPlan, setStep }) => {
     </form>
   );
 };
+
 export default CheckoutForm;

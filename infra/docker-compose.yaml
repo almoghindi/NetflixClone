@@ -1,53 +1,57 @@
 version: "3.8"
 services:
-  auth-service:
-    build:
-      context: ../auth
-    ports:
-      - "3001:3001"
-    depends_on:
-      - auth-mongodb
-    environment:
-      MONGO_URI: mongodb://auth-mongodb:27017/authdb
+  # auth-service:
+  #   build:
+  #     context: ../auth
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - auth-mongodb
+  #     - kafka
+  #   environment:
+  #     MONGO_URI: mongodb://auth-mongodb:27017/auth
+  #     KAFKA_BROKER: kafka:9092
+  #     KAFKA_CLIENT_ID: auth
 
-  accounts-service:
-    build:
-      context: ../accounts
-    ports:
-      - "3002:3002"
-    depends_on:
-      - mysql
-    environment:
-      PORT: 3002
-      DB_HOST: mysql
-      DB_USER: netflix
-      DB_PASSWORD: api
-      DB_NAME: netflix_accounts
-      DB_PORT: 3306
+  #   accounts-service:
+  #     build:
+  #       context: ../accounts
+  #     ports:
+  #       - "3002:3002"
+  #     depends_on:
+  #       - mysql
+  #     environment:
+  #       PORT: 3002
+  #       DB_HOST: mysql
+  #       DB_USER: netflix
+  #       DB_PASSWORD: api
+  #       DB_NAME: netflix_accounts
+  #       DB_PORT: 3306
 
-  content-service:
-    build:
-      context: ../content
-    ports:
-      - "3003:3003"
-    depends_on:
-      - content-mongodb
-    environment:
-      MONGO_URI: mongodb://content-mongodb:27018/contentdb
+  #   content-service:
+  #     build:
+  #       context: ../content
+  #     ports:
+  #       - "3003:3003"
+  #     depends_on:
+  #       - content-mongodb
+  #       - redis
+  #     environment:
+  #       MONGO_URI: mongodb://content-mongodb:27018/contentdb
 
-  auth-mongodb:
-    container_name: auth_mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - "27017:27017"
+  # auth-mongodb:
+  #   container_name: auth_mongodb_container
+  #   image: mongo:latest
+  #   restart: always
+  #   ports:
+  #     - "27017:27017"
 
-  content-mongodb:
-    container_name: content_mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - "27018:27017"
+  #   content-mongodb:
+  #     container_name: content_mongodb_container
+  #     image: mongo:latest
+  #     restart: always
+  #     ports:
+  #       - "27018:27017"
 
   mysql:
     container_name: mysql_container
@@ -59,30 +63,34 @@ services:
       MYSQL_USER: netflix
       MYSQL_PASSWORD: api
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
-  client:
-    build:
-      context: ../client
-    ports:
-      - "80:80"
+  # client:
+  #   build:
+  #     context: ../client
+  #   ports:
+  #     - "5173:5173"
 
   zookeeper:
     image: bitnami/zookeeper:latest
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: "yes"
     ports:
       - "2181:2181"
-
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
     image: bitnami/kafka:latest
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      ALLOW_PLAINTEXT_LISTENER: "yes"
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+    depends_on:
+      - zookeeper
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+

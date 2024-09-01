@@ -16,7 +16,7 @@ import SearchBar from "./searchBar";
 const NavProfile = () => {
   const profileDropDown = [
     {
-      name: "Mange Profile",
+      name: "Manage Profile",
 
       href: "../profiles/manage",
       icon: PencilIcon,
@@ -24,13 +24,13 @@ const NavProfile = () => {
     {
       name: "Transfer Account",
 
-      href: "#",
+      href: "../profiles",
       icon: ArrowPathRoundedSquareIcon,
     },
     {
       name: "Account",
 
-      href: "#",
+      href: "../profiles",
       icon: UserIcon,
     },
   ];

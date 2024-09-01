@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { sendRequest } from "../hooks/use-request";

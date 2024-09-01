@@ -6,22 +6,18 @@ const NavMobile = () => {
   const profileDropDown = [
     {
       name: "Home",
-
       href: "/home",
     },
     {
       name: "TV Shows",
-
       href: "/tv",
     },
     {
       name: "New",
-
       href: "/new",
     },
     {
       name: "My List",
-
       href: "/mylist",
     },
   ];
@@ -57,14 +53,7 @@ const NavMobile = () => {
                     to={item.href}
                     className="block px-4 py-2 text-sm text-white"
                   >
-                    <div className="flex  ">
-                      <div className="mr-2">
-                        {item.icon && (
-                          <item.icon aria-hidden="true" width={22} />
-                        )}
-                      </div>
-                      {item.name}
-                    </div>
+                    <div className="flex">{item.name}</div>
                   </Link>
                 </MenuItem>
               </div>

@@ -52,10 +52,6 @@ export const validateRegisterBody = [
       .notEmpty().withMessage('User ID is required')
       .isString().withMessage('User ID must be a string'),
   
-    check('refreshToken')
-      .notEmpty().withMessage('Refresh Token is required')
-      .isString().withMessage('Refresh Token must be a string'),
-  
     (req: Request, res: Response, next: NextFunction) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

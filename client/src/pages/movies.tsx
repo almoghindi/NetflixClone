@@ -6,11 +6,9 @@ import ContentRows from "../components/content/contentRows";
 import {
   PlayIcon,
   InformationCircleIcon,
-  StarIcon,
 } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
-import VideoPlayer from "../components/video-test";
 import { useNavigate } from "react-router-dom";
 
 enum filters {
@@ -21,7 +19,7 @@ enum filters {
 }
 
 const Movies = () => {
-  const [content, setContent] = useState<NewContent>();
+  const [, setContent] = useState<NewContent>();
   const navigate = useNavigate();
 
   const getTop10Content = async (): Promise<void> => {
@@ -51,17 +49,15 @@ const Movies = () => {
     <>
       <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
-        <div
-          style={{
-            transform: "scale(1.5)", // This scales the player by 130%
-            transformOrigin: "center", // Keeps the scaling centered
-            width: "100%",
-            height: "80vh",
-            overflow: "hidden",
-          }}
-          className="z-60 -mt-36 sm:-mt-50  "
-        >
-          {<Video movieId={"1241674"} />}
+        <div style={{
+        transform: "scale(1.5)",  // This scales the player by 130%
+        transformOrigin: "center", // Keeps the scaling centered
+        width: "100%",
+        height: "80vh",
+        overflow: "hidden"
+        }}
+        className="z-60 -mt-36 sm:-mt-50  ">
+          {<Video movieId={"1241674"} type={"movie"} />}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">
