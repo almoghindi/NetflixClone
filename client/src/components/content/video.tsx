@@ -23,7 +23,7 @@ const Video: React.FC<VideoProps> = ({ movieId, type }) => {
   }, [movieId, type]);
 
   return (
-    <div className="z-60">
+    <div className="z-60 ">
       {trailer && (
         <ReactPlayer
           url={trailer}

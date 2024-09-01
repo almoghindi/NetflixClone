@@ -34,7 +34,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
           </div>
         </div>
         <div className="mt-4">
-          <Video movieId={movie.id}/>
+          <Video movieId={movie.id?.toString() || ''} type='movie'/>
         </div>
       </div>
     </div>

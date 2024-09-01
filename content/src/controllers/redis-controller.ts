@@ -203,3 +203,31 @@ export const getTvShows = async (
     res.status(500).send({ message: "Internal server error" });
   }
 };
+
+
+
+export const getTvShowDetails = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const cacheKey = `tv:details:${id}`;
+
+  try {
+    const data = await getCachedOrFetch(cacheKey, () => fetch(`/tv/${id}?language=en-US`));
+    res.status(200).send({ content: data });
+  } catch (error) {
+    console.error("Error fetching TV show details:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+export const getTvShowVideos = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const cacheKey = `tv:videos:${id}`;
+
+  try {
+    const data = await getCachedOrFetch(cacheKey, () => fetch(`/tv/${id}/videos?language=en-US`));
+    res.status(200).send({ content: data });
+  } catch (error) {
+    console.error("Error fetching TV show videos:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};

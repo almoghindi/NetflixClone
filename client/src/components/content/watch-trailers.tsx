@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { getTrailer } from "../../utils/trailerUtils";
+import WatchEpisode from "./watch-expisode";
 
 const WatchTrailers = () => {
-  const { movieId } = useParams<{ movieId: string }>();
+  const { movieId, type} = useParams<{ movieId: string , type: string}>();
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTrailer = async () => {
       if (movieId) {
-        const trailer = await getTrailer(movieId);
+        const trailer = await getTrailer(movieId,type as string);
         setTrailerUrl(trailer);
       }
     };
@@ -19,7 +20,9 @@ const WatchTrailers = () => {
   }, [movieId]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-black">
+    <>
+    
+    <div className="flex justify-center items-center h-min-screen bg-black">
       {trailerUrl ? (
         <ReactPlayer
           url={trailerUrl}
@@ -34,6 +37,12 @@ const WatchTrailers = () => {
         <p className="text-white text-xl">Loading trailer...</p>
       )}
     </div>
+    <div>
+    {type === 'tv' && movieId ? (
+          <WatchEpisode movieId={movieId} />
+        ) : null}
+    </div>
+    </>
   );
 };
 
