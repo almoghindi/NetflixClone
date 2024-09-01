@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Define TypeScript interfaces
 interface MovieContent {
   id: number;
   adult: boolean;
@@ -16,8 +17,8 @@ interface MovieContent {
   video: boolean;
   vote_average: number;
   vote_count: number;
-  name: string;
 }
+
 interface TVShowContent {
   backdrop_path: string;
   id: number;
@@ -38,17 +39,21 @@ interface TVShowContent {
 
 interface LikedContentAttrs {
   userId: string;
-  contentData: MovieContent;
+  contentType: "Movie" | "TvShow";
+  contentData: MovieContent | TVShowContent;
 }
 
 interface LikedContentDoc extends mongoose.Document {
   userId: string;
-  contentData: MovieContent;
+  contentType: "Movie" | "TvShow";
+  contentData: MovieContent | TVShowContent;
 }
 
 interface LikedContentModel extends mongoose.Model<LikedContentDoc> {
   build(attrs: LikedContentAttrs): LikedContentDoc;
 }
+
+// Define schemas
 const MovieContentSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   adult: { type: Boolean, required: true },
@@ -65,8 +70,8 @@ const MovieContentSchema = new mongoose.Schema({
   video: { type: Boolean, required: true },
   vote_average: { type: Number, required: true },
   vote_count: { type: Number, required: true },
-  name: { type: String, required: true },
 });
+
 const TVShowContentSchema = new mongoose.Schema({
   backdrop_path: { type: String, required: true },
   id: { type: Number, required: true },
@@ -85,14 +90,20 @@ const TVShowContentSchema = new mongoose.Schema({
   origin_country: { type: [String], required: true },
 });
 
+// LikedContent schema with discriminators
 const LikedContentSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
       required: true,
     },
+    contentType: {
+      type: String,
+      require: true,
+      enum: ["Movie", "TvShow"],
+    },
     contentData: {
-      type: MovieContentSchema || TVShowContentSchema,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
   },
@@ -105,12 +116,16 @@ const LikedContentSchema = new mongoose.Schema(
     },
   }
 );
+
+// Static method for building documents
 LikedContentSchema.statics.build = (attrs: LikedContentAttrs) => {
   return new LikedContent(attrs);
 };
 
+// Create model with discriminators
 const LikedContent = mongoose.model<LikedContentDoc, LikedContentModel>(
   "LikedContent",
   LikedContentSchema
 );
+
 export { LikedContent, MovieContent, TVShowContent };

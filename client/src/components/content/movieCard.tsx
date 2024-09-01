@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { NewContent } from "../../types/new-content";
+import { sendRequest } from "../../hooks/use-request";
+
 import {
   PlayIcon,
   MinusCircleIcon,
@@ -57,6 +59,18 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
     console.log(movie.id);
     navigate(`/watch/${movie.id}`);
   };
+  const id = useSelector((state: RootState) => state.auth.user!.id);
+  const handleLiked = async () => {
+    await sendRequest({
+      port: 3006,
+      url: "/api/add-liked-content",
+      method: "POST",
+      body: {
+        userId: id,
+        Content: movie,
+      },
+    });
+  };
 
   return (
     <div
@@ -102,7 +116,7 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
               />
             )}
             <div className="text-white cursor-pointer w-7 h-7 border-2 border-white rounded-full flex justify-center items-center transition hover:bg-neutral-500">
-              <HandThumbUpIcon width={20} height={20} onClick={() => {}} />
+              <HandThumbUpIcon width={20} height={20} onClick={handleLiked} />
             </div>
           </div>
           <div className="text-white mb-0">{movie.title || movie.name}</div>

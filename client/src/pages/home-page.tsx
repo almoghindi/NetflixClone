@@ -4,6 +4,7 @@ import Video from "../components/content/video";
 import Navbar from "../layouts/nav";
 import { useNavigate } from "react-router-dom";
 import Top10Videos from "../components/content/top10-videos";
+import RecommendedRow from "../components/content/recommended-Row";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const HomePage = () => {
           />
           <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
           <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
+          <RecommendedRow />
         </div>
       </div>
     </>
