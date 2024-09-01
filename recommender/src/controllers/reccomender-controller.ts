@@ -24,10 +24,32 @@ export default class RecommenderController {
 
     res.send(likedContent);
   }
+  static async RemoveLikedContent(req: Request, res: Response) {
+    const { Content, userId } = req.body;
+    const likedContent = LikedContent.find({
+      userId: userId,
+      contentData: Content,
+    });
+
+    await likedContent.deleteOne();
+    res.status(200).send({ message: "remove successful" });
+  }
+  static async getLikedContent(req: Request, res: Response) {
+    const userId = req.params.id;
+    const likedContent = await LikedContent.find({
+      userId: userId,
+    });
+    const likedMovies = likedContent.filter(
+      (content) => content.contentType === "Movie"
+    );
+    const likedTvShows = likedContent.filter(
+      (content) => content.contentType === "TvShow"
+    );
+    res.send({ movies: likedMovies, tvShows: likedTvShows });
+  }
   static async getRecommendetions(req: Request, res: Response) {
     try {
-      const { userId } = req.body;
-      console.log("userId:" + userId);
+      const userId = req.params.id;
       const LikedItems = await LikedContent.find({ userId: userId })
         .sort({ createdAt: -1 })
         .limit(10);
@@ -133,7 +155,6 @@ export default class RecommenderController {
         model: "llama3-8b-8192",
       });
       const groqAIResponse = response.choices[0]?.message?.content;
-      console.log(groqAIResponse);
       if (groqAIResponse) {
         // Extract IDs from the response
         const recommendedItems = groqAIResponse
@@ -154,8 +175,6 @@ export default class RecommenderController {
             (item): item is { id: number; name: string } => item !== null
           );
 
-        console.log(`Recommended items from AI: ${recommendedItems.length}`);
-
         // Find full data for recommended items
         const recommendedMovies = Movies.filter((movie) =>
           recommendedItems.some((item) => item.id === movie.id)
@@ -163,9 +182,6 @@ export default class RecommenderController {
         const recommendedTvShows = TvShows.filter((tvShow) =>
           recommendedItems.some((item) => item.id === tvShow.id)
         );
-
-        console.log(`Found movies: ${recommendedMovies.length}`);
-        console.log(`Found TV shows: ${recommendedTvShows.length}`);
 
         // Create a map of all recommended items
         const allRecommendedMap = new Map<
@@ -185,7 +201,6 @@ export default class RecommenderController {
           if (fullItem) {
             return fullItem;
           } else {
-            console.log(item);
             const isMovie = Movies.find((moive) => moive.title === item.name);
 
             if (isMovie) return isMovie;
@@ -198,8 +213,6 @@ export default class RecommenderController {
           }
         });
 
-        console.log(`Final recommendations: ${finalRecommendations.length}`);
-
         // Separate the final recommendations into movies and TV shows
         const contentObject = {
           movies: finalRecommendations.filter(
@@ -209,9 +222,6 @@ export default class RecommenderController {
             (item) => item?.media_type === "tv"
           ),
         };
-
-        console.log(`Final movies: ${contentObject.movies.length}`);
-        console.log(`Final TV shows: ${contentObject.tvShows.length}`);
         // Send the content object back to the client
         res.json(contentObject);
       } else {

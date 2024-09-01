@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { loginSuccess } from "../store/slices/authSlice";
+import { setUser } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 import { useNavigate } from "react-router-dom";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import BackGroundLadingPage from "../assets/img/landing-page-assets/landing-page-background.jpg";
-import encryptObject from "../utils/encription";
+import { encryptObject, encryptString } from "../utils/encription";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -23,7 +23,7 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigate();
-  // const { error, isLoading } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     register,
@@ -35,24 +35,31 @@ const LoginPage: React.FC = () => {
 
   const login = async (credentials: LoginFormInputs): Promise<void> => {
     try {
-      const encryptedPassword = encryptObject(credentials.password);
+      const encryptedPassword = encryptString(credentials.password);
       const encryptedCredentials = {
         ...credentials,
         password: encryptedPassword,
       };
 
+      console.log(encryptedPassword, "PASS LOGIN");
       const response = await sendRequest({
-        port: 8000,
+        port: 3001,
         url: "/api/auth/login",
         method: "POST",
         body: encryptedCredentials,
       });
+      dispatch(setUser(response));
 
-      dispatch(loginSuccess(response));
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("userId", response.user._id);
-      navigation("/home");
+      const encryptedResponse: string | null = encryptObject(response);
+      if (encryptedResponse) {
+        localStorage.setItem("user", encryptedResponse as string);
+      }
+      if (user?.subscription === "NOT_PAID") {
+        console.log(user, "USER IN LOGIN PAGE");
+        navigation("/choose-payment");
+      } else {
+        navigation("/");
+      }
     } catch (error) {
       console.error(
         error instanceof Error ? error.message : "An error occurred"
@@ -110,13 +117,11 @@ const LoginPage: React.FC = () => {
               </div>
               <button
                 type="submit"
-                // disabled={isLoading}
                 className="w-full bg-red-600 text-white p-3 rounded font-bold hover:bg-red-700 transition duration-300"
               >
-                {/* {isLoading ? "Loading..." : "Sign In"} */}
+                {"Sign In"}
               </button>
             </form>
-            {/* {error && <p className="text-red-500 mt-4">{error}</p>}  */}
             <div
               onClick={() => navigation("/forgot-password")}
               className="hover:text-gray-300 cursor-pointer mt-5 text-sm text-medium text-white hover:underline flex items-center justify-center"
@@ -133,7 +138,7 @@ const LoginPage: React.FC = () => {
               New to Netflix?{" "}
               <button
                 type="button"
-                onClick={() => navigation("/signup/regform")}
+                onClick={() => navigation("/signup")}
                 className="text-white hover:underline"
               >
                 Sign up now

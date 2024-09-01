@@ -1,6 +1,8 @@
 import { Request, Response, text } from "express";
 import { plans, stripe } from "../stripe";
 import Stripe from "stripe";
+import { ChangeSubscriptionProducer } from "../events/producers/change-subscription-producer";
+import { kafkaWrapper } from "../kafka-wrapper";
 
 export const createSubscription = async (req: Request, res: Response) => {
   const { plan, userId } = req.body;
@@ -30,6 +32,12 @@ export const createSubscription = async (req: Request, res: Response) => {
   const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
   const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
   const clientSecret = paymentIntent.client_secret;
+
+  await new ChangeSubscriptionProducer(kafkaWrapper.client).produce({
+    id: userId,
+    subscription: plan,
+  });
+
   res.send({
     subscriptionId: subscription.id,
     clientSecret: clientSecret,

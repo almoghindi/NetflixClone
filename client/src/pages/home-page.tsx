@@ -5,17 +5,37 @@ import Navbar from "../layouts/nav";
 import { useNavigate } from "react-router-dom";
 import Top10Videos from "../components/content/top10-videos";
 import RecommendedRow from "../components/content/recommended-Row";
+import { useEffect } from "react";
+import { sendRequest } from "../hooks/use-request";
+import { setLikedContent } from "../store/slices/liked-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = useSelector((state: RootState) => state.auth.user?.userId);
 
   function handlePlayMainVideoClick(): void {
     navigate(`/main-movie/play`);
   }
+  useEffect(() => {
+    const LoadLikedContent = async () => {
+      const LikedContentResponse = await sendRequest({
+        port: 3006,
+        url: `/api/get-liked-content/${userId}`,
+        method: "GET",
+      });
+      if (LikedContentResponse) {
+        console.log(LikedContentResponse);
+        dispatch(setLikedContent(LikedContentResponse));
+      } else console.log("not found likedContent");
+    };
+    LoadLikedContent();
+  }, [dispatch, userId]);
 
   return (
     <>
-      <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div
           style={{
@@ -28,7 +48,8 @@ const HomePage = () => {
           }}
           className="z-60 -mt-36 sm:-mt-50  "
         >
-          {<Video movieId={"1241674"} />} // TODO: This is The Last Breath Movie
+          {<Video movieId={"1241674"} type={"movie"} />} // TODO: This is The
+          Last Breath Movie
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">
@@ -52,6 +73,7 @@ const HomePage = () => {
           <ContentRows
             filter={{ url: "trending/all", title: "Trending Now" }}
           />
+          ``
           <Top10Videos
             filter={{
               url: "top_rated/movie",

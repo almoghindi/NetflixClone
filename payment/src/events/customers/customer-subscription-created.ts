@@ -30,6 +30,8 @@ export const subscriptionCreatedEvent = async (
       subscription: plan.type,
     });
 
+    
+
     await user.save();
     
   } else {

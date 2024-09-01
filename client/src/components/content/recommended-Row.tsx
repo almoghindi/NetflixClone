@@ -10,19 +10,16 @@ import { RootState } from "../../store/store";
 const RecommendedRow: React.FC = () => {
   const [movies, setMovies] = useState<NewContent[]>([]);
 
-  const userId = useSelector((state: RootState) => state.auth.user!.id);
+  const userId = useSelector((state: RootState) => state.auth.user!.userId)!;
   console.log(userId);
   useEffect(() => {
     const getRecommended = async (): Promise<void> => {
       try {
         console.log(userId + "  2");
         const data = await sendRequest({
-          url: `/api/recommendations`,
+          url: `/api/recommendations/${userId}`,
           method: "GET",
           port: 3006,
-          body: {
-            userId: userId,
-          },
         });
         console.log([...data.movies, ...data.tvShows]);
         setMovies([...data.movies, ...data.tvShows]);
