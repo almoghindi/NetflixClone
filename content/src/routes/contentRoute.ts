@@ -19,6 +19,7 @@ const contentRouter = Router();
 
 
 contentRouter.get("/trending/all", getAllContentByCategory);
+contentRouter.get("/tvshows", getTvShows);
 contentRouter.get("/trending/:type", getTrendingContent);
 contentRouter.get("/:id/trailers/:type", getContentTrailers);
 contentRouter.get("/:id/details/:type", getContentDetails);
@@ -29,6 +30,5 @@ contentRouter.get("/genre/:genre", getContentByGenre);
 contentRouter.get("/movies/:movieId/trailer", getTrailer);
 contentRouter.get("/tvshows", getTvShows);
 //contentRouter.get("/:id", getByID);
-
 
 export default contentRouter;

@@ -53,7 +53,7 @@ const App: React.FC = () => {
             />
             <Route path="/signup/*" element={<SignupFlow />} />
             <Route path="/choose-payment" element={<SignupFlow initialStep={4} />}/>
-            
+            <Route path="/signup" element={<SignupFlow />} />
             <Route path="/purchase-success" element={<PurchaseSuccess />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

@@ -8,7 +8,7 @@ import MovieCard from "../components/content/movieCard";
 const SearchPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get("query") || "";
+  const query = queryParams.get("q") || "";
   const [content, setContent] = useState<NewContent[]>([]);
 
   useEffect(() => {

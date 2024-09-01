@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import ContentRows from '../components/content/contentRows';
-import { sendRequest } from '../hooks/use-request';
-import { NewContent } from '../types/new-content';
-import { InformationCircleIcon, PlayIcon } from '@heroicons/react/24/outline';
-import Video from '../components/content/video';
-import Navbar from '../layouts/nav';
+import React, { useEffect, useState } from "react";
+import ContentRows from "../components/content/contentRows";
+import { sendRequest } from "../hooks/use-request";
+import { NewContent } from "../types/new-content";
+import { InformationCircleIcon, PlayIcon } from "@heroicons/react/24/outline";
+import Video from "../components/content/video";
+import Navbar from "../layouts/nav";
 
 const TvShows = () => {
- //const [tvShows, setTvShows] = useState<NewContent[]>([]);
+  //const [tvShows, setTvShows] = useState<NewContent[]>([]);
   const [selectedShow, setSelectedShow] = useState<NewContent | null>(null);
 
   const getTvShows = async (): Promise<void> => {
@@ -17,13 +17,14 @@ const TvShows = () => {
         url: "/redis/tv",
         method: "GET",
       });
-      
-      const data = response.content;  
 
-      setSelectedShow(data)
+      const data = response.content;
 
+      setSelectedShow(data);
     } catch (error) {
-      console.error(error instanceof Error ? error.message : "An error occurred");
+      console.error(
+        error instanceof Error ? error.message : "An error occurred"
+      );
     }
   };
 
@@ -33,7 +34,6 @@ const TvShows = () => {
 
   const handlePlayMainVideoClick = () => {
     if (selectedShow) {
-      // Add functionality to navigate or play the selected show
       console.log("Playing:", selectedShow.title);
     }
   };
@@ -42,20 +42,24 @@ const TvShows = () => {
     <>
       <Navbar />
       <div className="z-50 -mt-36 bg-gradient-to-t from-black to-gray-900">
-        <div style={{
-            transform: "scale(1.5)", //TODO: FIX THE SIZING TO FIT THE WINDOW.
+        <div
+          style={{
+            transform: "scale(1.5)",
             transformOrigin: "center",
             width: "100%",
             height: "80vh",
             overflow: "hidden",
             opacity: "0.7",
-          }} className="z-60 -mt-36 sm:-mt-50">
-          {selectedShow && <Video movieId={selectedShow.id!.toString()} type={"tv"} />}
+          }}
+          className="z-60 -mt-36 sm:-mt-50"
+        >
+          {selectedShow && (
+            <Video movieId={selectedShow.id!.toString()} type={"tv"} />
+          )}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">
           <p className="text-white text-4xl md:text-3xl h-full w-[100%] lg:text-6xl font-bold drop-shadow-xl">
             {selectedShow?.name}
-
           </p>
           {/* <p className="text-white text-[8px] md:text-sm mt-3 md:-mt8 w-[90%] md:w-[60%] lg:w-[50%] drop-shadow-xl">
             {selectedShow?.overview}
@@ -78,13 +82,15 @@ const TvShows = () => {
           </div>
         </div>
         <div className="pb-40 mt-15">
-            <>
+          <>
             <ContentRows filter={{ url: "trending/tv", title: "Tranding" }} />
             <ContentRows filter={{ url: "popular/tv", title: "TV Shows" }} />
             <ContentRows filter={{ url: "top_rated/tv", title: "Top Rated" }} />
             <ContentRows filter={{ url: "on_the_air/tv", title: "On Air" }} />
-            <ContentRows filter={{ url: "airing_today/tv", title: "Airing Today" }} />
-            </>
+            <ContentRows
+              filter={{ url: "airing_today/tv", title: "Airing Today" }}
+            />
+          </>
         </div>
       </div>
     </>

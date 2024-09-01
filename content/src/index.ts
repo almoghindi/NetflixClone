@@ -1,5 +1,5 @@
 import app from "./app";
-import {DBConnect} from "./db/connection";
+import { DBConnect } from "./db/connection";
 
 const port = process.env.PORT || 3003;
 

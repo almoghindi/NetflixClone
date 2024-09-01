@@ -225,7 +225,7 @@ export const getTvShows = async (
 ) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/tv/popular?page=1`,
+      `https://api.themoviedb.org/3/tv/popular?page=2`,
       {
         headers: {
           "Content-Type": "application/json",

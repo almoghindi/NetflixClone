@@ -7,9 +7,8 @@ import { AppDispatch, RootState } from "../../store/store";
 import { setUser, signupSuccess } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
-import {encryptObject, encryptString} from "../../utils/encription";
+import { encryptObject, encryptString } from "../../utils/encription";
 import { Link, useNavigate } from "react-router-dom";
-
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -29,7 +28,6 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const navigation = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
 
-
   const {
     register,
     handleSubmit,
@@ -38,12 +36,13 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
     resolver: zodResolver(signUpSchema),
   });
 
-
   const signup = async (credentials: SignUpFormInputs): Promise<void> => {
     try {
-      
       const encryptedPassword = encryptString(credentials.password);
-      const encryptedCredentials = { ...credentials, password: encryptedPassword };
+      const encryptedCredentials = {
+        ...credentials,
+        password: encryptedPassword,
+      };
 
       const response = await sendRequest({
         port: 3001,
@@ -52,10 +51,10 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
         body: encryptedCredentials,
       });
       console.log(response);
-      
+
       dispatch(setUser(response));
       const encryptedResponse: string | null = encryptObject(response);
-      if (encryptedResponse){
+      if (encryptedResponse) {
         localStorage.setItem("user", encryptedResponse as string);
       }
       // if (user?.subscription === "NOT_PAID") {
@@ -84,7 +83,10 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
           <div className="container mx-auto px-4 flex justify-between items-center">
             <HeaderLandingPage />
 
-            <Link className="text-gray-600 font-semibold text-medium cursor-pointer hover:underline" to="/login">
+            <Link
+              className="text-gray-600 font-semibold text-medium cursor-pointer hover:underline"
+              to="/login"
+            >
               Sign In
             </Link>
           </div>

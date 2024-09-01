@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const { search } = useLocation();
   const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent) => {
@@ -17,7 +18,7 @@ function SearchBar() {
     if (!query) {
       return;
     }
-    navigate(`/search?query=${encodeURIComponent(query)}`);
+    navigate(`/search?q=${encodeURIComponent(query)}`);
   }, [query, navigate]);
 
   const handleIconClick = () => {
@@ -48,9 +49,9 @@ function SearchBar() {
         id="q"
         type="text"
         onChange={(e) => setQuery(e.target.value)}
-        className={`text-white bg-transparent ${
-          isOpen ? "w-60 bg-slate-800 opacity-100 z-20" : "w-0 opacity-0"
-        } transition-all duration-300 ease-in-out pl-10 pr-2 py-1 border absolute top-0 right-0 z-10`}
+        className={`text-white bg-black ${
+          isOpen ? "w-60 bg-black opacity-100 z-20" : "w-0 opacity-0"
+        } transition-all duration-300 ease-in-out pl-10 pr-2 py-1 border absolute top-0 right-0   z-10`}
         placeholder="Title, people, genres"
       />
       <MagnifyingGlassIcon
