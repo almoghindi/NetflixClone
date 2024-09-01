@@ -8,7 +8,7 @@ import {
   searchContent,
   getContentByCategory,
   getContentByGenre,
-  // getByID,
+  getByID,
   getTrailer,
   getTvShows,
 } from "../controllers/contentControler";
@@ -20,6 +20,7 @@ const contentRouter = Router();
 
 contentRouter.get("/trending/all", getAllContentByCategory);
 contentRouter.get("/tvshows", getTvShows);
+contentRouter.get("/mylist/:id/:type", getByID)
 contentRouter.get("/trending/:type", getTrendingContent);
 contentRouter.get("/:id/trailers/:type", getContentTrailers);
 contentRouter.get("/:id/details/:type", getContentDetails);

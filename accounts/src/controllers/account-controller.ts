@@ -86,22 +86,38 @@ export default getAllProfiles;
 
 const addFavoriteItemById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
-    const data = { profile_id: id, ...req.body };
+    const { id, type } = req.params;
+    const { content_id } = req.body;
 
-    console.log(data);
-    
     // Validate that the profile exists before adding an item
     const profile = await Profile.findByPk(id);
     if (!profile) {
       res.status(404).json({ message: "Profile not found" });
+      return;
     }
 
     // Validate the content ID
-    if (!req.body.content_id) {
+    if (!content_id) {
       res.status(400).json({ message: "Content ID is required" });
+      return;
     }
 
+    // Check if the item already exists
+    const existingItem = await FavoriteItem.findOne({
+      where: {
+        profile_id: id,
+        content_id: content_id,
+        type: type
+      }
+    });
+
+    if (existingItem) {
+      res.status(409).json({ message: "Favorite item already exists" });
+      return;
+    }
+
+    // If the item doesn't exist, create it
+    const data = { profile_id: id, type: type, content_id, ...req.body };
     console.log("Data to create:", data);
 
     const fav_item = await FavoriteItem.create(data);
@@ -113,6 +129,29 @@ const addFavoriteItemById = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+const deleteFavoriteItemById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Find the favorite item by ID
+    const fav_item = await FavoriteItem.findOne({
+      where: { id }
+    });
+
+    if (!fav_item) {
+      res.status(404).json({ message: "Favorite item not found" });
+      return;
+    }
+
+    // Delete the favorite item
+    await fav_item.destroy();
+
+    res.status(200).json({ message: "Favorite item deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting favorite item:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 const getFavoriteItemsById = async (
   req: Request,
@@ -125,6 +164,16 @@ const getFavoriteItemsById = async (
   
   res.status(200).json(FavoriteItems);
 };
+const deleteAllItems = async (req: Request, res: Response): Promise<void> => {
+  try {
+    await FavoriteItem.destroy({ where: {} });
+    res.status(200).json({ message: "All items deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting all items:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export {
   getAllProfiles,
   addFavoriteItemById,
@@ -132,4 +181,6 @@ export {
   getFavoriteItemsById,
   updateProfile,
   deleteProfile,
+  deleteFavoriteItemById,
+  deleteAllItems
 };
