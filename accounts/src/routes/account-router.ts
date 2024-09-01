@@ -15,7 +15,7 @@ const router: Router = Router();
 router.post("/create", expressAsyncHandler(createProfile));
 router.post("/delete", expressAsyncHandler(deleteProfile));
 router.post("/:id/:type/additem", expressAsyncHandler(addFavoriteItemById));
-router.get("/all", expressAsyncHandler(getAllProfiles));
+router.get("/all/:id", expressAsyncHandler(getAllProfiles));
 router.get("/:id/items", expressAsyncHandler(getFavoriteItemsById));
 router.put("/:id/update", expressAsyncHandler(updateProfile));
 router.delete("/:id/item/:itemId", expressAsyncHandler(deleteFavoriteItemById));

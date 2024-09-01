@@ -2,6 +2,7 @@ import Profile from "../models/profile";
 import FavoriteItem from "../models/favorite-item";
 import { Request, Response } from "express";
 import { randomBytes } from "crypto";
+import { Op } from "sequelize";
 
 const createProfile = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -74,7 +75,28 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
 
 const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
-    const profiles = await Profile.findAll({ include: [FavoriteItem] });
+    const { id } = req.params; // This is now the user_id
+
+    if (!id) {
+      res.status(400).json({ message: "User ID is required" });
+      return;
+    }
+
+    const profiles = await Profile.findAll({
+      where: {
+        user_id: id
+      },
+      include: [{
+        model: FavoriteItem,
+        as: 'favoriteItems'
+      }]
+    });
+
+    if (profiles.length === 0) {
+      res.status(404).json({ message: "No profiles found for this user" });
+      return;
+    }
+
     res.status(200).json(profiles);
   } catch (error) {
     console.error("Error fetching profiles:", error);
