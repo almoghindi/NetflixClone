@@ -21,20 +21,26 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
   await profile!.save();
   res.status(200).json(profile);
 };
-const addFavoriteItemById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const data = { profile_id: req.params.id, ...req.body };
-  const fav_item = await FavoriteItem.create(data);
-  res.status(201).json(fav_item);
-};
 
 const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
   const profiles = await Profile.findAll({ include: [FavoriteItem] });
   res.status(200).json(profiles);
 };
-
+const addFavoriteItemById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const data = { profile_id: req.params.id, ...req.body };
+    console.log(data);
+    const fav_item = await FavoriteItem.create(data);
+    res.status(201).json(fav_item);
+    console.log("success");
+  } catch (error) {
+    console.error("Error adding favorite item:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 const getFavoriteItemsById = async (
   req: Request,
   res: Response

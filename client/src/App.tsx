@@ -41,7 +41,7 @@ const App: React.FC = () => {
           <>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* <Route
+            <Route
               path="/signup/regform"
               element={
                 <SignUpPageForm
@@ -50,7 +50,7 @@ const App: React.FC = () => {
                   }}
                 />
               }
-            /> */}
+            />
             <Route path="/signup" element={<SignupFlow />} />
 
             <Route path="/purchase-success" element={<PurchaseSuccess />} />

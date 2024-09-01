@@ -10,6 +10,7 @@ import {
   getContentByGenre,
   getByID,
   getTrailer,
+  getTvShows,
 } from "../controllers/contentControler";
 
 const router = Router();
@@ -19,6 +20,7 @@ const contentRouter = Router();
 // new content Routes
 
 contentRouter.get("/trending/all", getAllContentByCategory);
+contentRouter.get("/tvshows", getTvShows);
 contentRouter.get("/trending/:type", getTrendingContent);
 contentRouter.get("/:id/trailers/:type", getContentTrailers);
 contentRouter.get("/:id/details/:type", getContentDetails);
@@ -28,6 +30,5 @@ contentRouter.get("/:category/:type", getContentByCategory);
 contentRouter.get("/genre/:genre", getContentByGenre);
 contentRouter.get("/:id", getByID);
 contentRouter.get("/movies/:movieId/trailer", getTrailer);
-
 
 export default contentRouter;

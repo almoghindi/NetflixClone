@@ -20,7 +20,6 @@ import { PopoverGroup } from "@headlessui/react";
 </svg>;
 
 export default function Navbar() {
-
   const navigate = useNavigate();
 
   return (
@@ -30,7 +29,7 @@ export default function Navbar() {
     >
       <nav
         aria-label="Global"
-        className=" flex  absolute top-0 inset-x-0 items-center justify-between p-5 lg:px-8  "
+        className=" flex   top-0 inset-x-0 items-center justify-between p-5 lg:px-8  "
       >
         <div className="flex lg:flex-0">
           <Link to="/" className="-m-1.5 p-1.5">
@@ -38,19 +37,34 @@ export default function Navbar() {
           </Link>
 
           <PopoverGroup className="hidden  lg:flex lg:gap-x-12 ms-20 mt-4">
-            <Link to="/home" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/home"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Home
             </Link>
-            <Link to="/tv" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/tv"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               TV Shows
             </Link>
-            <Link to="/movies" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/movies"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               Movies
             </Link>
-            <Link to="/new" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/new"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               New & Popular
             </Link>
-            <Link to="/mylist" className="text-sm font-semibold leading-6 text-white">
+            <Link
+              to="/mylist"
+              className="text-sm font-semibold leading-6 text-white"
+            >
               My List
             </Link>
           </PopoverGroup>

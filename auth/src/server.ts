@@ -1,15 +1,15 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { corsConfiguration } from './configurations/cors';
-import cors from 'cors';
-import { DBConnect } from './configurations/database';
-import authRoutes from './routes/auth-routes';
-import errorHandler from './middleware/error-handler';
+import express from "express";
+import dotenv from "dotenv";
+import { corsConfiguration } from "./configurations/cors";
+import cors from "cors";
+import { DBConnect } from "./configurations/database";
+import authRoutes from "./routes/auth-routes";
+import errorHandler from "./middleware/error-handler";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3001;
 
 app.use(express.json());
 
@@ -17,7 +17,7 @@ app.use(cors(corsConfiguration()));
 
 DBConnect();
 
-app.use('/api/auth', authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
 

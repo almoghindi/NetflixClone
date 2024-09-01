@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NewContent } from "../../types/new-content";
+
 import {
   PlayIcon,
   MinusCircleIcon,
@@ -10,10 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
-  addMovieToList,
-  removeMovieFromList,
+  // addMovieToList,
+  // removeMovieFromList,
   selectIsMovieInList,
 } from "../../store/slices/myListSlice";
+import { sendRequest } from "../../hooks/use-request";
 const genreLookup: { [key: number]: string } = {
   28: "Action",
   12: "Adventure",
@@ -38,20 +40,55 @@ const genreLookup: { [key: number]: string } = {
 const MovieCard = ({ movie }: { movie: NewContent }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  // const dispatch: AppDispatch = useDispatch();
 
   // Determine if the movie is already in the list
   const isAddedToMyList = useSelector((state: RootState) =>
     selectIsMovieInList(state.myList, movie.id as number)
   );
-
-  const handleAddOrRemoveMovie = () => {
-    if (isAddedToMyList) {
-      dispatch(removeMovieFromList(movie.id as number));
-    } else {
-      dispatch(addMovieToList(movie));
+  const user = useSelector((state: RootState) => state.auth.user);
+  const handleAddMovie = async (movie: NewContent): Promise<void> => {
+    try {
+      const id = "b6437740-0320-4ba4-9325-45ec52c1139c";
+      const data = await sendRequest({
+        url: `/api/profile/${id}/additem`,
+        method: "POST",
+        port: 3002,
+        body: { content_id: movie.id },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Movie added to watch list:", data);
+    } catch (error) {
+      new Error(error instanceof Error ? error.message : "An error occurred");
     }
   };
+  const handleRemoveMovie = async (movie: NewContent): Promise<void> => {
+    try {
+      const id = "b6437740-0320-4ba4-9325-45ec52c1139c";
+      const data = await sendRequest({
+        url: `/api/profile/${id}/additem`,
+        method: "DELETE",
+        port: 3002,
+        body: { content_id: movie.id },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Movie added to watch list:", data);
+    } catch (error) {
+      new Error(error instanceof Error ? error.message : "An error occurred");
+    }
+  };
+
+  // const handleAddOrRemoveMovie = () => {
+  //   if (isAddedToMyList) {
+  //     dispatch(removeMovieFromList(movie.id as number));
+  //   } else {
+  //     dispatch(addMovieToList(movie));
+  //   }
+  // };
 
   const handlePlay = () => {
     console.log(movie.id);
@@ -61,18 +98,18 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
   return (
     <div
       className={`group relative black col-span transition-all duration-300 ease-in-out ${
-        isHovered ? "h-[20vw] translate-y-4" : "h-[10vw]"
+        isHovered ? "h-[20vw] translate-y-4 z-10" : "h-[10vw]"
       } w-[160px] sm:w-[200px] md:w-[240px] lg:w-[350px] xl:w-[400px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <img
-        className="cursor-pointer object-cover transition duration shadow-md rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 w-full h-full"
+        className="cursor-pointer object-cover transition duration shadow-md rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-100 w-full h-full"
         src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
         alt={movie.title}
       />
 
-      <div className="opacity-0 absolute top-0 transition duration-500 z-10 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:opacity-100">
+      <div className="opacity-0 absolute top-0 transition duration-500 z-10 invisible sm:visible delay-100 w-full scale-0 group-hover:scale-110 group-hover:opacity-100">
         <img
           className="cursor-pointer object-cover duration shadow-xl rounded-t-md w-full h-[12vw]"
           src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
@@ -89,14 +126,14 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
             {isAddedToMyList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={handleAddOrRemoveMovie}
+                onClick={handleRemoveMovie}
                 width={30}
                 height={30}
               />
             ) : (
               <PlusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={handleAddOrRemoveMovie}
+                onClick={() => handleAddMovie(movie)}
                 width={30}
                 height={30}
               />

@@ -43,14 +43,14 @@ const NavProfile = () => {
     <div className="flex  lg:flex lg:flex-1 lg:justify-end me-10 ">
       <SearchBar />
 
-      <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 text-white cursor-pointer" />
-      <a className="text-sm font-semibold leading-6 text-white">
+      <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 hidden md:block text-white cursor-pointer" />
+      <div className="text-sm font-semibold leading-6 text-white">
         <img
           src={profileColorPicker}
           className="h-8 w-8 rounded cursor-pointer"
           alt=""
         />
-      </a>
+      </div>
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <MenuButton className="ms-3 mt-2">
@@ -87,7 +87,7 @@ const NavProfile = () => {
             </div>
           ))}
           <MenuItem>
-            <Link to="/" >
+            <Link to="/">
               <Logout />
             </Link>
           </MenuItem>
