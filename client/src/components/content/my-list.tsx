@@ -1,25 +1,23 @@
 import MovieCard from "./movieCard";
 import { NewContent } from "../../types/new-content";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { sendRequest } from "../../hooks/use-request";
+import { useState } from "react";
 
 const MyListPage = () => {
-  const myList = useSelector((state: RootState) => state.myList.movies);
+  const [myList, setMyList] = useState<NewContent[]>([]);
+  const getMyList = async (): Promise<void> => {
+    try {
+      const data = await sendRequest({
+        url: `/api/profile/${id}/items`,
+        method: "GET",
+        port: 3002,
+      });
 
-  // const getMyList = async (): Promise<void> => {
-  //   try {
-  //     console.log(userId);
-  //     const data = await sendRequest({
-  //       url: `/api/${userId}/items`,
-  //       method: "GET",
-  //       port: 3003,
-  //     });
-  //     setMovies(data.content);
-  //   } catch (error) {
-  //     new Error(error instanceof Error ? error.message : "An error occurred");
-  //   }
-  // };
+      setMyList(data);
+    } catch (error) {
+      new Error(error instanceof Error ? error.message : "An error occurred");
+    }
+  };
 
   return (
     <>

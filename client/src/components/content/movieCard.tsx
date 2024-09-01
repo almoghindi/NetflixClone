@@ -126,7 +126,7 @@ const MovieCard = ({ movie }: { movie: NewContent }) => {
             {isAddedToMyList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={handleRemoveMovie}
+                onClick={() => handleRemoveMovie(movie)}
                 width={30}
                 height={30}
               />
