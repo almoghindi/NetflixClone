@@ -37,6 +37,9 @@ The streaming service uses HLS to split the master file into segments, which are
 ### AI Recommendations
 recommendations are powered by Groq, processing user activity in real-time to deliver personalized content suggestions, enhancing user engagement and experience on the platform.
 
+### Code Reuse with npm Package
+To enhance code reuse and maintain consistency across the microservices, common utilities, types, and shared logic are encapsulated in a private npm package (@netflix-adea/common). This package is used across different services within the platform to ensure a modular and DRY (Don't Repeat Yourself) approach, making the development process more efficient and the codebase easier to maintain.
+
 ## Media
 
 #### Home Page
