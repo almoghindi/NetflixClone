@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import EditProfile from "./edit-profile"; // Ensure this is the correct import path
 import { Link, useNavigate } from "react-router-dom";
-import { profiles } from "./select-profile";
+import { useProfiles } from "./profiles"; // Import useProfiles hook
 
 export interface Profile {
+  id: string;
   src: string;
   name: string;
   isKid: boolean;
 }
 
 const ProfileManager: React.FC = () => {
+  const { profiles, loading, error } = useProfiles();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -28,6 +30,14 @@ const ProfileManager: React.FC = () => {
     navigate("/profiles/add");
   };
 
+  if (loading) {
+    return <div>Loading profiles...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading profiles: {error}</div>;
+  }
+
   return (
     <div className="font-netflix min-h-screen flex flex-col items-center justify-center p-6 sm:p-8 lg:p-12">
       {isEditing && selectedProfile ? (
@@ -43,7 +53,10 @@ const ProfileManager: React.FC = () => {
                 <p className="text-gray-400 mb-6 sm:mb-8 lg:mb-10">
                   No profiles available.
                 </p>
-                <button className="bg-red-600 text-white px-5 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-5 rounded-lg shadow-lg transition duration-200 hover:bg-red-500">
+                <button
+                  onClick={handleAddProfileClick}
+                  className="bg-red-600 text-white px-5 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-5 rounded-lg shadow-lg transition duration-200 hover:bg-red-500"
+                >
                   Add Profile
                 </button>
               </div>
@@ -52,8 +65,8 @@ const ProfileManager: React.FC = () => {
                 {profiles.map((profile, index) => (
                   <div
                     onClick={() => handleProfileClick(profile)}
-                    key={index}
-                    className="relative  group"
+                    key={profile.id || index} // Use profile.id if available
+                    className="relative group"
                   >
                     <div className="relative text-center">
                       <img

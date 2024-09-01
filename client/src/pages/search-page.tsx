@@ -25,6 +25,8 @@ const SearchPage = () => {
           method: "GET",
         });
 
+        console.log(data);
+
         if (data.content.results) {
           setContent(data.content.results);
           console.log(data.content);

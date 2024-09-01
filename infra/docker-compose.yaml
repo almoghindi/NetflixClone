@@ -1,17 +1,17 @@
 version: "3.8"
 services:
-  auth-service:
-    build:
-      context: ../auth
-    ports:
-      - "3001:3001"
-    depends_on:
-      - auth-mongodb
-      - kafka
-    environment:
-      MONGO_URI: mongodb://auth-mongodb:27017/auth
-      KAFKA_BROKER: kafka:9092
-      KAFKA_CLIENT_ID: auth
+  # auth-service:
+  #   build:
+  #     context: ../auth
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - auth-mongodb
+  #     - kafka
+  #   environment:
+  #     MONGO_URI: mongodb://auth-mongodb:27017/auth
+  #     KAFKA_BROKER: kafka:9092
+  #     KAFKA_CLIENT_ID: auth
 
   #   accounts-service:
   #     build:
@@ -39,12 +39,12 @@ services:
   #     environment:
   #       MONGO_URI: mongodb://content-mongodb:27018/contentdb
 
-  auth-mongodb:
-    container_name: auth_mongodb_container
-    image: mongo:latest
-    restart: always
-    ports:
-      - "27017:27017"
+  # auth-mongodb:
+  #   container_name: auth_mongodb_container
+  #   image: mongo:latest
+  #   restart: always
+  #   ports:
+  #     - "27017:27017"
 
   #   content-mongodb:
   #     container_name: content_mongodb_container
@@ -84,7 +84,7 @@ services:
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
     depends_on:
       - zookeeper

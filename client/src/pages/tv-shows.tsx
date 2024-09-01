@@ -40,7 +40,6 @@ const TvShows = () => {
 
   return (
     <>
-      <Navbar />
       <div className="z-50 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div
           style={{

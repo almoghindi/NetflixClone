@@ -2,12 +2,15 @@ import CryptoJS from "crypto-js";
 
 const secretkey:string = (import.meta.env.VITE_SECRET_KEY_CRYPTO as string);
 
-export const encryptString = (password : string) => {
+export const encryptString = (password: string) => {
+  if (!secretkey) {
+    console.log(secretkey, "key")
+    console.error("Encryption error: Secret key is undefined or empty.");
+    return null;
+  }
+
   try {
-    const encryptedObject = CryptoJS.AES.encrypt(
-      password,
-      secretkey
-    ).toString();
+    const encryptedObject = CryptoJS.AES.encrypt(password, secretkey).toString();
     return encryptedObject;
   } catch (error) {
     console.error("Encryption error:", error);
@@ -39,12 +42,12 @@ export const decryptObject = (ciphertext: string) => {
     const bytes = CryptoJS.AES.decrypt(ciphertext, secretkey);
     const decryptedObject = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-
     if (decryptedObject.user) {
       const { user, ...rest } = decryptedObject;
       return {
         ...rest,
         ...user,
+        profileId: user?.profileId || null, 
       };
     }
 
@@ -55,4 +58,5 @@ export const decryptObject = (ciphertext: string) => {
     return null;
   }
 };
+
 

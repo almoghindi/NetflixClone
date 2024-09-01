@@ -16,6 +16,7 @@ export interface AuthResponse {
         subscription:string;
         accessToken: string | null;
         refreshToken: string | null;
+        profileId?: string|null; 
     }
 }
 

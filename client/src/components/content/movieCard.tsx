@@ -50,24 +50,40 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const isAddedToMyList = useSelector((state: RootState) =>
     selectIsMovieInList(state.myList, movie.id as number)
   );
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const handleAddMovie = async (movie: NewContent): Promise<void> => {
     try {
-      const id = "b6437740-0320-4ba4-9325-45ec52c1139c";
+      if (!user?.profileId) {
+        throw new Error("Profile ID is missing.");
+      }
+      
+      // Sanitize the profileId
+      const sanitizedProfileId = sanitizeProfileId(user.profileId);
+      console.log(sanitizedProfileId, "Sanitized Profile ID");
+      console.log("MOVIE" + movie.id);
+  
       const data = await sendRequest({
-        url: `/api/profile/${id}/additem`,
+        url: `/api/profile/${sanitizedProfileId}/additem`,
         method: "POST",
         port: 3002,
         body: { content_id: movie.id },
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
+  
+      console.log(data, "THE RES");
       console.log("Movie added to watch list:", data);
     } catch (error) {
-      new Error(error instanceof Error ? error.message : "An error occurred");
+      console.error("Error adding movie to watch list:", error);
     }
   };
+  
+  // Example sanitizeProfileId function
+  const sanitizeProfileId = (profileId: string) => {
+    return profileId.replace(/\//g, '')
+                    .replace(/\+/g, '')
+                    .replace(/=/g, '');
+  };
+  
   const handleRemoveMovie = async (movie: NewContent): Promise<void> => {
     try {
       const id = "b6437740-0320-4ba4-9325-45ec52c1139c";

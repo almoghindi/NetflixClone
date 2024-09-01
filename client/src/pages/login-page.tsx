@@ -41,6 +41,7 @@ const LoginPage: React.FC = () => {
         password: encryptedPassword,
       };
 
+      console.log(encryptedPassword, "PASS LOGIN")
       const response = await sendRequest({
         port: 3001,
         url: "/api/auth/login",

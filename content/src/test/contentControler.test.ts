@@ -10,7 +10,7 @@ import {
   getSeasonDetails,
   getContentByGenre,
   getTvShows,
-  getByID,
+  // getByID,
   getTrailer,
   searchContent,
 } from "../controllers/contentControler"; // Adjust the path as needed
@@ -26,7 +26,7 @@ app.get("/trending/all/day", getAllContentByCategory);
 app.get("/tv/:id/season/:seasonNumber", getSeasonDetails);
 app.get("/discover/movie/with_genres/:id", getContentByGenre);
 app.get("/tv/popular", getTvShows);
-app.get("/movie/:id/videos", getByID);
+// app.get("/movie/:id/videos", getByID);
 app.get("/movie/:movieId/trailer", getTrailer);
 app.get("/search/:text", searchContent);
 

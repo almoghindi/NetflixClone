@@ -17,6 +17,7 @@ const authSlice = createSlice({
     logoutSuccess: (state) => {
       state.user = null;
     },
+    
     signupSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.user = action.payload.user;
     },

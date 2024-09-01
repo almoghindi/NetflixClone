@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import ProfileModal from "./profile-modal"; // Import the ProfileModal component
 import IconSelector from "./modals/icon-selector-profile"; // Import the new IconSelector component
 import BlueIcon from "../../assets/img/blueIcon.jpg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { sendRequest } from "../../hooks/use-request";
+import { useNavigate } from "react-router-dom";
 
 const AddProfile: React.FC = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const [name, setName] = useState("");
   const [isKid, setIsKid] = useState(false);
   const [icon, setIcon] = useState(BlueIcon);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -22,11 +28,38 @@ const AddProfile: React.FC = () => {
     setIsModalOpen(false); // Close the modal after selecting an icon
   };
 
-  const handleContinue = () => {
-    console.log("Profile Name:", name);
-    console.log("Is Kid:", isKid);
+  const handleContinue = async () => {
+    if (!user) {
+      console.error("User is not logged in.");
+      return;
+    }
+  
+    const profileData = {
+      user_id: user.userId, 
+      name,
+      avatar: icon,
+      isKid,
+    };
+  
+    try {
+      const response = await sendRequest({
+        port: 3002,
+        url: "/api/profile/create",
+        method: "POST",
+        body: profileData,
+      });
+  
+      if (response) {
+        console.log("Profile created successfully:", response);
+        navigate("/profiles"); // Navigate to the profiles page after creation
+      } else {
+        console.error("Failed to create profile.");
+      }
+    } catch (error) {
+      console.error("Error creating profile:", error);
+    }
   };
-
+  
   const handleCancel = () => {
     setName("");
     setIsKid(false);
