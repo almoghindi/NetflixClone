@@ -246,47 +246,40 @@ export const getTvShows = async (
   }
 };
 
-// export const getByID = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const { id } = req.params;
-//   console.log(`${id} - THIS IS THE ID`);
+export const getByID = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type, id } = req.params;
+  console.log(`${id} - THIS IS THE ID `, type);
 
-//   try {
-//     const response = await fetch(
-//       `https://api.themoviedb.org/3/movie/${id}/videos`,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-//         },
-//       }
-//     );
+  try {
+    // Construct the correct URL based on type and id
+    const response = await fetch(
+      `https://api.themoviedb.org/3/${id}/${type}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+        },
+      }
+    );
 
-//     const data = await response.json();
+    // Check if the response is OK (status 200-299)
+    if (!response.ok) {
+      console.error(`Failed to fetch: ${response.status} ${response.statusText}`);
+      res.status(404).send({ message: `Content not found for id ${id}` });
+      return;
+    }
 
-//     const trailers = data.results.filter(
-//       (video: { type: string; site: string }) =>
-//         video.type === "Trailer" && video.site === "YouTube"
-//     );
-
-//     if (trailers.length > 0) {
-//       const trailerUrl = `https://www.youtube.com/watch?v=${trailers[0].key}`;
-//       console.log("Trailer URL:", trailerUrl);
-
-//       // Return the trailer URL and any other relevant data
-//       res.status(200).json({ trailerUrl, data: trailers[0] });
-//     } else {
-//       console.log("No trailer found for this movie.");
-//       res.status(404).json({ message: "No trailer found for this movie." });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send({ message: "Internal server error" });
-//   }
-// };
+    const data = await response.json();
+    res.status(200).json({ content: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
 
 export const getTrailer = async (
   req: Request,

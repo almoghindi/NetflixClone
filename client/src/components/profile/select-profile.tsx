@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useProfiles } from "./profiles";
-import { setProfileId, setUser } from "../../store/slices/authSlice"; // Adjust the path to your Redux slice
+import { setUser } from "../../store/slices/authSlice"; // Adjust the path to your Redux slice
 import { encryptString, encryptObject } from "../../utils/encription"; // Assuming you have encryption utilities
 import { RootState } from "../../store/store";
 import { AuthResponse } from "../../types/auth";

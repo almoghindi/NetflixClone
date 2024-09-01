@@ -2,19 +2,20 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { sendRequest } from "../../hooks/use-request";
-import MovieCard from "./movieCard";
+import MovieCard, { MovieCardProps } from "./movieCard";
 import { NewContent } from "../../types/new-content";
 
 interface MovieProps {
   id: string;
   profile_id: string;
   content_id: string;
+  type: string | null; // The type of content: "movie", "tv", or null
   createdAt: string;
   updatedAt: string;
 }
 
 const MyListPage = () => {
-  const [myList, setMyList] = useState<MovieProps[]>([]);
+  const [myList, setMyList] = useState<MovieCardProps[]>([]);
   const { user } = useSelector((state: RootState) => state.auth);
 
   const getMyList = async (): Promise<void> => {
@@ -23,7 +24,8 @@ const MyListPage = () => {
         throw new Error("Profile ID is missing.");
       }
 
-      const data = await sendRequest({
+      // Fetch the list of saved items for the profile
+      const data: MovieProps[] = await sendRequest({
         url: `/api/profile/${user.profileId}/items`,
         method: "GET",
         port: 3002,
@@ -31,11 +33,7 @@ const MyListPage = () => {
 
       console.log("Response data:", data);
 
-      if (Array.isArray(data)) {
-        setMyList(data);
-      } else {
-        console.error("Unexpected data format:", data);
-      }
+      setMyList(data);
     } catch (error) {
       console.error("Error fetching my list:", error instanceof Error ? error.message : "An error occurred");
     }
@@ -47,11 +45,11 @@ const MyListPage = () => {
 
   return (
     <div className="px-10 md:px-12 min-h-screen">
-      <h1 className="text-white text-3xl font-semibold mt-20">My List</h1>
-      <div className="grid grid-cols-2 gap-1 p-20 sm:grid-cols-4">
-        {myList.map((movie) => (
-          <div key={movie.id} className="me-20">
-            <MovieCard movie={{ id: movie.content_id }} /> {/* Assuming MovieCard accepts id as prop */}
+      <h1 className="text-white text-3xl font-semibold mt-10">My List</h1>
+      <div className="grid grid-cols-2 gap-8 p-20 sm:grid-cols-4">
+        {myList.map((movie, index) => (
+          <div key={index} className="me-20">
+            <MovieCard movie={movie} /> {/* Assuming MovieCard accepts the full movie object */}
           </div>
         ))}
       </div>

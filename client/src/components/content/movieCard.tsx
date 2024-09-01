@@ -38,18 +38,21 @@ const genreLookup: { [key: number]: string } = {
   10752: "War",
   37: "Western",
 };
-interface MovieCardProps {
+export interface MovieCardProps {
   movie: NewContent | TvProps;
 }
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
-  // const dispatch: AppDispatch = useDispatch();
-
-  // Determine if the movie is already in the list
-  const isAddedToMyList = useSelector((state: RootState) =>
+  const [isAddedToList, setIsAddedMyList] = useState(useSelector((state: RootState) =>
     selectIsMovieInList(state.myList, movie.id as number)
-  );
+  ));
+  const navigate = useNavigate();
+ const dispatch: AppDispatch = useDispatch();
+  // Determine if the movie is already in the list
+  // const isAddedToMyList = useSelector((state: RootState) =>
+  //   selectIsMovieInList(state.myList, movie.id as number)
+  // );
+
   const { user } = useSelector((state: RootState) => state.auth);
 
   const handleAddMovie = async (movie: NewContent): Promise<void> => {
@@ -57,25 +60,41 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       if (!user?.profileId) {
         throw new Error("Profile ID is missing.");
       }
-      
+  
       // Sanitize the profileId
       const sanitizedProfileId = sanitizeProfileId(user.profileId);
-      console.log(sanitizedProfileId, "Sanitized Profile ID");
-      console.log("MOVIE" + movie.id);
   
       const data = await sendRequest({
-        url: `/api/profile/${sanitizedProfileId}/additem`,
+        url: `/api/profile/${sanitizedProfileId}/${movie.media_type}/additem`,
         method: "POST",
         port: 3002,
-        body: { content_id: movie.id },
+        body: {
+          content_id: movie.id,
+          type: movie.media_type || "movie",
+          backdrop_path: movie.backdrop_path,
+          title: movie.title,
+          original_title: movie.original_title,
+          overview: movie.overview,
+          poster_path: movie.poster_path,
+          media_type: movie.media_type,
+          adult: movie.adult,
+          original_language: movie.original_language,
+          genre_ids: movie.genre_ids,
+          popularity: movie.popularity,
+          release_date: movie.release_date,
+          video: movie.video,
+          vote_average: movie.vote_average,
+          vote_count: movie.vote_count,
+        },
       });
-  
-      console.log(data, "THE RES");
+      setIsAddedMyList(true);
+      dispatch(addMovieToList(movie));
       console.log("Movie added to watch list:", data);
     } catch (error) {
       console.error("Error adding movie to watch list:", error);
     }
   };
+  
   
   // Example sanitizeProfileId function
   const sanitizeProfileId = (profileId: string) => {
@@ -86,19 +105,24 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   
   const handleRemoveMovie = async (movie: NewContent): Promise<void> => {
     try {
-      const id = "b6437740-0320-4ba4-9325-45ec52c1139c";
+      const movieId = movie.id; // The ID of the movie to be removed
+      const profileId = user?.profileId; // The ID of the profile
+  
+      if (!profileId || !movieId) {
+        throw new Error("Profile ID or Movie ID is missing.");
+      }
+  
       const data = await sendRequest({
-        url: `/api/profile/${id}/additem`,
+        url: `/api/profile/${profileId}/item/${movieId}`,
         method: "DELETE",
         port: 3002,
-        body: { content_id: movie.id },
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
-      console.log("Movie added to watch list:", data);
+  
+      console.log("Movie removed from watch list:", data);
+      setIsAddedMyList(false);
+      // You might want to update the UI or state here to reflect the deletion
     } catch (error) {
-      new Error(error instanceof Error ? error.message : "An error occurred");
+      console.error("Error removing movie from watch list:", error);
     }
   };
 
@@ -137,7 +161,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             >
               <PlayIcon width={16} height={20} />
             </div>
-            {isAddedToMyList ? (
+            {isAddedToList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
                 onClick={() => handleRemoveMovie}
@@ -160,8 +184,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             {movie.name || movie.original_title}
           </div>
           <div className="flex flex-row mt-0 gap-2 items-center">
-            <p className="text-white text-[8px] lg:text-xs">
-              {movie.genre_ids.map((genre: number, index: React.Key) => (
+          <p className="text-white text-[8px] lg:text-xs">
+             {movie.genre_ids.map((genre: number, index: React.Key) => (
                 <span
                   key={index}
                   className="text-white text-[0.75rem] lg:text-sm sm:text-[8px]"
@@ -170,7 +194,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                   {index !== movie.genre_ids.length - 1 && " • "}
                 </span>
               ))}
-            </p>
+          </p>
           </div>
         </div>
       </div>
