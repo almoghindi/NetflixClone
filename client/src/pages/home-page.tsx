@@ -10,11 +10,12 @@ import { sendRequest } from "../hooks/use-request";
 import { setLikedContent } from "../store/slices/liked-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
+import { setMyListContent } from "../store/slices/myListSlice";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const userId = useSelector((state: RootState) => state.auth.user?.userId);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   function handlePlayMainVideoClick(): void {
     navigate(`/main-movie/play`);
@@ -23,7 +24,7 @@ const HomePage = () => {
     const LoadLikedContent = async () => {
       const LikedContentResponse = await sendRequest({
         port: 3006,
-        url: `/api/get-liked-content/${userId}`,
+        url: `/api/get-liked-content/${user?.userId}`,
         method: "GET",
       });
       if (LikedContentResponse) {
@@ -31,8 +32,20 @@ const HomePage = () => {
         dispatch(setLikedContent(LikedContentResponse));
       } else console.log("not found likedContent");
     };
+    const LoadMyListContent = async () => {
+      const MyListContentResponse = await sendRequest({
+        url: `/api/profile/${user?.profileId}/items`,
+        method: "GET",
+        port: 3002,
+      });
+      if (MyListContentResponse) {
+        console.log(MyListContentResponse);
+        dispatch(setMyListContent(MyListContentResponse));
+      } else console.log("not found myListContent");
+    };
     LoadLikedContent();
-  }, [dispatch, userId]);
+    LoadMyListContent();
+  }, [dispatch, user]);
 
   return (
     <>

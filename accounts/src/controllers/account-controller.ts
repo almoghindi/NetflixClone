@@ -2,7 +2,7 @@ import Profile from "../models/profile";
 import FavoriteItem from "../models/favorite-item";
 import { Request, Response } from "express";
 import { randomBytes } from "crypto";
-import { Op } from "sequelize";
+import { convertFavoriteItemToContent } from "../utils/converter";
 
 const createProfile = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -13,13 +13,19 @@ const createProfile = async (req: Request, res: Response): Promise<void> => {
     const { user_id, name, avatar, isKid } = req.body;
 
     if (!user_id || !name || !avatar) {
-       res.status(400).json({ message: "Missing required fields" });
+      res.status(400).json({ message: "Missing required fields" });
     }
 
     // Create the new profile with the generated ID
-    const profile = await Profile.create({ id: generatedId, user_id, name, avatar, isKid });
+    const profile = await Profile.create({
+      id: generatedId,
+      user_id,
+      name,
+      avatar,
+      isKid,
+    });
     console.log("Profile created successfully:", profile);
-    
+
     res.status(201).json(profile);
   } catch (error) {
     console.error("Error creating profile:", error);
@@ -106,10 +112,13 @@ const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
 
 export default getAllProfiles;
 
-const addFavoriteItemById = async (req: Request, res: Response): Promise<void> => {
+const addFavoriteItemById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id, type } = req.params;
-    const { content_id } = req.body;
+    const { Content } = req.body;
 
     // Validate that the profile exists before adding an item
     const profile = await Profile.findByPk(id);
@@ -119,7 +128,7 @@ const addFavoriteItemById = async (req: Request, res: Response): Promise<void> =
     }
 
     // Validate the content ID
-    if (!content_id) {
+    if (!Content) {
       res.status(400).json({ message: "Content ID is required" });
       return;
     }
@@ -128,9 +137,9 @@ const addFavoriteItemById = async (req: Request, res: Response): Promise<void> =
     const existingItem = await FavoriteItem.findOne({
       where: {
         profile_id: id,
-        content_id: content_id,
-        type: type
-      }
+        content_id: Content.id,
+        media_type: type,
+      },
     });
 
     if (existingItem) {
@@ -139,7 +148,33 @@ const addFavoriteItemById = async (req: Request, res: Response): Promise<void> =
     }
 
     // If the item doesn't exist, create it
-    const data = { profile_id: id, type: type, content_id, ...req.body };
+    const data = {
+      profile_id: id,
+      content_id: Content.id.toString(), // Ensure content ID is a string
+      media_type: Content.media_type, // 'movie' or 'tv'
+      adult: Content.adult,
+      backdrop_path: Content.backdrop_path,
+      original_language: Content.original_language,
+      overview: Content.overview,
+      poster_path: Content.poster_path,
+      genre_ids: Content.genre_ids,
+      popularity: Content.popularity,
+      vote_average: Content.vote_average,
+      vote_count: Content.vote_count,
+      ...(Content.media_type === "movie"
+        ? {
+            original_title: Content.original_title,
+            title: Content.title,
+            release_date: Content.release_date,
+            video: Content.video,
+          }
+        : {
+            name: Content.name,
+            original_name: Content.original_name,
+            first_air_date: Content.first_air_date,
+            origin_country: Content.origin_country,
+          }),
+    };
     console.log("Data to create:", data);
 
     const fav_item = await FavoriteItem.create(data);
@@ -151,14 +186,18 @@ const addFavoriteItemById = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-const deleteFavoriteItemById = async (req: Request, res: Response): Promise<void> => {
+const deleteFavoriteItemById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { id } = req.params;
-
+    const { id, itemId } = req.params;
+    console.log(id, itemId);
     // Find the favorite item by ID
     const fav_item = await FavoriteItem.findOne({
-      where: { id }
+      where: { profile_id: id, content_id: itemId },
     });
+    console.log(fav_item);
 
     if (!fav_item) {
       res.status(404).json({ message: "Favorite item not found" });
@@ -179,12 +218,19 @@ const getFavoriteItemsById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const FavoriteItems = await FavoriteItem.findAll({
+  const favoriteItems: FavoriteItem[] = await FavoriteItem.findAll({
     where: { profile_id: req.params.id },
   });
-  console.log(FavoriteItems);
-  
-  res.status(200).json(FavoriteItems);
+
+  const convertedItems = favoriteItems.map(convertFavoriteItemToContent);
+
+  const FavoriteMovies = convertedItems.filter(
+    (content) => content.media_type === "movie"
+  );
+  const FavoriteTvShows = convertedItems.filter(
+    (content) => content.media_type === "tv"
+  );
+  res.status(200).json({ movies: FavoriteMovies, tvShows: FavoriteTvShows });
 };
 const deleteAllItems = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -194,7 +240,7 @@ const deleteAllItems = async (req: Request, res: Response): Promise<void> => {
     console.error("Error deleting all items:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 
 export {
   getAllProfiles,
@@ -204,5 +250,5 @@ export {
   updateProfile,
   deleteProfile,
   deleteFavoriteItemById,
-  deleteAllItems
+  deleteAllItems,
 };

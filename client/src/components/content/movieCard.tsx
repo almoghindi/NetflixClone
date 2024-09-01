@@ -59,18 +59,16 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     )
   );
 
+  // Determine if the movie is already in the list
   const [isAddedToList, setIsAddedMyList] = useState(
     useSelector((state: RootState) =>
-    selectIsMovieInList(state.myList, movie.id as number)
-  ));
-  // Determine if the movie is already in the list
-  // const isAddedToMyList = useSelector((state: RootState) =>
-  //   selectIsMovieInList(state.myList, movie.id as number)
-  // );
+      selectIsMovieInList(state.myList, movie.id as number)
+    )
+  );
 
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const handleAddMovie = async (movie: NewContent): Promise<void> => {
+  const handleAddMovie = async (): Promise<void> => {
     try {
       if (!user?.profileId) {
         throw new Error("Profile ID is missing.");
@@ -86,22 +84,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         method: "POST",
         port: 3002,
         body: {
-          content_id: movie.id,
-          type: movie.media_type || "movie",
-          backdrop_path: movie.backdrop_path,
-          title: movie.title,
-          original_title: movie.original_title,
-          overview: movie.overview,
-          poster_path: movie.poster_path,
-          media_type: movie.media_type,
-          adult: movie.adult,
-          original_language: movie.original_language,
-          genre_ids: movie.genre_ids,
-          popularity: movie.popularity,
-          release_date: movie.release_date,
-          video: movie.video,
-          vote_average: movie.vote_average,
-          vote_count: movie.vote_count,
+          Content: movie,
         },
       });
 
@@ -118,21 +101,21 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     return profileId.replace(/\//g, "").replace(/\+/g, "").replace(/=/g, "");
   };
 
-  const handleRemoveMovie = async (movie: NewContent): Promise<void> => {
+  const handleRemoveMovie = async (): Promise<void> => {
     try {
       const movieId = movie.id; // The ID of the movie to be removed
       const profileId = user?.profileId; // The ID of the profile
-  
+
       if (!profileId || !movieId) {
         throw new Error("Profile ID or Movie ID is missing.");
       }
-  
+
       const data = await sendRequest({
         url: `/api/profile/${profileId}/item/${movieId}`,
         method: "DELETE",
         port: 3002,
       });
-  
+      dispatch(removeMovieFromList(movie.id as number));
       console.log("Movie removed from watch list:", data);
       setIsAddedMyList(false);
       // You might want to update the UI or state here to reflect the deletion
@@ -208,14 +191,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             {isAddedToList ? (
               <MinusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={() => handleRemoveMovie}
+                onClick={handleRemoveMovie}
                 width={30}
                 height={30}
               />
             ) : (
               <PlusCircleIcon
                 className="text-white cursor-pointer w-7 h-7 transition hover:bg-neutral-500 rounded-full"
-                onClick={() => handleAddMovie(movie as NewContent)}
+                onClick={handleAddMovie}
                 width={30}
                 height={30}
               />
@@ -236,8 +219,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             {movie.name || (movie as NewContent).original_title}
           </div>
           <div className="flex flex-row mt-0 gap-2 items-center">
-          <p className="text-white text-[8px] lg:text-xs">
-             {movie.genre_ids.map((genre: number, index: React.Key) => (
+            <p className="text-white text-[8px] lg:text-xs">
+              {movie.genre_ids.map((genre: number, index: React.Key) => (
                 <span
                   key={index}
                   className="text-white text-[0.75rem] lg:text-sm sm:text-[8px]"
@@ -246,7 +229,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                   {index !== movie.genre_ids.length - 1 && " • "}
                 </span>
               ))}
-          </p>
+            </p>
           </div>
         </div>
       </div>
