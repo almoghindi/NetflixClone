@@ -59,8 +59,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     )
   );
 
-  // Determine if the movie is already in the list
-  const [isAddedToList, setIsAddedMyList] = useState(useSelector((state: RootState) =>
+  const [isAddedToList, setIsAddedMyList] = useState(
+    useSelector((state: RootState) =>
     selectIsMovieInList(state.myList, movie.id as number)
   ));
   // Determine if the movie is already in the list

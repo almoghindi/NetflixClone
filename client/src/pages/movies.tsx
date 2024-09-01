@@ -47,7 +47,6 @@ const Movies = () => {
 
   return (
     <>
-      <Navbar />
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
         <div style={{
         transform: "scale(1.5)",  // This scales the player by 130%

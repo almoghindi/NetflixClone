@@ -73,7 +73,6 @@ const HomePage = () => {
           <ContentRows
             filter={{ url: "trending/all", title: "Trending Now" }}
           />
-          ``
           <Top10Videos
             filter={{
               url: "top_rated/movie",
