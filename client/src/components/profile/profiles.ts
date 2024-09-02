@@ -20,7 +20,7 @@ export const useProfiles = () => {
 
       try {
         const response = await sendRequest({
-          url: '/api/profile/all',
+          url: `/api/profile/all/${user.userId}`,
           method: 'GET',
           port: 3002,
         });

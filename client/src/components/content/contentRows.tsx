@@ -79,11 +79,11 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       </p>
       <div className="relative">
         <ChevronLeftIcon
-          className="w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
+          className="z-50 w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
           onClick={() => slideLeft(`slider-${filter.url}`)}
         />
         <ChevronRightIcon
-          className="w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
+          className="z-50 w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
           onClick={() => slideRight(`slider-${filter.url}`)}
         />
       </div>
