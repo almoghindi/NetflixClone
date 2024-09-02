@@ -11,7 +11,6 @@ const createProfile = async (req: Request, res: Response): Promise<void> => {
 
     // Ensure that all required fields are present
     const { user_id, name, avatar, isKid } = req.body;
-
     if (!user_id || !name || !avatar) {
       res.status(400).json({ message: "Missing required fields" });
     }
@@ -87,22 +86,22 @@ const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "User ID is required" });
       return;
     }
-
     const profiles = await Profile.findAll({
       where: {
-        user_id: id
+        user_id: id,
       },
-      include: [{
-        model: FavoriteItem,
-        as: 'favoriteItems'
-      }]
+      include: [
+        {
+          model: FavoriteItem,
+          as: "favoriteItems",
+        },
+      ],
     });
 
     if (profiles.length === 0) {
       res.status(404).json({ message: "No profiles found for this user" });
       return;
     }
-
     res.status(200).json(profiles);
   } catch (error) {
     console.error("Error fetching profiles:", error);

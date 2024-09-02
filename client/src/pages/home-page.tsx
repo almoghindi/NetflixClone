@@ -1,7 +1,6 @@
 import ContentRows from "../components/content/contentRows";
 import { PlayIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
-import Navbar from "../layouts/nav";
 import { useNavigate } from "react-router-dom";
 import Top10Videos from "../components/content/top10-videos";
 import RecommendedRow from "../components/content/recommended-Row";

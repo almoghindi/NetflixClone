@@ -16,7 +16,7 @@ export class UserRegisteredConsumer extends BaseConsumer<UserRegisteredEvent> {
   ): Promise<void> {
     const { id } = data;
     const profile = Profile.build({
-      id,
+      user_id: id,
     });
     await profile.save();
   }
