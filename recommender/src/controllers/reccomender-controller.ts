@@ -39,12 +39,12 @@ export default class RecommenderController {
     const likedContent = await LikedContent.find({
       userId: userId,
     });
-    const likedMovies = likedContent.filter(
-      (content) => content.contentType === "Movie"
-    );
-    const likedTvShows = likedContent.filter(
-      (content) => content.contentType === "TvShow"
-    );
+    const likedMovies = likedContent
+      .filter((content) => content.contentType === "Movie")
+      .map((content) => content.contentData);
+    const likedTvShows = likedContent
+      .filter((content) => content.contentType === "TvShow")
+      .map((content) => content.contentData);
     res.send({ movies: likedMovies, tvShows: likedTvShows });
   }
   static async getRecommendetions(req: Request, res: Response) {

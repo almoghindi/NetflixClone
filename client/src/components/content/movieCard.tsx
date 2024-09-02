@@ -77,8 +77,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       // Sanitize the profileId
       const sanitizedProfileId = sanitizeProfileId(user.profileId);
       console.log(sanitizedProfileId, "Sanitized Profile ID");
-      console.log("MOVIE" + movie.id);
-
+      console.log(movie);
       const data = await sendRequest({
         url: `/api/profile/${sanitizedProfileId}/${movie.media_type}/additem`,
         method: "POST",
@@ -148,7 +147,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     await sendRequest({
       port: 3006,
       url: "/api/remove-liked-content",
-      method: "POST",
+      method: "DELETE",
       body: {
         userId: id,
         Content: movie,

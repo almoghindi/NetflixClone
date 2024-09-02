@@ -12,7 +12,7 @@ router.post(
   "/add-liked-content",
   expressAsyncHandler(RecommenderController.AddedLikedContent)
 );
-router.post(
+router.delete(
   "/remove-liked-content",
   expressAsyncHandler(RecommenderController.RemoveLikedContent)
 );

@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import MovieCard from "./movieCard";
 
 const MyListPage = () => {
-  const [myList, setMyList] = useState(
-    useSelector((state: RootState) => state.myList)
-  );
+  const myList = useSelector((state: RootState) => state.myList);
   return (
     <div className="px-10 md:px-12 min-h-screen">
       <h1 className="text-white text-3xl font-semibold mt-10">My List</h1>

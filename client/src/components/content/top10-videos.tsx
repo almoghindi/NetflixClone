@@ -68,7 +68,7 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
                 className="h-full w-3/4 object-contain absolute -left-44 "
               />
               <div className="relative">
-                <MovieCard movie={movie} />
+                <MovieCard movie={{ ...movie, media_type: "movie" }} />
               </div>
             </div>
           ))}

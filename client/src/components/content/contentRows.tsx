@@ -25,40 +25,42 @@ export interface TvProps {
 const ContentRows = ({ filter }: { filter: filter }) => {
   const [content, setContent] = useState<(NewContent | TvProps)[]>([]);
 
-  const fetchContent = async (): Promise<void> => {
-    try {
-      const data = await sendRequest({
-        url: `/redis/${filter.url}`,
-        method: "GET",
-        port: 3003,
-      });
-
-      if (
-        filter.url === "trending/all" ||
-        filter.url === "tv" ||
-        filter.url === "trending/tv"
-      ) {
-        if (Array.isArray(data.content)) {
-          setContent(data.content);
-        } else {
-          console.error("Expected an array but received:", data.content);
-          setContent([]); // Clear content if not an array
-        }
-      } else {
-        if (Array.isArray(data.content.results)) {
-          setContent(data.content.results);
-        } else {
-          console.error("Expected an array but received:", data.content.results);
-          setContent([]); // Clear content if not an array
-        }
-      }
-    } catch (error) {
-      console.error("Fetch content error:", error);
-      setContent([]); // Clear content on error
-    }
-  };
-
   useEffect(() => {
+    const fetchContent = async (): Promise<void> => {
+      try {
+        const data = await sendRequest({
+          url: `/redis/${filter.url}`,
+          method: "GET",
+          port: 3003,
+        });
+
+        if (
+          filter.url === "trending/all" ||
+          filter.url === "tv" ||
+          filter.url === "trending/tv"
+        ) {
+          if (Array.isArray(data.content)) {
+            setContent(data.content);
+          } else {
+            console.error("Expected an array but received:", data.content);
+            setContent([]); // Clear content if not an array
+          }
+        } else {
+          if (Array.isArray(data.content.results)) {
+            setContent(data.content.results);
+          } else {
+            console.error(
+              "Expected an array but received:",
+              data.content.results
+            );
+            setContent([]); // Clear content if not an array
+          }
+        }
+      } catch (error) {
+        console.error("Fetch content error:", error);
+        setContent([]); // Clear content on error
+      }
+    };
     fetchContent();
   }, [filter.url]);
 
@@ -94,7 +96,11 @@ const ContentRows = ({ filter }: { filter: filter }) => {
         {content &&
           content.map((item, index) => (
             <div key={index}>
-              <MovieCard movie={item} />
+              <MovieCard
+                movie={
+                  item.media_type ? item : { ...item, media_type: "movie" }
+                }
+              />
             </div>
           ))}
       </div>
