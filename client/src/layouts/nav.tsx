@@ -23,7 +23,7 @@ export default function Navbar() {
   return (
     <header
       // onScroll={handleScroll}
-      className="navbar sticky top-0 inset-x-0    z-40 "
+      className="navbar sticky top-0 inset-x-0 bg-transparent   z-40 "
     >
       <nav
         aria-label="Global"

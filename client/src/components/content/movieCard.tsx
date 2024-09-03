@@ -160,7 +160,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
     <div
       className={`group relative black col-span transition-all duration-300 ease-in-out ${
-        isHovered ? "h-[20vw] translate-y-4" : "h-[12vw]"
+        isHovered ? "h-[20vw]" : "h-[12vw]"
       } w-[160px] sm:w-[200px] md:w-[240px] lg:w-[350px] xl:w-[400px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
