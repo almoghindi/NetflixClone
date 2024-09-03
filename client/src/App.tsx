@@ -32,7 +32,7 @@ import WatchEpisode from "./components/content/watch-expisode";
 // import Login from "./pages/login-page";
 
 const App: React.FC = () => {
-  const {user} = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <Router>
@@ -53,7 +53,10 @@ const App: React.FC = () => {
               }
             />
             <Route path="/signup/*" element={<SignupFlow />} />
-            <Route path="/choose-payment" element={<SignupFlow initialStep={4} />}/>
+            <Route
+              path="/choose-payment"
+              element={<SignupFlow initialStep={4} />}
+            />
             <Route path="/signup" element={<SignupFlow />} />
             <Route path="/purchase-success" element={<PurchaseSuccess />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -63,9 +66,9 @@ const App: React.FC = () => {
         ) : (
           <>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/profiles/manage" element={<ProfileManager />} />
             <Route path="/profiles/add" element={<AddProfile />} />
-            <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/mylist" element={<MyList />} />
             <Route path="/steam-test" element={<VideoProcessor />} />
