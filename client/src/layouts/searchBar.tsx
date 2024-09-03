@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const { search } = useLocation();
   const navigate = useNavigate();
 
   const submitHandler = async (e: React.FormEvent) => {

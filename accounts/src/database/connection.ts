@@ -8,7 +8,8 @@ const DBConnect = async () => {
   const databaseName = process.env.DB_NAME!;
   const connection = mysql.createConnection({
     host: process.env.DB_HOST,
-    user: process.env.DB_USERNAME,
+    // user: process.env.DB_USERNAME,
+    user: "root",
     password: process.env.DB_PASSWORD,
   });
 

@@ -3,10 +3,11 @@ import { icons } from "./modals/icon-selector-components/icons";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { sendRequest } from "../../hooks/use-request";
+import { Profile } from "./profile-manager";
 
 export const useProfiles = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,10 +27,12 @@ export const useProfiles = () => {
         });
 
         if (response && Array.isArray(response)) {
-          const profilesWithIcons = response.map((profile, index) => ({
-            ...profile,
-            src: icons[index % icons.length]?.src || icons[0].src,
-          }));
+          const profilesWithIcons = (response as Profile[]).map(
+            (profile, index) => ({
+              ...profile,
+              src: icons[index % icons.length]?.src || icons[0].src,
+            })
+          );
           setProfiles(profilesWithIcons);
         } else {
           setError("Failed to load profiles");

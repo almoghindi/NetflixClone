@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { setUser, signupSuccess } from "../store/slices/authSlice";
+import { setUser } from "../store/slices/authSlice";
 import { sendRequest } from "../hooks/use-request";
 import HeaderLandingPage from "../layouts/header-landing-page";
 import { useNavigate } from "react-router-dom";

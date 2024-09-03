@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
@@ -7,23 +7,22 @@ import MovieCard from "./movieCard";
 const Top10Videos = ({ filter }: { filter: filter }) => {
   const [movies, setMovies] = useState<NewContent[]>([]);
 
-  const showMovies = async (): Promise<void> => {
-    try {
-      console.log(filter);
-      const data = await sendRequest({
-        url: `/redis/${filter.url}`,
-        method: "GET",
-        port: 3003,
-      });
-
-      console.log(data);
-      setMovies(data.content.results.slice(0, 10)); // Ensure we only get top 10
-    } catch (error) {
-      new Error(error instanceof Error ? error.message : "An error occurred");
-    }
-  };
-
   useEffect(() => {
+    const showMovies = async (): Promise<void> => {
+      try {
+        const data = await sendRequest({
+          url: `/redis/${filter.url}`,
+          method: "GET",
+          port: 3003,
+        });
+
+        console.log(data);
+        setMovies(data.content.results.slice(0, 10)); // Ensure we only get top 10
+      } catch (error) {
+        new Error(error instanceof Error ? error.message : "An error occurred");
+      }
+    };
+
     showMovies();
   }, [filter.url]);
 

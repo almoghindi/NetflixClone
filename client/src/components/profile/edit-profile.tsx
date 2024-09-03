@@ -19,11 +19,11 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
   const [gameHandle, setGameHandle] = useState(""); // Assuming GameHandle provides this
   const [maturitySettings, setMaturitySettings] = useState({}); // Assuming MaturitySettings provides this
   const [autoplay, setAutoplay] = useState({}); // Assuming AutoplayControls provides this
-
   // This data will be passed to the ActionButtons for the save operation
   const updatedProfileData = {
     name,
     avatar,
+    isKid: profile.isKid,
     language,
     gameHandle,
     maturitySettings,
@@ -38,7 +38,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
         <div className="flex flex-col sm:flex-row sm:space-x-4">
           {/* Column for Profile Picture */}
           <div className="flex-shrink-0 w-full sm:w-1/3 flex flex-col items-center mb-4 sm:mb-0">
-            <ProfilePicture src={avatar} onChange={setAvatar} />
+            <ProfilePicture src={avatar} handleChangeAvatar={setAvatar} />
           </div>
 
           {/* Column for Other Settings */}
@@ -49,17 +49,17 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
               onChange={(e) => setName(e.target.value)}
               className="bg-zinc-700 p-2 rounded w-full text-sm sm:text-base mb-3"
             />
-            <LanguageSelector onChange={setLanguage} />
-            <GameHandle onChange={setGameHandle} />
+            <LanguageSelector handleSelectLanguage={setLanguage} />
+            <GameHandle handleGameHandle={setGameHandle} />
             <div className="border-b border-gray-700 mb-2 mt-6"></div>
-            <MaturitySettings onChange={setMaturitySettings} />
+            <MaturitySettings handleMaturitySettings={setMaturitySettings} />
             <div className="border-b border-gray-700 mb-2 mt-2"></div>
-            <AutoplayControls onChange={setAutoplay} />
+            <AutoplayControls handleAutoplayControls={setAutoplay} />
             <div className="border-b border-gray-700 mb-2 mt-2"></div>
-            <ActionButtons 
-              onClose={onClose} 
-              profileId={profile.id} 
-              profileData={updatedProfileData} 
+            <ActionButtons
+              onClose={onClose}
+              profileId={profile.id}
+              profileData={updatedProfileData}
             />
           </div>
         </div>

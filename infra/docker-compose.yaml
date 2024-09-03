@@ -1,57 +1,105 @@
 version: "3.8"
 services:
-  # auth-service:
+  auth-service:
+    build:
+      context: ../auth
+    ports:
+      - "3001:3001"
+    depends_on:
+      - auth-mongodb
+      - kafka
+    env_file:
+      - ../auth/.env
+
+  accounts-service:
+    build:
+      context: ../accounts
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mysql
+      - kafka
+    env_file:
+      - ../accounts/.env
+
+  content-service:
+    build:
+      context: ../content
+    ports:
+      - "3003:3003"
+    depends_on:
+      - content-mongodb
+      - redis
+    env_file:
+      - ../content/.env
+    environment:
+      REDIS_URL: redis://redis:6379
+
+  payment-service:
+    build:
+      context: ../payment
+    ports:
+      - "3004:3004"
+    depends_on:
+      - payment-mongodb
+      - kafka
+    env_file:
+      - ../payment/.env
+
+  recommender-service:
+    build:
+      context: ../recommender
+    ports:
+      - "3006:3006"
+    depends_on:
+      - recommender-mongodb
+    env_file:
+      - ../recommender/.env
+
+  # streamer-service:
   #   build:
-  #     context: ../auth
+  #     context: ../streamer
   #   ports:
-  #     - "3001:3001"
-  #   depends_on:
-  #     - auth-mongodb
-  #     - kafka
-  #   environment:
-  #     MONGO_URI: mongodb://auth-mongodb:27017/auth
-  #     KAFKA_BROKER: kafka:9092
-  #     KAFKA_CLIENT_ID: auth
+  #     - "3005:3005"
+  #   env_file:
+  #     - ../streamer/.env
 
-  #   accounts-service:
-  #     build:
-  #       context: ../accounts
-  #     ports:
-  #       - "3002:3002"
-  #     depends_on:
-  #       - mysql
-  #     environment:
-  #       PORT: 3002
-  #       DB_HOST: mysql
-  #       DB_USER: netflix
-  #       DB_PASSWORD: api
-  #       DB_NAME: netflix_accounts
-  #       DB_PORT: 3306
+  auth-mongodb:
+    container_name: auth_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
 
-  #   content-service:
-  #     build:
-  #       context: ../content
-  #     ports:
-  #       - "3003:3003"
-  #     depends_on:
-  #       - content-mongodb
-  #       - redis
-  #     environment:
-  #       MONGO_URI: mongodb://content-mongodb:27018/contentdb
+  content-mongodb:
+    container_name: content_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27018:27017"
 
-  # auth-mongodb:
-  #   container_name: auth_mongodb_container
-  #   image: mongo:latest
-  #   restart: always
-  #   ports:
-  #     - "27017:27017"
+  payment-mongodb:
+    container_name: payment_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27019:27017"
 
-  #   content-mongodb:
-  #     container_name: content_mongodb_container
-  #     image: mongo:latest
-  #     restart: always
-  #     ports:
-  #       - "27018:27017"
+  recommender-mongodb:
+    container_name: recommender_mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27020:27017"
+
+  stripe-cli:
+    image: stripe/stripe-cli
+    container_name: stripe-cli
+    depends_on:
+      - payment-service
+    command: "listen --api-key $${STRIPE_API_KEY} --device-name $${STRIPE_DEVICE_NAME} --forward-to payment-service:3004/api/webhook/"
+    env_file:
+      - ./stripe_cli.env
 
   mysql:
     container_name: mysql_container
@@ -64,12 +112,22 @@ services:
       MYSQL_PASSWORD: api
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist data
 
-  # client:
-  #   build:
-  #     context: ../client
-  #   ports:
-  #     - "5173:5173"
+  client:
+    build:
+      context: ../client
+    ports:
+      - "5173:80"
+    depends_on:
+      - auth-service
+      - accounts-service
+      - content-service
+      - payment-service
+      - recommender-service
+    env_file:
+      - ../client/.env
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -77,6 +135,7 @@ services:
       - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
     image: bitnami/kafka:latest
     ports:
@@ -84,7 +143,7 @@ services:
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
     depends_on:
       - zookeeper
@@ -93,4 +152,5 @@ services:
     image: redis
     ports:
       - "6379:6379"
-
+volumes:
+  mysql_data:

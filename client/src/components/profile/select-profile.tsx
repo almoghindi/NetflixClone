@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useProfiles } from "./profiles";
 import { setUser } from "../../store/slices/authSlice"; // Adjust the path to your Redux slice
-import { encryptString, encryptObject } from "../../utils/encription"; // Assuming you have encryption utilities
+import { encryptObject } from "../../utils/encription"; // Assuming you have encryption utilities
 import { RootState } from "../../store/store";
 import { AuthResponse } from "../../types/auth";
 
@@ -20,23 +20,23 @@ const ProfileSelector = () => {
     try {
       // Encrypt the profile ID
       //const encryptedProfileId: string|null = encryptString(profileId);
-  
+
       // Get the current user from the Redux store and add profileId
-      const currentUser: AuthResponse['user'] = { 
-        ...user, 
-        profileId
+      const currentUser: AuthResponse["user"] = {
+        ...user!,
+        profileId,
       };
 
       // Update the Redux store with the new user object
-      dispatch(setUser(currentUser)); 
-    
+      dispatch(setUser(currentUser));
+
       // Encrypt the updated user object
       const encryptedResponse: string | null = encryptObject(currentUser);
       if (encryptedResponse) {
         // Store the encrypted user object in localStorage
         localStorage.setItem("user", encryptedResponse);
       }
-  
+
       // Navigate to the home page
       navigate("/");
     } catch (error) {
@@ -45,7 +45,6 @@ const ProfileSelector = () => {
       );
     }
   };
-  
 
   if (loading) {
     return <div>Loading profiles...</div>;

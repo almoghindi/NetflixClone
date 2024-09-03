@@ -24,7 +24,7 @@ const SignupFlow: React.FC<SignupFlowProps> = ({ initialStep = 1 }) => {
   const handlePaymentMethodSelected = (method: string) => {
     setPaymentMethod(method);
     handleNextStep();
-  }
+  };
 
   return (
     <>
@@ -35,20 +35,24 @@ const SignupFlow: React.FC<SignupFlowProps> = ({ initialStep = 1 }) => {
         <PlanSelection
           selectedPlan={selectedPlan}
           setSelectedPlan={setSelectedPlan}
-          planPrice={price}
+          // planPrice={price}
           setSelectedPrice={setPrice}
           onNext={handleNextStep}
         />
       )}
-      {step === 5 && <ChoosePayment onPaymentMethodSelect={handlePaymentMethodSelected} />}
-      {step === 6 &&
-        paymentMethod === "Credit or Debit Card" && (
-          <Payment selectedPlan={selectedPlan} setStep={setStep} />
-        )}
-      {step === 6 &&
-        paymentMethod === "PayPal" && (
-          <PayPalSetup selectedPlan={selectedPlan} PlanPrice={price} setStep={setStep} />
-        )}
+      {step === 5 && (
+        <ChoosePayment onPaymentMethodSelect={handlePaymentMethodSelected} />
+      )}
+      {step === 6 && paymentMethod === "Credit or Debit Card" && (
+        <Payment selectedPlan={selectedPlan} setStep={setStep} />
+      )}
+      {step === 6 && paymentMethod === "PayPal" && (
+        <PayPalSetup
+          selectedPlan={selectedPlan}
+          PlanPrice={price}
+          setStep={setStep}
+        />
+      )}
     </>
   );
 };

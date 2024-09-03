@@ -2,13 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { setUser, signupSuccess } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { setUser } from "../../store/slices/authSlice";
 import { sendRequest } from "../../hooks/use-request";
 import HeaderLandingPage from "../../layouts/header-landing-page";
 import { encryptObject, encryptString } from "../../utils/encription";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -25,8 +25,6 @@ interface SignUpPageFormProps {
 
 const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigate();
-  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     register,

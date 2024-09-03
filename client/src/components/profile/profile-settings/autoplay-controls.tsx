@@ -1,4 +1,6 @@
-const AutoplayControls: React.FC = () => (
+const AutoplayControls: React.FC<{
+  handleAutoplayControls: (src: string) => void;
+}> = () => (
   <div>
     <h2 className="text-sm sm:text-base mb-4">Autoplay controls</h2>
     <div className="space-y-2">

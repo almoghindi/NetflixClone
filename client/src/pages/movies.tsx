@@ -3,12 +3,8 @@ import { sendRequest } from "../hooks/use-request";
 
 import { NewContent } from "../types/new-content";
 import ContentRows from "../components/content/contentRows";
-import {
-  PlayIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/20/solid";
+import { PlayIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 import Video from "../components/content/video";
-import Navbar from "../layouts/nav";
 import { useNavigate } from "react-router-dom";
 
 enum filters {
@@ -48,14 +44,16 @@ const Movies = () => {
   return (
     <>
       <div className="z-60 -mt-36 bg-gradient-to-t from-black to-gray-900">
-        <div style={{
-        transform: "scale(1.5)",  // This scales the player by 130%
-        transformOrigin: "center", // Keeps the scaling centered
-        width: "100%",
-        height: "80vh",
-        overflow: "hidden"
-        }}
-        className="z-60 -mt-36 sm:-mt-50  ">
+        <div
+          style={{
+            transform: "scale(1.5)", // This scales the player by 130%
+            transformOrigin: "center", // Keeps the scaling centered
+            width: "100%",
+            height: "80vh",
+            overflow: "hidden",
+          }}
+          className="z-60 -mt-36 sm:-mt-50  "
+        >
           {<Video movieId={"1241674"} type={"movie"} />}
         </div>
         <div className="absolute top-[50%] ml-4 md:ml-16">

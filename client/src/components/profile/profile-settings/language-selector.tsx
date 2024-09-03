@@ -1,4 +1,6 @@
-const LanguageSelector: React.FC = () => (
+const LanguageSelector: React.FC<{
+  handleSelectLanguage: (src: string) => void;
+}> = () => (
   <div className="mb-2">
     <label htmlFor="language" className="block mb-2 text-sm sm:text-base">
       Language:

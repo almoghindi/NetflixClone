@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ContentRows from "../components/content/contentRows";
 import { sendRequest } from "../hooks/use-request";
 import { NewContent } from "../types/new-content";
 import { InformationCircleIcon, PlayIcon } from "@heroicons/react/24/outline";
 import Video from "../components/content/video";
-import Navbar from "../layouts/nav";
 
 const TvShows = () => {
   //const [tvShows, setTvShows] = useState<NewContent[]>([]);

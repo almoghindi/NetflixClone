@@ -1,4 +1,6 @@
-const MaturitySettings: React.FC = () => (
+const MaturitySettings: React.FC<{
+  handleMaturitySettings: (src: string) => void;
+}> = () => (
   <div>
     <h2 className="text-sm sm:text-base mb-2">Maturity Settings:</h2>
     <p className="bg-zinc-800 p-2 rounded mb-3 text-sm sm:text-base">

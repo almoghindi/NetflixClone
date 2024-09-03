@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-const GameHandle: React.FC = () => {
+const GameHandle: React.FC<{
+  handleGameHandle: (src: string) => void;
+}> = () => {
   const [gameHandle, setGameHandle] = useState("");
   const [error, setError] = useState("");
 

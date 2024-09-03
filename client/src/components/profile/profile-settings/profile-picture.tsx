@@ -1,5 +1,6 @@
 interface ProfilePictureProps {
   src: string;
+  handleChangeAvatar: (src: string) => void;
 }
 
 const ProfilePicture: React.FC<ProfilePictureProps> = ({ src }) => (

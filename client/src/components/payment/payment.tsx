@@ -44,7 +44,7 @@ const Payment: React.FC<PaymentProps> = ({ selectedPlan, setStep }) => {
         method: "POST",
         body: {
           plan: selectedPlan.toLocaleUpperCase(),
-          userId: user?.id,
+          userId: user?.userId,
         },
       }).then(async (res: clientSecret) => {
         const { clientSecret } = res;
