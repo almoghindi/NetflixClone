@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
         console.log(user, "USER IN LOGIN PAGE");
         navigation("/choose-payment");
       } else {
-        navigation("/");
+        navigation("/profiles");
       }
     } catch (error) {
       console.error(

@@ -24,7 +24,6 @@ const NavMobile = () => {
 
   return (
     <>
-      {/* Small screen navigation */}
       <div className="lg:hidden flex">
         <Menu as="div" className="relative  text-left">
           <div>

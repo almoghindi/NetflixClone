@@ -12,9 +12,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { setMyListContent } from "../store/slices/myListSlice";
 import ReactPlayer from "react-player";
 
-
 const mainTreiler = import.meta.env.VITE_LAST_BREATH_TREILER;
-
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -25,6 +23,11 @@ const HomePage = () => {
     navigate(`/main-movie/play`);
   }
   useEffect(() => {
+    if (!user?.profileId) {
+      navigate("/profiles");
+      return;
+    }
+
     const LoadLikedContent = async () => {
       const LikedContentResponse = await sendRequest({
         port: 3006,
@@ -53,33 +56,33 @@ const HomePage = () => {
 
   return (
     <>
- <div className="z-60 relative -mt-36 bg-gradient-to-t from-gray-900 to-black">
-      <div
-        className="
+      <div className="z-60 relative -mt-36 bg-gradient-to-t from-gray-900 to-black">
+        <div
+          className="
           relative
           w-full
           h-[30vh] sm:h-[60vh] md:h-[60vh] lg:h-[70vh]  xl:h-[80vh] 
           overflow-hidden
         "
-      >
-        <div className="absolute inset-0 bg-black opacity-30"></div>
-        <ReactPlayer
-          url={mainTreiler}
-          playing={true}
-          loop
-          muted
-          width="100%"
-          height="100%"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            objectFit: 'cover',
-          }}
-          controls={false}
-        />
-        <div className="z-60 absolute bottom-0 left-0 right-0 h-60 bg-gradient-to-t from-black to-transparent"></div>
+        >
+          <div className="absolute inset-0 bg-black opacity-30"></div>
+          <ReactPlayer
+            url={mainTreiler}
+            playing={true}
+            loop
+            muted
+            width="100%"
+            height="100%"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              objectFit: "cover",
+            }}
+            controls={false}
+          />
+          <div className="z-60 absolute bottom-0 left-0 right-0 h-60 bg-gradient-to-t from-black to-transparent"></div>
           {/* {<Video movieId={"1241674"} type={"movie"} />} // TODO: Use when switching to real unlimited Cloud storage*/}
           Last Breath Movie
         </div>

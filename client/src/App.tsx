@@ -65,9 +65,9 @@ const App: React.FC = () => {
         ) : (
           <>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/profiles/manage" element={<ProfileManager />} />
             <Route path="/profiles/add" element={<AddProfile />} />
-            <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/mylist" element={<MyList />} />
             <Route path="/steam-test" element={<VideoProcessor />} />

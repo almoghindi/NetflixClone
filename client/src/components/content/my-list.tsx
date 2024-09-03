@@ -24,22 +24,6 @@ const MyListPage: React.FC = () => {
             "
           >
             <MovieCard movie={movie} />
-            <button
-              className="
-                w-6 h-6 
-                absolute 
-                top-2 right-2
-                text-white 
-                cursor-pointer 
-                opacity-0 group-hover:opacity-50 hover:opacity-100 
-                transition-opacity duration-300
-                z-10 
-                hidden sm:block
-              "
-            >
-              {/* Add an icon or text for the button */}
-              &#x2715;
-            </button>
           </div>
         ))}
       </div>
