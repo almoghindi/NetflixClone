@@ -43,28 +43,65 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
       </p>
       <div className="relative">
         <ChevronLeftIcon
-          className="w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 z-10"
+          className="
+                w-6 h-6 
+                absolute 
+                left-0 
+                text-white 
+                cursor-pointer 
+                mt-[4.5rem] 
+                opacity-50 
+                hover:opacity-100 
+                z-10 
+                sm:block 
+                hidden   
+              "
           onClick={() => slideLeft(`slider-${filter.url}`)}
         />
         <ChevronRightIcon
-          className="w-6 h-6 absolute right-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 z-10"
+          className="
+                w-6 h-6 
+                absolute 
+                right-0 
+                text-white 
+                cursor-pointer 
+                mt-[4.5rem] 
+                opacity-50 
+                hover:opacity-100 
+                z-10 
+                sm:block  
+                hidden    
+              "
           onClick={() => slideRight(`slider-${filter.url}`)}
         />
         <div
-          className="flex items-center gap-24  overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide"
+          className="flex items-center  overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide md:gap-24 lg:gap-24 xl:gap-24"
           id={`slider-${filter.url}`}
         >
           {movies.map((movie, index) => (
             <div
               key={movie.id}
-              className="ml-24 flex items-center space-x-2 relative"
-            >
+              className={`flex items-center space-x-2 relative w-1/3 ${
+                index !== 0 ? 'ml-24 sm:ml-16' : 'ml-8 lg:ml-12 xl:ml-24 md:ml-12'}`}>
               <img
                 src={`https://www.netflix.com/tudum/top10/images/big_numbers/${
                   index + 1
                 }.png`}
                 alt={`Number ${index + 1}`}
-                className="h-full w-3/4 object-contain absolute -left-44 "
+                className="
+                  w-1/3            
+                  sm:w-1/3         
+                  md:w-3/4         
+                  lg:w-3/4         
+                  xl:w-3/4         
+                  object-contain   
+                  absolute         
+                  -left-10         
+                  sm:-left-44      
+                  md:-left-left-44 
+                  lg:-left-left-44 
+                  xl:-left-left-54 
+                "
               />
               <div className="relative">
                 <MovieCard movie={{ ...movie, media_type: "movie" }} />

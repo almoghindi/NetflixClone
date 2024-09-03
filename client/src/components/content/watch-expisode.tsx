@@ -49,9 +49,10 @@ const WatchEpisode: React.FC<EpisodeProps> = ({ movieId }) => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-4">{tvShow.name}</h1>
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-2/3">
+          <div className="w-full lg:w-2/3">
+
             {selectedVideo && (
-              <div className="aspect-w-16 aspect-h-9 mb-4">
+              <div className="relative aspect-w-16 aspect-h-9 mb-4">
                 <ReactPlayer
                   url={`https://www.youtube.com/embed/${selectedVideo.key}`}
                   playing={true}

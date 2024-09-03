@@ -48,11 +48,33 @@ const RecommendedRow: React.FC = () => {
         </p>
         <div className=" ">
           <ChevronLeftIcon
-            className="w-6 h-6 absolute left-0  text-white cursor-pointer mt-[4.5rem]  opacity-50 hover:opacity-100"
+            className="
+              w-6 h-6 
+              absolute 
+              left-0  
+              text-white 
+              cursor-pointer 
+              mt-[4.5rem]  
+              opacity-50 
+              hover:opacity-100 
+              sm:block  
+              hidden    
+            "
             onClick={() => slideLeft(`slider-recommendations`)}
           />
           <ChevronRightIcon
-            className="w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100"
+            className="
+              w-6 h-6 
+              absolute 
+              right-0 
+              text-white 
+              cursor-pointer 
+              mt-[4.5rem] 
+              opacity-50 
+              hover:opacity-100 
+              sm:block   
+              hidden     
+            "
             onClick={() => slideRight(`slider-recommendations`)}
           />
         </div>
