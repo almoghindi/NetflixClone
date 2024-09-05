@@ -24,7 +24,6 @@ export interface TvProps {
 
 const ContentRows = ({ filter }: { filter: filter }) => {
   const [content, setContent] = useState<(NewContent | TvProps)[]>([]);
-
   useEffect(() => {
     const fetchContent = async (): Promise<void> => {
       try {
@@ -64,45 +63,44 @@ const ContentRows = ({ filter }: { filter: filter }) => {
     fetchContent();
   }, [filter.url]);
 
-  const slideLeft = (id: string) => {
-    const slider = document.getElementById(id) as HTMLElement;
-    slider.scrollLeft -= 500;
+  const slideLeft = () => {
+    const slider = document.getElementById(`slider-${filter.url}`);
+    if (slider) slider.scrollLeft -= 600; // Slightly larger scroll increment
   };
 
-  const slideRight = (id: string) => {
-    const slider = document.getElementById(id) as HTMLElement;
-    slider.scrollLeft += 500;
+  const slideRight = () => {
+    const slider = document.getElementById(`slider-${filter.url}`);
+    if (slider) slider.scrollLeft += 600;
   };
 
   return (
-    <div className="px-4 md:px-12 mt-4 space-y-8">
-      <p className="text-white text-xl md:text:xl lg:text-2xl xl:text-3xl font-semibold mb-4">
+    <div className="relative space-y-0.5 md:space-y-2 px-4">
+      <h2 className="cursor-pointer text-sm font-semibold text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl">
         {filter.title}
-      </p>
-      <div className="relative">
+      </h2>
+
+      <div className="group relative">
         <ChevronLeftIcon
           className="z-50 w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
-          onClick={() => slideLeft(`slider-${filter.url}`)}
+          onClick={() => slideLeft()}
         />
         <ChevronRightIcon
           className="z-50 w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
-          onClick={() => slideRight(`slider-${filter.url}`)}
+          onClick={() => slideRight()}
         />
       </div>
       <div
-        className="relative gap-2 flex items-center w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide"
         id={`slider-${filter.url}`}
+        className="flex overflow-x-scroll scrollbar-hide scroll-type-x mandatory scroll-smooth whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5"
       >
-        {content &&
-          content.map((item, index) => (
-            <div key={index}>
-              <MovieCard
-                movie={
-                  item.media_type ? item : { ...item, media_type: "movie" }
-                }
-              />
-            </div>
-          ))}
+        {content.map((item, index) => (
+          <div
+            key={index}
+            className="scroll-snap-align-start w-[350px] min-w-[350px] "
+          >
+            <MovieCard movie={item} />
+          </div>
+        ))}
       </div>
     </div>
   );

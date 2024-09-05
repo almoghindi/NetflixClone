@@ -1,3 +1,5 @@
+import scrollbarHide from "tailwind-scrollbar-hide";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -8,8 +10,12 @@ export default {
       },
     },
   },
-  plugins: [
-    // eslint-disable-next-line no-undef
-    require("tailwind-scrollbar-hide"),
-  ],
+  variants: {
+    transitionProperty: ["respoWnsive", "motion-safe", "motion-reduce"],
+  },
+  extend: {
+    // ...
+    transitionProperty: ["hover", "focus"],
+  },
+  plugins: [scrollbarHide],
 };

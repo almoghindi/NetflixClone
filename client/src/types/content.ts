@@ -14,3 +14,4 @@ export interface Content {
   genre: string[];
   isSeries: boolean;
 }
+

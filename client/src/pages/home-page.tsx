@@ -1,6 +1,6 @@
 import ContentRows from "../components/content/contentRows";
 import { PlayIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
-import Video from "../components/content/video";
+// import Video from "../components/content/video";
 import { useNavigate } from "react-router-dom";
 import Top10Videos from "../components/content/top10-videos";
 import RecommendedRow from "../components/content/recommended-Row";
@@ -52,7 +52,7 @@ const HomePage = () => {
     };
     LoadLikedContent();
     LoadMyListContent();
-  }, [dispatch, user]);
+  }, [dispatch, navigate, user]);
 
   return (
     <>
@@ -104,7 +104,7 @@ const HomePage = () => {
             </button>
           </div>
         </div>
-        <div className="pb-40 mt-15">
+        <div className="relative pb-40 mt-15 overflow-visible">
           <Top10Videos
             filter={{
               url: "top_rated/movie",

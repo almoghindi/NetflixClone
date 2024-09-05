@@ -150,7 +150,7 @@ const addFavoriteItemById = async (
     const data = {
       profile_id: id,
       content_id: Content.id.toString(), // Ensure content ID is a string
-      media_type: Content.media_type, // 'movie' or 'tv'
+      media_type: Content.media_type || type, // 'movie' or 'tv'
       adult: Content.adult,
       backdrop_path: Content.backdrop_path,
       original_language: Content.original_language,

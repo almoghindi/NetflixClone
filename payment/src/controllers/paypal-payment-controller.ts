@@ -27,11 +27,12 @@ export class PayPalController {
 
   createPayPalOrder = async (req: Request, res: Response): Promise<void> => {
     const { selectedPlan, PlanPrice, userId } = req.body as ICreateOrderRequest;
+    console.log(selectedPlan, PlanPrice, userId);
     const order = await this.paypalService.createOrder(
       selectedPlan,
       Number(PlanPrice)
     );
-
+    console.log(order);
     const subscription: ISubscription = {
       userId,
       orderId: order.id,
@@ -45,14 +46,13 @@ export class PayPalController {
       id: userId,
       subscription: selectedPlan,
     });
-
     res.json(order);
   };
 
   capturePayPalOrder = async (req: Request, res: Response): Promise<void> => {
     const { orderID, selectedPlan, PlanPrice } =
       req.body as ICaptureOrderRequest;
-
+    console.log(orderID);
     const captureData = await this.paypalService.captureOrder(orderID);
 
     if (captureData.status === "COMPLETED") {

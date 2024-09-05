@@ -20,7 +20,7 @@ interface PaymentProps {
 const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-
+  console.log(selectedPlan, PlanPrice);
   const [isLoading, setIsLoading] = useState(true);
   const navigaion = useNavigate();
 
@@ -40,6 +40,7 @@ const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
           userId: user?.userId,
         },
       });
+      console.log(order);
       return order.id;
     } catch (error) {
       console.error("Failed to create order:", error);
@@ -48,6 +49,7 @@ const PayPalSetup: React.FC<PaymentProps> = ({ selectedPlan, PlanPrice }) => {
 
   const onApprove = async (data: OnApproveData) => {
     try {
+      console.log(data);
       const orderData = await sendRequest({
         port: 3004,
         url: "/api/payment/capture-paypal-order",
