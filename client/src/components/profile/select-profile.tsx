@@ -16,18 +16,18 @@ const ProfileSelector = () => {
     navigate("/profiles/manage");
   };
 
-  const handleProfileSelection = async (profileId: string) => {
+  const handleProfileSelection = async (profileId: string, avatar: string) => {
     try {
-      // Encrypt the profile ID
-      //const encryptedProfileId: string|null = encryptString(profileId);
 
+      
       // Get the current user from the Redux store and add profileId
       const currentUser: AuthResponse["user"] = {
         ...user!,
         profileId,
+        avatar,
+        
       };
-
-      // Update the Redux store with the new user object
+      
       dispatch(setUser(currentUser));
 
       // Encrypt the updated user object
@@ -64,11 +64,11 @@ const ProfileSelector = () => {
           <div
             key={index}
             className="relative text-center group"
-            onClick={() => handleProfileSelection(profile.id)} // Pass profile ID
+            onClick={() => handleProfileSelection(profile.id, profile.avatar)} // Pass profile ID
           >
             <div className="relative">
               <img
-                src={profile.src}
+                src={ profile.avatar }
                 alt={profile.name}
                 className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-46 lg:h-46 xl:w-[190px] xl:h-[190px] rounded cursor-pointer transform transition-transform duration-300 group-hover:ring-4 group-hover:ring-white"
               />
@@ -78,7 +78,7 @@ const ProfileSelector = () => {
                 </span>
               )}
             </div>
-            <p className="mt-2 sm:mt-4 text-base sm:text-2xl text-gray-400 transition-colors duration-300 group-hover:text-white">
+            <p className="mt-2 sm:mt-4 text-base sm:text-xl text-gray-400 transition-colors duration-300 group-hover:text-white">
               {profile.name}
             </p>
           </div>

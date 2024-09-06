@@ -15,7 +15,7 @@ import VideoProcessor from "./components/video-test";
 import PurchaseSuccess from "./components/payment/purchase-success";
 import HomePage from "./pages/home-page";
 import Footer from "./layouts/footer";
-import ProfileManager from "./components/profile/profile-manager";
+import ProfileManager, { Profile } from "./components/profile/profile-manager";
 import AddProfile from "./components/profile/add-profile";
 import SelectProfile from "./components/profile/select-profile";
 import VideoPlayer from "./components/video-test";
@@ -27,8 +27,9 @@ import { useSelector } from "react-redux";
 import WatchTrailers from "./components/content/watch-trailers";
 import SearchPage from "./pages/search-page";
 import Navbar from "../src/layouts/nav";
+import EditProfileIcon from "./components/profile/profile-settings/edit-icon";
+import EditProfile from "./components/profile/edit-profile";
 
-// import Login from "./pages/login-page";
 
 const App: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -68,6 +69,12 @@ const App: React.FC = () => {
             <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/profiles/manage" element={<ProfileManager />} />
             <Route path="/profiles/add" element={<AddProfile />} />
+            <Route path="/profiles/manage/edit/:profileId" element={<EditProfile profile={user?.profileId as unknown as Profile } onClose={function (): void {
+                throw new Error("Function not implemented.");
+              } } />}  />
+            <Route path="/profile/edit-icon" element={<EditProfileIcon />} />
+            <Route path="/edit-profile-icon" element={<EditProfileIcon />} />
+
             <Route path="/search" element={<SearchPage />} />
             <Route path="/mylist" element={<MyList />} />
             <Route path="/steam-test" element={<VideoProcessor />} />

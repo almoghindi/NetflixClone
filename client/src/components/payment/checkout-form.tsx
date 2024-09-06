@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { setUser } from "../../store/slices/authSlice";
 import { encryptObject } from "../../utils/encription";
-import { useNavigate } from "react-router-dom";
 interface CheckoutFormProps {
   selectedPlan: string;
   setStep: (step: number) => void;
@@ -18,7 +17,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<string>("");

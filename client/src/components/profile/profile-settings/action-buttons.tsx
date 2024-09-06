@@ -21,7 +21,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         url: "/api/profile/delete",
         method: "POST",
         port: 3002,
-        body: { id: profileId },
+        body: { id: profileId  },
       });
 
       if (response) {
@@ -37,13 +37,16 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
   const handleSave = async () => {
     try {
+      console.log(profileData, profileId);
       const response = await sendRequest({
-        url: `/api/profile/${profileId}/update`, // Assuming this is the route for updating
+        url: `/api/profile/${profileId }/update`, // Assuming this is the route for updating
         method: "PUT",
         port: 3002,
         body: profileData,
       });
 
+      console.log(response," Hewew");
+      
       if (response) {
         console.log("Profile updated successfully:", response);
         navigate("/profiles"); // Redirect to profiles list after update
