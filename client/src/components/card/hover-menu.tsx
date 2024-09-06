@@ -9,7 +9,7 @@ import { NewContent } from "../../types/new-content";
 
 const HoverMenu: React.FC<{ movie: TvProps | NewContent }> = ({ movie }) => {
   return (
-    <div className="bg-zinc-800 p-3 rounded-b-md shadow-xl">
+    <div className="bg-zinc-800 p-3 rounded-b-md shadow-xl ">
       <div className="flex flex-row items-center gap-3 mb-2">
         <PlayButton movie={movie} />
         <ListButton movie={movie} />

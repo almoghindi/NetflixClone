@@ -24,6 +24,9 @@ export interface TvProps {
 
 const ContentRows = ({ filter }: { filter: filter }) => {
   const [content, setContent] = useState<(NewContent | TvProps)[]>([]);
+  const [translateX, setTranslateX] = useState(0);
+  const visibleItems = 5.13; // Number of visible items at once
+
   useEffect(() => {
     const fetchContent = async (): Promise<void> => {
       try {
@@ -64,17 +67,18 @@ const ContentRows = ({ filter }: { filter: filter }) => {
   }, [filter.url]);
 
   const slideLeft = () => {
-    const slider = document.getElementById(`slider-${filter.url}`);
-    if (slider) slider.scrollLeft -= 600; // Slightly larger scroll increment
+    setTranslateX((prev) => Math.min(prev + 25, 0)); // Slide left by 25%
   };
 
   const slideRight = () => {
-    const slider = document.getElementById(`slider-${filter.url}`);
-    if (slider) slider.scrollLeft += 600;
+    const maxTranslateX = -(
+      (content.length - visibleItems) *
+      (100 / visibleItems)
+    );
+    setTranslateX((prev) => Math.max(prev - 25, maxTranslateX)); // Slide right by 25%
   };
-
   return (
-    <div className="relative space-y-0.5 md:space-y-2 px-4">
+    <div className={`relative space-y-0.5 md:space-y-2 px-4 mb-8 hover:z-50`}>
       <h2 className="cursor-pointer text-sm font-semibold text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl">
         {filter.title}
       </h2>
@@ -91,12 +95,13 @@ const ContentRows = ({ filter }: { filter: filter }) => {
       </div>
       <div
         id={`slider-${filter.url}`}
-        className="flex overflow-x-scroll scrollbar-hide scroll-type-x mandatory scroll-smooth whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5"
+        className="flex overflow-visible scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300"
+        style={{ transform: `translateX(${translateX}%)` }}
       >
         {content.map((item, index) => (
           <div
             key={index}
-            className="scroll-snap-align-start w-[350px] min-w-[350px] "
+            className="scroll-snap-align-start w-[350px] min-w-[350px] item transition-transform duration-300"
           >
             <MovieCard movie={item} />
           </div>

@@ -157,9 +157,9 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie }) => {
   };
 
   return (
-    <div className=" relative z-50 flex items-center justify-center">
+    <div className=" relative  flex items-center justify-center">
       <div
-        className={`relative w-[250px] duration-500 transition-transform scale-150 z-50 `}
+        className={`relative w-[250px] duration-500 transition-transform scale-150  `}
       >
         <img
           className="cursor-pointer object-cover rounded-md h-full w-full"

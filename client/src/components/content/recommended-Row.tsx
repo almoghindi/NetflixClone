@@ -8,7 +8,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
 const RecommendedRow: React.FC = () => {
-  const [movies, setMovies] = useState<NewContent[]>([]);
+  const [content, setContents] = useState<NewContent[]>([]);
+  const [translateX, setTranslateX] = useState(0);
+  const visibleItems = 5.13; // Number of visible items at once
 
   const userId = useSelector((state: RootState) => state.auth.user!.userId)!;
   console.log(userId);
@@ -22,7 +24,7 @@ const RecommendedRow: React.FC = () => {
           port: 3006,
         });
         console.log([...data.movies, ...data.tvShows]);
-        setMovies([...data.movies, ...data.tvShows]);
+        setContents([...data.movies, ...data.tvShows]);
       } catch (error) {
         new Error(error instanceof Error ? error.message : "An error occurred");
       }
@@ -30,61 +32,46 @@ const RecommendedRow: React.FC = () => {
     getRecommended();
   }, [userId]);
 
-  const slideLeft = (id: string) => {
-    const slider = document.getElementById(id) as HTMLElement;
-    slider.scrollLeft -= 500;
+  const slideLeft = () => {
+    setTranslateX((prev) => Math.min(prev + 25, 0)); // Slide left by 25%
   };
 
-  const slideRight = (id: string) => {
-    const slider = document.getElementById(id) as HTMLElement;
-    slider.scrollLeft += 500;
+  const slideRight = () => {
+    const maxTranslateX = -(
+      (content.length - visibleItems) *
+      (100 / visibleItems)
+    );
+    setTranslateX((prev) => Math.max(prev - 25, maxTranslateX)); // Slide right by 25%
   };
 
   return (
     <>
-      <div className="px-4 md:px-12 mt-4 space-y-8 ">
-        <p className="text-white text-xl md:text:xl lg-text-2xl xl:text-3xl font-semibold mb-4  ">
+      <div className={`relative space-y-0.5 md:space-y-2 px-4 mb-8 hover:z-50`}>
+        <h2 className="cursor-pointer text-sm font-semibold text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl">
           For You
-        </p>
-        <div className=" ">
+        </h2>
+
+        <div className="group relative">
           <ChevronLeftIcon
-            className="
-              w-6 h-6 
-              absolute 
-              left-0  
-              text-white 
-              cursor-pointer 
-              mt-[4.5rem]  
-              opacity-50 
-              hover:opacity-100 
-              sm:block  
-              hidden    
-            "
-            onClick={() => slideLeft(`slider-recommendations`)}
+            className="z-50 w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
+            onClick={() => slideLeft()}
           />
           <ChevronRightIcon
-            className="
-              w-6 h-6 
-              absolute 
-              right-0 
-              text-white 
-              cursor-pointer 
-              mt-[4.5rem] 
-              opacity-50 
-              hover:opacity-100 
-              sm:block   
-              hidden     
-            "
-            onClick={() => slideRight(`slider-recommendations`)}
+            className="z-50 w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
+            onClick={() => slideRight()}
           />
         </div>
         <div
-          className="relative gap-2 flex items-center w-full h-full overflow-x-scroll  whitespace-nowrap scroll-smooth  scrollbar-hide "
+          className="flex overflow-visible scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300"
+          style={{ transform: `translateX(${translateX}%)` }}
           id={`slider-recommendations`}
         >
-          {movies &&
-            movies.map((movie, index) => (
-              <div key={index}>
+          {content &&
+            content.map((movie, index) => (
+              <div
+                key={index}
+                className="scroll-snap-align-start w-[350px] min-w-[350px] item transition-transform duration-300"
+              >
                 <MovieCard movie={movie} />
               </div>
             ))}

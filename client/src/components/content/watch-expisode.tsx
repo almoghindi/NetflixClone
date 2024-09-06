@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { sendRequest } from '../../hooks/use-request';
-import ReactPlayer from 'react-player';
+import React, { useState, useEffect } from "react";
+import { sendRequest } from "../../hooks/use-request";
+import ReactPlayer from "react-player";
+import LikeButton from "../card/Like-button";
 
 interface TvShow {
   name: string;
@@ -26,14 +27,22 @@ const WatchEpisode: React.FC<EpisodeProps> = ({ movieId }) => {
   useEffect(() => {
     const fetchTvShowData = async () => {
       try {
-        const tvShowResponse = await sendRequest({ url: `/redis/api/tv/${movieId}/details`, method: 'GET', port: 3003 });
-        const videosResponse = await sendRequest({ url: `/redis/api/tv/${movieId}/videos`, method: 'GET', port: 3003 });
+        const tvShowResponse = await sendRequest({
+          url: `/redis/api/tv/${movieId}/details`,
+          method: "GET",
+          port: 3003,
+        });
+        const videosResponse = await sendRequest({
+          url: `/redis/api/tv/${movieId}/videos`,
+          method: "GET",
+          port: 3003,
+        });
 
         setTvShow(tvShowResponse.content);
         setVideos(videosResponse.content.results);
         setSelectedVideo(videosResponse.content.results[0]);
       } catch (error) {
-        console.error('Error fetching TV show data:', error);
+        console.error("Error fetching TV show data:", error);
       }
     };
 
@@ -50,7 +59,6 @@ const WatchEpisode: React.FC<EpisodeProps> = ({ movieId }) => {
         <h1 className="text-4xl font-bold mb-4">{tvShow.name}</h1>
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-2/3">
-
             {selectedVideo && (
               <div className="relative aspect-w-16 aspect-h-9 mb-4">
                 <ReactPlayer
@@ -70,13 +78,35 @@ const WatchEpisode: React.FC<EpisodeProps> = ({ movieId }) => {
               </button>
               <div className="flex space-x-2">
                 <button className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </button>
                 <button className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
                   </svg>
                 </button>
               </div>

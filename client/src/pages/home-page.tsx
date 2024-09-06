@@ -56,7 +56,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="z-60 relative -mt-36 bg-gradient-to-t from-gray-900 to-black">
+      <div className="relative -mt-36 bg-gradient-to-t from-gray-900 to-black">
         <div
           className="
           relative
@@ -104,7 +104,7 @@ const HomePage = () => {
             </button>
           </div>
         </div>
-        <div className="relative pb-40 mt-15 overflow-visible">
+        <div className="pb-40 mt-15 overflow-visible overflow-x-hidden z-0">
           <Top10Videos
             filter={{
               url: "top_rated/movie",
