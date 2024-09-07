@@ -115,19 +115,19 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql # Persist data
 
-  # client:
-  #   build:
-  #     context: ../client
-  #   ports:
-  #     - "5173:80"
-  #   depends_on:
-  #     - auth-service
-  #     - accounts-service
-  #     - content-service
-  #     - payment-service
-  #     - recommender-service
-  #   env_file:
-  #     - ../client/.env
+  client:
+    build:
+      context: ../client
+    ports:
+      - "5173:80"
+    depends_on:
+      - auth-service
+      - accounts-service
+      - content-service
+      - payment-service
+      - recommender-service
+    env_file:
+      - ../client/.env
 
   zookeeper:
     image: bitnami/zookeeper:latest

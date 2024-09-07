@@ -10,6 +10,7 @@ export interface MovieCardProps {
 
 const Top10Card: React.FC<MovieCardProps> = ({ movie }) => {
   const navigate = useNavigate();
+
   const handlePlay = () => {
     console.log(movie.id);
     navigate(`/watch/${movie.id}/${movie.media_type || "movie"}`);

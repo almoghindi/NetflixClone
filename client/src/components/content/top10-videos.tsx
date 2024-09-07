@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
@@ -6,7 +6,11 @@ import Top10Card from "./top10-card";
 
 const Top10Videos = ({ filter }: { filter: filter }) => {
   const [content, setContents] = useState<NewContent[]>([]);
-  const [translateX, setTranslateX] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const ITEMS_PER_SCREEN = 5;
+  const ITEM_WIDTH = 315 + 128; // Width of a single item in pixels
 
   useEffect(() => {
     const showMovies = async (): Promise<void> => {
@@ -28,12 +32,16 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
   }, [filter.url]);
 
   const slideLeft = () => {
-    setTranslateX((prev) => Math.min(prev + 25, 0)); // Slide left by 25%
+    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
   const slideRight = () => {
-    setTranslateX((prev) => Math.max(prev - 25, -((content.length - 4) * 25))); // Slide right by 25%
+    setCurrentIndex((prevIndex) =>
+      Math.min(prevIndex + 1, Math.max(content.length - ITEMS_PER_SCREEN, 0))
+    );
   };
+
+  const translateX = -currentIndex * ITEM_WIDTH;
 
   return (
     <div className={`relative space-y-0.5 md:space-y-2 px-4 mb-8 hover:z-50`}>
@@ -42,17 +50,24 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
       </h2>
       <div className="group relative">
         <ChevronLeftIcon
-          className="z-50 w-10 h-10 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
-          onClick={() => slideLeft()}
+          className={`z-50 w-6 h-6 absolute left-0 text-white cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block ${
+            currentIndex === 0 ? "invisible" : "visible"
+          }`}
+          onClick={slideLeft}
         />
         <ChevronRightIcon
-          className="z-50 w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block"
-          onClick={() => slideRight()}
+          className={`z-50 w-6 h-6 absolute text-white right-0 cursor-pointer mt-[4.5rem] opacity-50 hover:opacity-100 hidden md:block ${
+            currentIndex >= content.length - ITEMS_PER_SCREEN
+              ? "invisible"
+              : "visible"
+          }`}
+          onClick={slideRight}
         />
       </div>
       <div
         className="flex overflow-visible scrollbar-hide items-center whitespace-nowrap  md:gap-24 lg:gap-24 xl:gap-24 transition-transform duration-300"
-        style={{ transform: `translateX(${translateX}%)` }}
+        style={{ transform: `translateX(${translateX}px)` }}
+        ref={sliderRef}
         id={`slider-${filter.url}`}
       >
         {content.map((movie, index) => (

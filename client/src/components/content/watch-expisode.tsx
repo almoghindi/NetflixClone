@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { sendRequest } from "../../hooks/use-request";
 import ReactPlayer from "react-player";
-import LikeButton from "../card/Like-button";
 
 interface TvShow {
   name: string;
