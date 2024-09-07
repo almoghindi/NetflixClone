@@ -17,6 +17,7 @@ export interface AuthResponse {
     accessToken: string | null;
     refreshToken: string | null;
     profileId?: string | null;
+    avatar?: string | null;
   };
 }
 

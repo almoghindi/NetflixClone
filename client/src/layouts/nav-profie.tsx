@@ -1,8 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
-import blueIcon from "../assets/img/blueIcon.jpg";
-import redIcon from "../assets/img/redIcon.jpg";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronDownIcon,
   PencilIcon,
@@ -12,8 +11,12 @@ import {
 import Logout from "../components/logout";
 import { BellIcon } from "@heroicons/react/24/outline";
 import SearchBar from "./searchBar";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 
 const NavProfile = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
   const profileDropDown = [
     {
       name: "Manage Profile",
@@ -35,10 +38,6 @@ const NavProfile = () => {
     },
   ];
 
-  const profileColor = [blueIcon, redIcon];
-  const profileColorPicker =
-    profileColor[Math.floor(Math.random() * profileColor.length)];
-
   return (
     <div className="flex  lg:flex lg:flex-1 lg:justify-end me-10 ">
       <SearchBar />
@@ -46,10 +45,12 @@ const NavProfile = () => {
       <BellIcon className="h-7 w-7 me-5 ms-6 mt-1 hidden md:block text-white cursor-pointer" />
       <div className="text-sm font-semibold leading-6 text-white">
         <img
-          src={profileColorPicker}
+          onClick={() => navigate("/profiles")}
+          src={user?.avatar || "https://i.pravatar.cc/300"}
           className="h-8 w-8 rounded cursor-pointer"
           alt=""
         />
+        
       </div>
       <Menu as="div" className="relative inline-block text-left">
         <div>

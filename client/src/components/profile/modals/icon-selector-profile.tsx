@@ -2,26 +2,31 @@
 import React from "react";
 import IconSelectorHeader from "./icon-selector-components/icon-selector-header";
 import IconsSection from "./icon-selector-components/icons-section";
+import { Profile } from "../profile-manager";
 
 
 
 interface IconSelectorProps {
   onIconSelect: (icon: string) => void;
   onClose: () => void;
+  profile: Profile;
 }
 
 const IconSelector: React.FC<IconSelectorProps> = ({
   onIconSelect,
   onClose,
+  profile,
 }) => {
   return (
     <>
-      <IconSelectorHeader />
+
+      <IconSelectorHeader profile={profile} />
       <IconsSection
-        title={"Classic Icons"}
         onIconSelect={onIconSelect}
         onClose={onClose}
-      />
+        
+        />
+
     </>
   );
 };

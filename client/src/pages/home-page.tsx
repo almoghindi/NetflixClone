@@ -1,6 +1,5 @@
 import ContentRows from "../components/content/contentRows";
 import { PlayIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
-// import Video from "../components/content/video";
 import { useNavigate } from "react-router-dom";
 import Top10Videos from "../components/content/top10-videos";
 import RecommendedRow from "../components/content/recommended-Row";
@@ -17,14 +16,14 @@ const mainTreiler = import.meta.env.VITE_LAST_BREATH_TREILER;
 const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   function handlePlayMainVideoClick(): void {
     navigate(`/main-movie/play`);
   }
   useEffect(() => {
     if (!user?.profileId) {
-      navigate("/profiles");
+      navigate("/profiles/add");
       return;
     }
 
@@ -50,6 +49,7 @@ const HomePage = () => {
         dispatch(setMyListContent(MyListContentResponse));
       } else console.log("not found myListContent");
     };
+
     LoadLikedContent();
     LoadMyListContent();
   }, [dispatch, navigate, user]);
@@ -86,8 +86,8 @@ const HomePage = () => {
           {/* {<Video movieId={"1241674"} type={"movie"} />} // TODO: Use when switching to real unlimited Cloud storage*/}
           Last Breath Movie
         </div>
-        <div className="absolute top-[17%] ml-4 md:ml-16 lg:ml-24 lg:top-[24%]">
-          <p className=" text-white text-1xl md:text-3xl h-full lg:text-8xl font-black drop-shadow-xl">
+        <div className="absolute top-[17%] ml-4 md:ml-16 xl:ml-24 xl:top-[22%]  xl:top-[24%] lg:ml-24 lg:top-[18%]">
+          <p className=" text-white text-1xl md:text-3xl h-full lg:text-6xl font-black drop-shadow-xl">
             The Last Breath
           </p>
           <div className="flex gap-3 flex-row items-center mt-3 md:mt-4 ">

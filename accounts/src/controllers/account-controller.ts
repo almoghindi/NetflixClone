@@ -66,6 +66,8 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    console.log("The Req Body:", req.body);
+    
     // Update profile with the fields provided in req.body
     Object.assign(profile, req.body);
 
@@ -78,10 +80,61 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getProfilebyId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const profile = await Profile.findOne({
+      where: { id: req.params.id },
+    });
+
+    if (!profile) {
+      res.status(404).json({ message: "Profile not found" });
+      return;
+    }
+
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const userHaveProfile = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params; // This is the user_id
+
+  if (!id) {
+    res.status(400).json({ hasProfile: false, message: "User ID is required" });
+    return;
+  }
+
+  try {
+    const profile = await Profile.findOne({
+      where: {
+        user_id: id,
+      },
+      include: [
+        {
+          model: FavoriteItem,
+          as: "favoriteItems",
+        },
+      ],
+    });
+
+    if (!profile) {
+      res.status(200).json({ hasProfile: false, message: "No profile found for this user" });
+    } else {
+      res.status(200).json({ hasProfile: true, profileId: profile.id });
+    }
+  } catch (error) {
+    console.error('Error checking user profile:', error);
+    res.status(500).json({ hasProfile: false, message: "Internal server error" });
+  }
+};
+
+
 const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params; // This is now the user_id
-
+    console.log("user id L"+id);
     if (!id) {
       res.status(400).json({ message: "User ID is required" });
       return;
@@ -102,6 +155,7 @@ const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({ message: "No profiles found for this user" });
       return;
     }
+    console.log(profiles);
     res.status(200).json(profiles);
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -250,4 +304,6 @@ export {
   deleteProfile,
   deleteFavoriteItemById,
   deleteAllItems,
+  getProfilebyId,
+  userHaveProfile,
 };
