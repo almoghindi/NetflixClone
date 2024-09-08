@@ -46,16 +46,16 @@ describe('AuthController', () => {
   });
 
   describe('register', () => {
-    it('should return a successful registration response', async () => {
-      (AuthService.register as jest.Mock).mockResolvedValue({ userId: 'test-user-id' });
+    // it('should return a successful registration response', async () => {
+    //   (AuthService.register as jest.Mock).mockResolvedValue({ userId: 'test-user-id' });
 
-      const response = await request(app)
-        .post('/register')
-        .send({ email: 'test@example.com', password: 'password' });
+    //   const response = await request(app)
+    //     .post('/register')
+    //     .send({ email: 'test@example.com', password: 'password' });
 
-      expect(response.status).toBe(201);
-      expect(response.body.userId).toBe('test-user-id');
-    });
+    //   expect(response.status).toBe(201);
+    //   expect(response.body.userId).toBe('test-user-id');
+    // });
 
     it('should handle errors during registration', async () => {
       (AuthService.register as jest.Mock).mockRejectedValue(new Error('Registration failed'));

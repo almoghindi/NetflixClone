@@ -17,10 +17,10 @@ const Top10Card: React.FC<MovieCardProps> = ({ movie }) => {
   };
 
   return (
-    <div className="scroll-snap-align-start min-w-[300px] item transition-transform duration-300">
+    <div className="scroll-snap-align-start min-w-[300px] item transition-transform duration-300 mt-8">
       <div className={`group justify-center items-start`}>
         <div
-          className={`h-[300px] w-[250px] duration-500 transition-transform ease-in-out group-hover:scale-125 group-hover:z-50 group-hover:shadow-lg`}
+          className={`h-[170px] w-[150px] duration-500 transition-transform ease-in-out group-hover:scale-125 group-hover:z-50 group-hover:shadow-lg xl:h-[300px] xl:w-[250px] `}
         >
           <img
             className="cursor-pointer object-cover rounded-md h-full w-full group-hover:hidden"

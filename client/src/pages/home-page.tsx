@@ -88,7 +88,7 @@ const HomePage = () => {
           {/* {<Video movieId={"1241674"} type={"movie"} />} // TODO: Use when switching to real unlimited Cloud storage*/}
           Last Breath Movie
         </div>
-        <div className="absolute top-[17%] ml-4 md:ml-16 xl:ml-24 xl:top-[22%]  xl:top-[24%] lg:ml-24 lg:top-[18%]">
+        <div className="absolute top-[10%] ml-4 md:ml-16 xl:ml-24 xl:top-[22%]  xl:top-[24%] lg:ml-24 lg:top-[18%]">
           <p className=" text-white text-1xl md:text-3xl h-full lg:text-6xl font-black drop-shadow-xl">
             The Last Breath
           </p>
