@@ -20,7 +20,7 @@ const HoverMenu: React.FC<{ movie: TvProps | NewContent }> = ({ movie }) => {
         {movie.name || (movie as NewContent).original_title}
       </h3>
       <div className="flex flex-wrap gap-1 mb-2">
-        {movie.genre_ids.slice(0, 3).map((genre: number, index: number) => (
+        {movie.genre_ids?.slice(0, 3).map((genre: number, index: number) => (
           <span
             key={index}
             className="text-white text-xs bg-red-600 px-1 rounded"

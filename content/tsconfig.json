@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
+    "target": "ES6",
     "outDir": "./dist",
+    "rootDir": "./src",
 
-    "target": "es2020",
+
 
     /* Modules */
     "module": "commonjs",
@@ -14,5 +16,6 @@
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*", "tests/**/*"]
 }
