@@ -39,7 +39,7 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
     const profile = await Profile.findOne({
       where: { id },
     });
-
+    
     if (!profile) {
       res.status(404).json({ message: "Profile not found" });
       return;
