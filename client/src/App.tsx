@@ -30,7 +30,6 @@ import Navbar from "../src/layouts/nav";
 import EditProfileIcon from "./components/profile/profile-settings/edit-icon";
 import EditProfile from "./components/profile/edit-profile";
 
-
 const App: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -49,6 +48,7 @@ const App: React.FC = () => {
                   onNext={function (): void {
                     throw new Error("Function not implemented.");
                   }}
+                  emailInput=""
                 />
               }
             />
@@ -69,9 +69,17 @@ const App: React.FC = () => {
             <Route path="/profiles" element={<SelectProfile />} />
             <Route path="/profiles/manage" element={<ProfileManager />} />
             <Route path="/profiles/add" element={<AddProfile />} />
-            <Route path="/profiles/manage/edit/:profileId" element={<EditProfile profile={user?.profileId as unknown as Profile } onClose={function (): void {
-                throw new Error("Function not implemented.");
-              } } />}  />
+            <Route
+              path="/profiles/manage/edit/:profileId"
+              element={
+                <EditProfile
+                  profile={user?.profileId as unknown as Profile}
+                  onClose={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                />
+              }
+            />
             <Route path="/profile/edit-icon" element={<EditProfileIcon />} />
             <Route path="/edit-profile-icon" element={<EditProfileIcon />} />
 

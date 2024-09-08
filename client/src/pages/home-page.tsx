@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { setMyListContent } from "../store/slices/myListSlice";
 import ReactPlayer from "react-player";
+import { useProfiles } from "../components/profile/profiles";
 
 const mainTreiler = import.meta.env.VITE_LAST_BREATH_TREILER;
 
 const HomePage = () => {
+  const { profiles, error, loading } = useProfiles();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -22,11 +24,11 @@ const HomePage = () => {
     navigate(`/main-movie/play`);
   }
   useEffect(() => {
-    if (!user?.profileId) {
-      navigate("/profiles/add");
+    if (loading || error) return; // Wait for profiles to finish loading and handle errors if any
+    if (profiles.length === 1 && !profiles[0].name) {
+      navigate(`/profiles/add`, { state: { firstLoad: profiles[0].id } });
       return;
     }
-
     const LoadLikedContent = async () => {
       const LikedContentResponse = await sendRequest({
         port: 3006,
@@ -52,7 +54,7 @@ const HomePage = () => {
 
     LoadLikedContent();
     LoadMyListContent();
-  }, [dispatch, navigate, user]);
+  }, [dispatch, error, loading, navigate, profiles, user]);
 
   return (
     <>

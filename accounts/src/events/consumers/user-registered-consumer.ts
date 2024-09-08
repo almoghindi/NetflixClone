@@ -5,6 +5,7 @@ import {
 } from "@netflix-adea/common";
 import { EachMessagePayload } from "kafkajs";
 import Profile from "../../models/profile";
+import { randomBytes } from "crypto";
 
 export class UserRegisteredConsumer extends BaseConsumer<UserRegisteredEvent> {
   topic: Topics.UserRegistered = Topics.UserRegistered;
@@ -15,7 +16,10 @@ export class UserRegisteredConsumer extends BaseConsumer<UserRegisteredEvent> {
     payload: EachMessagePayload
   ): Promise<void> {
     const { id } = data;
+    const generatedId = randomBytes(6).toString("hex");
+
     const profile = Profile.build({
+      id: generatedId,
       user_id: id,
     });
     await profile.save();

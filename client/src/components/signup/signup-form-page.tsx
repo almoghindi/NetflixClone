@@ -21,9 +21,13 @@ type SignUpFormInputs = z.infer<typeof signUpSchema>;
 
 interface SignUpPageFormProps {
   onNext: () => void;
+  emailInput: string;
 }
 
-const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
+const SignUpPageForm: React.FC<SignUpPageFormProps> = ({
+  onNext,
+  emailInput,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -109,6 +113,7 @@ const SignUpPageForm: React.FC<SignUpPageFormProps> = ({ onNext }) => {
                   placeholder="Email"
                   {...register("email")}
                   className="w-full p-4 border border-gray-300 rounded"
+                  defaultValue={emailInput}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">

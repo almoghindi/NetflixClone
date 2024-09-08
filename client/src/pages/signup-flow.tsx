@@ -6,16 +6,24 @@ import PlanSelection from "../components/signup/plan-selection";
 import Payment from "../components/payment/payment";
 import ChoosePayment from "../components/signup/choose-payment";
 import PayPalSetup from "../components/payment/paypal-payment";
+import { useLocation } from "react-router-dom";
 
 interface SignupFlowProps {
   initialStep?: number;
 }
-
+interface LocationState {
+  emailInput: string;
+}
 const SignupFlow: React.FC<SignupFlowProps> = ({ initialStep = 1 }) => {
   const [step, setStep] = useState(initialStep);
   const [selectedPlan, setSelectedPlan] = useState("10341"); // Default to Premium
   const [price, setPrice] = useState("20"); // Default to Premium
   const [paymentMethod, setPaymentMethod] = useState("");
+  const location = useLocation();
+
+  const emailInput = location.state
+    ? (location.state as LocationState).emailInput
+    : "";
 
   const handleNextStep = () => {
     setStep(step + 1);
@@ -29,7 +37,9 @@ const SignupFlow: React.FC<SignupFlowProps> = ({ initialStep = 1 }) => {
   return (
     <>
       {step === 1 && <SignUpPage onNext={handleNextStep} />}
-      {step === 2 && <SignUpPageForm onNext={handleNextStep} />}
+      {step === 2 && (
+        <SignUpPageForm onNext={handleNextStep} emailInput={emailInput} />
+      )}
       {step === 3 && <ChoosePlan onNext={handleNextStep} />}
       {step === 4 && (
         <PlanSelection

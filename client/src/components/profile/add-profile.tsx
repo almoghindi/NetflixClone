@@ -3,12 +3,14 @@ import BlueIcon from "../../assets/img/blueIcon.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { sendRequest } from "../../hooks/use-request";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../../store/slices/authSlice";
 import ProfileModal from "./profile-modal";
 import IconSelector from "./modals/icon-selector-profile";
 import { Profile } from "./profile-manager";
-
+interface LocationState {
+  firstLoad: string;
+}
 const AddProfile: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
@@ -18,7 +20,10 @@ const AddProfile: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const isFirstLoad = location.state
+    ? (location.state as LocationState).firstLoad
+    : undefined;
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value.trim();
     if (input.length > 9) {
@@ -64,6 +69,21 @@ const AddProfile: React.FC = () => {
     dispatch(setUser({ ...user, avatar }));
 
     try {
+      if (isFirstLoad) {
+        const response = await sendRequest({
+          port: 3002,
+          url: `/api/profile/${isFirstLoad}/update`,
+          method: "PUT",
+          body: profileData,
+        });
+        if (response) {
+          console.log("First Profile created successfully:", response);
+          navigate("/profiles");
+        } else {
+          console.error("Failed to create profile.");
+        }
+        return;
+      }
       const response = await sendRequest({
         port: 3002,
         url: "/api/profile/create",
@@ -99,7 +119,9 @@ const AddProfile: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
       <div className="text-center w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-3 md:mb-4">Add Profile</h1>
+        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl mb-2 sm:mb-3 md:mb-4">
+          Add Profile
+        </h1>
         <p className="text-gray-400 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg">
           Add a profile for another person watching Netflix.
         </p>
@@ -141,7 +163,10 @@ const AddProfile: React.FC = () => {
             onChange={handleKidChange}
             className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-red-600 bg-gray-800 border border-gray-600 focus:ring-0"
           />
-          <label htmlFor="kid" className="ml-2 text-gray-400 text-base sm:text-lg">
+          <label
+            htmlFor="kid"
+            className="ml-2 text-gray-400 text-base sm:text-lg"
+          >
             Kid?
           </label>
         </div>
