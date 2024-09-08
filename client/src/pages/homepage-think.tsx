@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { PlayIcon, InformationCircleIcon } from '@heroicons/react/20/solid';
-import ReactPlayer from 'react-player';
+import React, { useEffect, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { PlayIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
+import ReactPlayer from "react-player";
 
-import ContentRows from '../components/content/contentRows';
-import Top10Videos from '../components/content/top10-videos';
-import RecommendedRow from '../components/content/recommended-Row';
-import { sendRequest } from '../hooks/use-request';
-import { setLikedContent } from '../store/slices/liked-slice';
-import { setMyListContent } from '../store/slices/myListSlice';
-import { AppDispatch, RootState } from '../store/store';
+import ContentRows from "../components/content/contentRows";
+import Top10Videos from "../components/content/top10-videos";
+import RecommendedRow from "../components/content/recommended-Row";
+import { sendRequest } from "../hooks/use-request";
+import { setLikedContent } from "../store/slices/liked-slice";
+import { setMyListContent } from "../store/slices/myListSlice";
+import { AppDispatch, RootState } from "../store/store";
+import { useProfiles } from "../components/profile/profiles";
 
 const MAIN_TRAILER = import.meta.env.VITE_LAST_BREATH_TREILER;
 
@@ -18,23 +19,20 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const [userHasProfile, setUserHasProfile] = useState(false);
+  // const [userHasProfile, setUserHasProfile] = useState(false);
+  const { profiles } = useProfiles();
 
   useEffect(() => {
     const checkUserProfile = async () => {
-      if (!user?.userId) return;
-
-      const profileResponse = await sendRequest({
-        url: `/api/profile/${user.userId}/has-profile`,
-        method: 'GET',
-        port: 3002,
-      });
-
-      if (profileResponse?.hasProfile) {
-        setUserHasProfile(true);
-        navigate('/profiles');
+      console.log(profiles);
+      if (profiles[0].name === null) {
+        navigate(`/profiles/manage/edit/${user?.profileId}`);
       } else if (!user?.profileId) {
-        navigate('/profiles/add');
+        console.log("what the hell");
+        navigate("/profiles/add");
+      } else {
+        console.log(user?.profileId + " proflie id");
+        navigate(`/profiles`);
       }
     };
 
@@ -45,11 +43,11 @@ const HomePage: React.FC = () => {
         sendRequest({
           port: 3006,
           url: `/api/get-liked-content/${user.userId}`,
-          method: 'GET',
+          method: "GET",
         }),
         sendRequest({
           url: `/api/profile/${user.profileId}/items`,
-          method: 'GET',
+          method: "GET",
           port: 3002,
         }),
       ]);
@@ -60,7 +58,7 @@ const HomePage: React.FC = () => {
 
     checkUserProfile();
     loadUserContent();
-  }, [dispatch, user, navigate]);
+  }, [dispatch, user, navigate, profiles]);
 
   const handlePlayMainVideoClick = () => navigate(`/main-movie/play`);
 
@@ -84,11 +82,11 @@ const MainTrailer: React.FC = () => (
       width="100%"
       height="100%"
       style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        objectFit: 'cover',
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        objectFit: "cover",
       }}
       controls={false}
     />
@@ -125,13 +123,13 @@ const ContentSection: React.FC = () => (
   <div className="pb-40 mt-15">
     <Top10Videos
       filter={{
-        url: 'top_rated/movie',
-        title: 'Top 10 Movies in Israel Today',
+        url: "top_rated/movie",
+        title: "Top 10 Movies in Israel Today",
       }}
     />
-    <ContentRows filter={{ url: 'trending/all', title: 'Trending Now' }} />
-    <ContentRows filter={{ url: 'popular/movie', title: 'Popular' }} />
-    <ContentRows filter={{ url: 'upcoming/movie', title: 'Upcoming' }} />
+    <ContentRows filter={{ url: "trending/all", title: "Trending Now" }} />
+    <ContentRows filter={{ url: "popular/movie", title: "Popular" }} />
+    <ContentRows filter={{ url: "upcoming/movie", title: "Upcoming" }} />
     <RecommendedRow />
   </div>
 );
