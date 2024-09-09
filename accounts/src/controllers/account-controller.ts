@@ -39,7 +39,7 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
     const profile = await Profile.findOne({
       where: { id },
     });
-    
+
     if (!profile) {
       res.status(404).json({ message: "Profile not found" });
       return;
@@ -67,7 +67,7 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
     }
 
     console.log("The Req Body:", req.body);
-    
+
     // Update profile with the fields provided in req.body
     Object.assign(profile, req.body);
 
@@ -120,21 +120,24 @@ const userHaveProfile = async (req: Request, res: Response): Promise<void> => {
     });
 
     if (!profile) {
-      res.status(200).json({ hasProfile: false, message: "No profile found for this user" });
+      res
+        .status(200)
+        .json({ hasProfile: false, message: "No profile found for this user" });
     } else {
       res.status(200).json({ hasProfile: true, profileId: profile.id });
     }
   } catch (error) {
-    console.error('Error checking user profile:', error);
-    res.status(500).json({ hasProfile: false, message: "Internal server error" });
+    console.error("Error checking user profile:", error);
+    res
+      .status(500)
+      .json({ hasProfile: false, message: "Internal server error" });
   }
 };
-
 
 const getAllProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params; // This is now the user_id
-    console.log("user id L"+id);
+    console.log("user id L" + id);
     if (!id) {
       res.status(400).json({ message: "User ID is required" });
       return;

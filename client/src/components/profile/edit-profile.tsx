@@ -23,12 +23,11 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
   const [gameHandle, setGameHandle] = useState("");
   const [maturitySettings, setMaturitySettings] = useState({});
   const [autoplay, setAutoplay] = useState({});
+
   const [error, setError] = useState('');
   const [profileId, ] = useState(profile.id);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-
-
 
   const updatedProfileData = {
     name,
@@ -43,9 +42,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     if (input.length > 9) {
-      setError('Name cannot exceed 9 characters.');
+      setError("Name cannot exceed 9 characters.");
     } else {
-      setError('');
+      setError("");
       setName(input);
     }
   };
@@ -62,12 +61,12 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
         <div className="border-b border-gray-700 mb-2"></div>
         <div className="flex flex-col sm:flex-row sm:space-x-4">
           {/* Column for Profile Picture */}
-          <div onClick={() => setIsModalOpen(true)} className="flex-shrink-0 w-full sm:w-1/3 flex flex-col items-center mb-4 sm:mb-0">
-            <ProfilePicture 
-              src={avatar} 
-              profileId={profileId}
-            />
-            <button 
+          <div
+            onClick={() => setIsModalOpen(true)}
+            className="flex-shrink-0 w-full sm:w-1/3 flex flex-col items-center mb-4 sm:mb-0"
+          >
+            <ProfilePicture src={avatar} profileId={profile.id} />
+            <button
               onClick={() => setIsModalOpen(true)}
               className="mt-2 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
             >
@@ -88,9 +87,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
                 className="bg-zinc-700 p-2 rounded w-full text-sm sm:text-base mb-3"
                 maxLength={9}
               />
-              {error && (
-                <p className="text-red-500 text-sm">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
             <LanguageSelector handleSelectLanguage={setLanguage} />
             <GameHandle handleGameHandle={setGameHandle} />
@@ -101,7 +98,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
             <div className="border-b border-gray-700 mb-2 mt-2"></div>
             <ActionButtons
               onClose={onClose}
-              profileId={profileId}
+              profileId={profile.id}
               profileData={updatedProfileData}
             />
           </div>

@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
 import Top10Card from "./top10-card";
-import { useSwipeable } from 'react-swipeable';
+import { useSwipeable } from "react-swipeable";
 
 const Top10Videos = ({ filter }: { filter: filter }) => {
   const [content, setContents] = useState<NewContent[]>([]);
@@ -36,10 +36,10 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
 
     showMovies();
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [filter.url]);
 
@@ -49,7 +49,10 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
 
   const slideRight = () => {
     setCurrentIndex((prevIndex) =>
-      Math.min(prevIndex + ITEMS_PER_SCREEN, Math.max(content.length - ITEMS_PER_SCREEN, 0))
+      Math.min(
+        prevIndex + ITEMS_PER_SCREEN,
+        Math.max(content.length - ITEMS_PER_SCREEN, 0)
+      )
     );
   };
 
@@ -98,7 +101,9 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
       <div
         {...handlers}
         className={`flex items-center whitespace-nowrap scrollbar-hide transition-transform duration-300 ${
-          isMobile ? 'overflow-x-scroll gap-4' : 'overflow-visible md:gap-24 lg:gap-24 xl:gap-24'
+          isMobile
+            ? "overflow-x-scroll gap-4"
+            : "overflow-visible md:gap-24 lg:gap-24 xl:gap-24"
         }`}
         style={{
           transform: `translateX(-${currentIndex * ITEM_WIDTH}px)`,
@@ -116,7 +121,9 @@ const Top10Videos = ({ filter }: { filter: filter }) => {
             }`}
           >
             <img
-              src={`https://www.netflix.com/tudum/top10/images/big_numbers/${index + 1}.png`}
+              src={`https://www.netflix.com/tudum/top10/images/big_numbers/${
+                index + 1
+              }.png`}
               alt={`Number ${index + 1}`}
               className={`
               w-full
