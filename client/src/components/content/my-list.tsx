@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import MovieCard from "./movieCard";
 
 const MyListPage: React.FC = () => {
   const myList = useSelector((state: RootState) => state.myList);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="px-10 sm:px-6 md:px-8 lg:px-10 xl:px-12 min-h-screen">
@@ -13,8 +25,8 @@ const MyListPage: React.FC = () => {
       </h1>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 lg:gap-5 xl:grid-cols-4 gap-8 sm:gap-6 md:gap-16 mt-4 sm:mt-6 md:mt-8">
         {[...myList.movies, ...myList.tvShows].map((movie, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="
               relative
               w-full
@@ -23,7 +35,7 @@ const MyListPage: React.FC = () => {
               hover:z-10
             "
           >
-            <MovieCard movie={movie} />
+            <MovieCard movie={movie} isMobile={isMobile} />
           </div>
         ))}
       </div>

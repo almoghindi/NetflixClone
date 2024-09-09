@@ -153,6 +153,7 @@ export default class RecommenderController {
           },
         ],
         model: "llama3-8b-8192",
+        temperature: 0,
       });
       const groqAIResponse = response.choices[0]?.message?.content;
       if (groqAIResponse) {

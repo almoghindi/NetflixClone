@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { sendRequest } from "../../hooks/use-request";
 import { filter, NewContent } from "../../types/new-content";
@@ -75,10 +75,10 @@ const ContentRows = ({ filter }: { filter: filter }) => {
 
     fetchContent();
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [filter.url]);
 
@@ -88,7 +88,10 @@ const ContentRows = ({ filter }: { filter: filter }) => {
 
   const slideRight = () => {
     setCurrentIndex((prevIndex) =>
-      Math.min(prevIndex + ITEMS_PER_SCREEN, Math.max(content.length - ITEMS_PER_SCREEN, 0))
+      Math.min(
+        prevIndex + ITEMS_PER_SCREEN,
+        Math.max(content.length - ITEMS_PER_SCREEN, 0)
+      )
     );
   };
 
@@ -138,7 +141,11 @@ const ContentRows = ({ filter }: { filter: filter }) => {
         {...handlers}
         id={`slider-${filter.url}`}
         ref={sliderRef}
-        className={!isMobile ? "flex overflow-visible scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300" : "flex overflow-x-scroll scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300"}
+        className={
+          !isMobile
+            ? "flex overflow-visible scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300"
+            : "flex overflow-x-scroll scrollbar-hide whitespace-nowrap space-x-1 md:space-x-2.5 lg:space-x-5 transition-transform duration-300"
+        }
         style={{
           transform: `translateX(-${currentIndex * ITEM_WIDTH}px)`,
         }}
@@ -147,9 +154,7 @@ const ContentRows = ({ filter }: { filter: filter }) => {
           <div
             key={index}
             className={`scroll-snap-align-start ${
-              isMobile
-                ? "w-[175px] min-w-[175px]"
-                : "w-[350px] min-w-[350px]"
+              isMobile ? "w-[175px] min-w-[175px]" : "w-[350px] min-w-[350px]"
             } item transition-transform duration-300`}
           >
             <MovieCard movie={item} isMobile={isMobile} />
