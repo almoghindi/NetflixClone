@@ -1,0 +1,65 @@
+apiVersion: skaffold/v3
+kind: Config
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: etprogrammer/client
+      context: client
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.tsx"
+    - image: etprogrammer/auth
+      context: auth
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: etprogrammer/recommender
+      context: recommender
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+
+    - image: etprogrammer/content
+      context: content
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+
+    - image: etprogrammer/payment
+      context: payment
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+
+    - image: etprogrammer/accounts
+      context: accounts
+      docker: 
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+
+
+  

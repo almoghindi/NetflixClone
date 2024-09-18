@@ -85,10 +85,9 @@ export class AuthService {
     }
 
     static async logout(userId: string){
-        console.log("User is " + userId);
+
         const user = await User.findById(userId);
         
-        console.log("User is " + user);
         if (!user){
             throw new Error('User not found');
         }
@@ -107,7 +106,6 @@ export class AuthService {
 
         const token = crypto.randomBytes(32).toString('hex');
 
-        console.log("Token is " + token);
         await PasswordResetToken.findOneAndDelete({ userId: user._id });
         await PasswordResetToken.create({ userId: user._id, token });
 

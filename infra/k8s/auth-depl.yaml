@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: etprogrammer/auth
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets 
+                  key: mongodb_uri   
+
+            - name: PORT
+              value: "3001" 
+
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: access_token
+
+            - name: REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: refresh_token
+
+            - name: TWILIO
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: twilio
+
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: sendgrid_api_key
+
+            - name: EMAIL_FROM
+              value: "eliorsenel@gmail.com"  
+
+            - name: SENDGRID_RESET_TEMPLATE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: sendgrid_reset_template_id
+
+            - name: FRONTEND_URL
+              value: "http://localhost:5173"
+
+            - name: SECRET_KEY_CRYPTO
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secrets
+                  key: secret_key_crypto
+
+            - name: KAFKA_BROKER
+              value: "kafka-srv:9092" 
+
+            - name: KAFKA_CLIENT_ID
+              value: "auth" 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: ClusterIP

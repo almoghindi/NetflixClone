@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommender-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommender
+  template:
+    metadata:
+      labels:
+        app: recommender
+    spec:
+      containers:
+        - name: recommender
+          image: etprogrammer/recommender
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          env:
+            - name: PORT
+              value: "3006"
+            - name: MONGO_URI
+              value: "mongodb://recommender-mongodb-srv:27017/likedContent"
+            - name: TMDB_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: recommender-secrets
+                  key: TMDB_API_KEY
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: recommender-secrets
+                  key: GROQ_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommender-srv
+spec:
+  selector:
+    app: recommender
+  ports:
+    - protocol: TCP
+      port: 3006
+      targetPort: 3006
+  type: ClusterIP

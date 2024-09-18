@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accounts
+  template:
+    metadata:
+      labels:
+        app: accounts
+    spec:
+      containers:
+        - name: accounts
+          image: etprogrammer/accounts
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          env:
+            - name: PORT
+              value: "3002"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secrets
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: accounts-secrets
+                  key: DB_NAME
+            - name: DB_HOST
+              value: "accounts-mysql-srv"
+            - name: DB_PORT
+              value: "3306"
+            - name: KAFKA_BROKER
+              value: "kafka-srv:9092"
+            - name: KAFKA_CLIENT_ID
+              value: "accounts"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: accounts-srv
+spec:
+  selector:
+    app: accounts
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP

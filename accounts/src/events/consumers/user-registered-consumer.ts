@@ -18,6 +18,7 @@ export class UserRegisteredConsumer extends BaseConsumer<UserRegisteredEvent> {
     const { id } = data;
     const generatedId = randomBytes(6).toString("hex");
 
+    
     const profile = Profile.build({
       id: generatedId,
       user_id: id,

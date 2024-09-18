@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: etprogrammer/payment
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"  
+          env:
+            - name: PORT
+              value: "3004"
+            - name: MONGO_URI
+              value: "mongodb://payment-mongodb-srv:27017/netflixpayment"
+            - name: STRIPE_PUBLISHABLE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: STRIPE_PUBLISHABLE_KEY
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: STRIPE_SECRET_KEY
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: STRIPE_WEBHOOK_SECRET
+            - name: BASE_URL
+              value: "http://localhost:3004/"
+            - name: CLIENT_URL
+              value: "http://localhost:5173/"
+            - name: PAYPAL_API_URL
+              value: "https://api-m.sandbox.paypal.com"
+            - name: PAYPAL_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: PAYPAL_CLIENT_ID
+            - name: PAYPAL_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: PAYPAL_CLIENT_SECRET
+            - name: KAFKA_BROKER
+              value: "kafka-srv:9092"
+            - name: KAFKA_CLIENT_ID
+              value: "payment"
+          command:
+            - "node"
+            - "--max-old-space-size=1024"  
+            - "node_modules/.bin/ts-node-dev"
+            - "--poll"
+            - "src/index.ts"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-srv
+spec:
+  selector:
+    app: payment
+  ports:
+    - protocol: TCP
+      port: 3004
+      targetPort: 3004
+  type: ClusterIP

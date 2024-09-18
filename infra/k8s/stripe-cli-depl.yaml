@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stripe-cli-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stripe-cli
+  template:
+    metadata:
+      labels:
+        app: stripe-cli
+    spec:
+      containers:
+        - name: stripe-cli
+          image: stripe/stripe-cli
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          command: [ "stripe", "listen", "--api-key", "$(STRIPE_API_KEY)", "--device-name", "$(STRIPE_DEVICE_NAME)", "--forward-to", "http://payment-service:3004/api/webhook/" ]
+          env:
+            - name: STRIPE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-cli-secrets
+                  key: STRIPE_API_KEY
+            - name: STRIPE_DEVICE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-cli-secrets
+                  key: STRIPE_DEVICE_NAME

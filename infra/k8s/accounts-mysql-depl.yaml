@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts-mysql-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accounts-mysql
+  template:
+    metadata:
+      labels:
+        app: accounts-mysql
+    spec:
+      containers:
+        - name: accounts-mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "api"  # Root password for MySQL
+            - name: MYSQL_DATABASE
+              value: "netflix_accounts"  # Database to create
+            - name: MYSQL_USER
+              value: "netflix"  # MySQL user to create
+            - name: MYSQL_PASSWORD
+              value: "api"  # Password for the MySQL user
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: accounts-mysql-srv
+spec:
+  selector:
+    app: accounts-mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP

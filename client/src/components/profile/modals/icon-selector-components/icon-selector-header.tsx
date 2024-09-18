@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store/store";
 import { Profile } from "../../profile-manager";
-import { useEffect, useState } from "react";
+
 
 interface IconSelectorHeaderProps {
   profile: Profile; 

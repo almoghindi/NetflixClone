@@ -1,0 +1,67 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+spec:
+  ingressClassName: nginx  # <-- Add this line
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /api/auth(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 3000
+
+          - path: /api/profile(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: profile-srv
+                port:
+                  number: 3000
+          
+          - path: /redis(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: content-srv  
+                port:
+                  number: 3000     
+
+          # - path: /api(/|$)(.*)
+          #   pathType: ImplementationSpecific
+          #   backend:
+          #     service:
+          #       name: content-srv  
+          #       port:
+          #         number: 3000     
+
+          - path: /api/payment(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 3000
+
+
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: recommender-srv
+                port:
+                  number: 3000
+
+
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000

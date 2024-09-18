@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommender-mongodb-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommender-mongodb
+  template:
+    metadata:
+      labels:
+        app: recommender-mongodb
+    spec:
+      containers:
+        - name: recommender-mongodb
+          image: mongo:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          ports:
+            - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommender-mongodb-srv
+spec:
+  selector:
+    app: recommender-mongodb
+  ports:
+    - protocol: TCP
+      port: 27017    
+      targetPort: 27017
+  type: ClusterIP

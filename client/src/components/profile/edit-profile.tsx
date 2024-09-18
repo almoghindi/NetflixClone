@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+
 import ProfilePicture from "./profile-settings/profile-picture";
 import LanguageSelector from "./profile-settings/language-selector";
 import GameHandle from "./profile-settings/game-handle";
@@ -7,8 +7,6 @@ import MaturitySettings from "./profile-settings/maturity-settings";
 import AutoplayControls from "./profile-settings/autoplay-controls";
 import ActionButtons from "./profile-settings/action-buttons";
 import { Profile } from "./profile-manager";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import ProfileModal from "./profile-modal";
 import IconSelector from "./modals/icon-selector-profile";
 
@@ -18,7 +16,7 @@ interface EditProfileProps {
 }
 
 const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
-  const { user } = useSelector((state: RootState) => state.auth);
+
   const [name, setName] = useState(profile.name);
   const [avatar, setAvatar] = useState(profile.avatar);
   const [language, setLanguage] = useState("");
@@ -26,7 +24,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ profile, onClose }) => {
   const [maturitySettings, setMaturitySettings] = useState({});
   const [autoplay, setAutoplay] = useState({});
   const [error, setError] = useState('');
-  const [profileId, setProfileId] = useState(profile.id);
+  const [profileId, ] = useState(profile.id);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
 

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: content
+  template:
+    metadata:
+      labels:
+        app: content
+    spec:
+      containers:
+        - name: content
+          image: etprogrammer/content
+          ports:
+            - containerPort: 3003
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"   
+            limits:
+              memory: "512Mi"
+              cpu: "500m"   
+          env:
+            - name: REDIS_URI
+              value: "redis://redis-srv.default.svc.cluster.local:6379"  
+            - name: PORT
+              value: "3003"
+            - name: TMDB_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: content-secrets
+                  key: TMDB_API_KEY
+            - name: SEARCH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: content-secrets
+                  key: SEARCH_KEY
+            - name: BASE_URL
+              value: "https://api.themoviedb.org/3"
+            # - name: MONGO_URI
+            #   value: "mongodb://content-mongodb:27017/content"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: content-srv
+spec:
+  selector:
+    app: content
+  ports:
+    - protocol: TCP
+      port: 3003
+      targetPort: 3003
+  type: ClusterIP

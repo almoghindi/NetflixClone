@@ -21,9 +21,7 @@ app.use(json());
 app.use(cors(corsConfiguration()));
 
 app.use("/api/profile/", accountRouter);
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Express & TypeScript Server");
-});
+
 
 app.use(errorHandler);
 

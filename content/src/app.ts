@@ -14,6 +14,6 @@ app.use(cors());
 
 app.use("/redis", redisRouter)
 app.use("/api", contentRouter);
-app.use("/api", seedRouter);
+
 
 export default app;

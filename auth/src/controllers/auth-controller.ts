@@ -30,7 +30,6 @@ export class AuthController {
   static async logout(req: Request, res: Response, next: NextFunction) {
     try {
         const { userId } = req.body;
-        console.log("UserId is"+userId);
 
         if (!userId){
             return res.status(400).json({ message: 'User ID is required in the request body!' });

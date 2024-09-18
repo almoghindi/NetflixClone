@@ -11,8 +11,6 @@ app.use(urlencoded({ extended: true }));
 app.use(cors(corsConfiguration()));
 app.use(express.json());
 app.use("/api", recommenderRouter);
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Recommender & TypeScript Server");
-});
+
 
 export default app;

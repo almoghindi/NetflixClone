@@ -47,8 +47,4 @@ startKafka();
 app.use(express.json());
 app.use("/api/payment", json(), paymentRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Payment & TypeScript Server");
-});
-
 export default app;

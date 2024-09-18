@@ -1,5 +1,17 @@
 version: "3.8"
 services:
+  kafka:
+    image: bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+    depends_on:
+      - zookeeper
+  
   auth-service:
     build:
       context: ../auth
@@ -11,6 +23,18 @@ services:
     env_file:
       - ../auth/.env
 
+  payment-service:
+    build:
+      context: ../payment
+    ports:
+      - "3004:3004"
+    depends_on:
+      - payment-mongodb
+      - kafka
+      - auth-service
+    env_file:
+      - ../payment/.env
+
   accounts-service:
     build:
       context: ../accounts
@@ -19,6 +43,8 @@ services:
     depends_on:
       - mysql
       - kafka
+      - auth-service
+      - payment-service
     env_file:
       - ../accounts/.env
 
@@ -35,17 +61,6 @@ services:
     environment:
       REDIS_URL: redis://redis:6379
 
-  payment-service:
-    build:
-      context: ../payment
-    ports:
-      - "3004:3004"
-    depends_on:
-      - payment-mongodb
-      - kafka
-    env_file:
-      - ../payment/.env
-
   recommender-service:
     build:
       context: ../recommender
@@ -55,14 +70,6 @@ services:
       - recommender-mongodb
     env_file:
       - ../recommender/.env
-
-  # streamer-service:
-  #   build:
-  #     context: ../streamer
-  #   ports:
-  #     - "3005:3005"
-  #   env_file:
-  #     - ../streamer/.env
 
   auth-mongodb:
     container_name: auth_mongodb_container
@@ -113,21 +120,21 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql # Persist data
+      - mysql_data:/var/lib/mysql
 
-  # client:
-  #   build:
-  #     context: ../client
-  #   ports:
-  #     - "5173:80"
-  #   depends_on:
-  #     - auth-service
-  #     - accounts-service
-  #     - content-service
-  #     - payment-service
-  #     - recommender-service
-  #   env_file:
-  #     - ../client/.env
+  client:
+    build:
+      context: ../client
+    ports:
+      - "5173:80"
+    depends_on:
+      - auth-service
+      - accounts-service
+      - content-service
+      - payment-service
+      - recommender-service
+    env_file:
+      - ../client/.env
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -136,21 +143,10 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
-  kafka:
-    image: bitnami/kafka:latest
-    ports:
-      - "9092:9092"
-    environment:
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-    depends_on:
-      - zookeeper
-
   redis:
     image: redis
     ports:
       - "6379:6379"
+
 volumes:
   mysql_data:
